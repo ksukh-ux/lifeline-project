@@ -12,12 +12,12 @@ Lifeline ist eine interaktive Timeline-Webanwendung zur visuellen Darstellung pe
 
 ## Teammitglieder
 
-| Name               | Rolle          | GitHub   |
-
-| Sukhmani Kaur      | Projektleitung | ksukh-ux |
-| Diona Feka         | Teammitglied   | x |
-| Mary Rose Alghanem | Teammitglied   | x |
-| Ahmed Al-Gumaeli   | Teammitglied   | x |
+| Name | Studiengang | Rolle | GitHub |
+|---|---|---|---|
+| Sukhmani Kaur | Wirtschaftsinformatik B.Sc. | Projektleitung / UI | ksukh-ux |
+| Diona Feka | Wirtschaftsinformatik B.Sc. |  | ... |
+| Mary Rose Alghanem | Wirtschaftsinformatik B.Sc. |  | ... |
+| Ahmed Al-Gumaeli | Wirtschaftsinformatik B.Sc. |  | ... |
 ---
 
 ## Technologien
