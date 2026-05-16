@@ -15,7 +15,7 @@ Lifeline ist eine interaktive Timeline-Webanwendung zur visuellen Darstellung pe
 | Name | Studiengang | Rolle | GitHub |
 |---|---|---|---|
 | Sukhmani Kaur | Wirtschaftsinformatik B.Sc. | Projektleitung / UI | ksukh-ux |
-| Diona Feka | Wirtschaftsinformatik B.Sc. |  | ... |
+| Diona Feka | Wirtschaftsinformatik B.Sc. |  | dionafeka |
 | Mary Rose Alghanem | Wirtschaftsinformatik B.Sc. |  | ... |
 | Ahmed Al-Gumaeli | Wirtschaftsinformatik B.Sc. | ? | ahmed-8x |
 ---
