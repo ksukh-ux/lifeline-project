@@ -41,3 +41,12 @@ Die Rollen beschreiben die Hauptverantwortlichkeiten im Projekt. Alle Teammitgli
 - Reminder-System
 - Progress Tracking
 - Moderne Dark-Mode UI
+
+---
+
+## KI-Werkzeuge
+- ChatGPT
+- Google Gemini
+- Claude 
+
+
