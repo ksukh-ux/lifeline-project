@@ -30,6 +30,7 @@ Die Rollen beschreiben die Hauptverantwortlichkeiten im Projekt. Alle Teammitgli
 - Tailwind CSS
 - Node.js
 - Express
+- SQLite – lokale Datenbank
 
 ---
 
