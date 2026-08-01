@@ -4,7 +4,8 @@ Die Spezifikation des Lifeline-Projekts ist nach dem Bausteinmodell von **Johann
 
 Dieses Dokument dient als zentrale Übersicht: Es erläutert das verwendete Modell, verweist auf alle Spezifikationsbausteine und dokumentiert, welche Bausteine für das Lifeline-Projekt nicht relevant sind.
 
-Eine Beschreibung des Bausteinmodells befindet sich in [`SIEDERSLEBEN.md`](SIEDERSLEBEN.md).
+Eine Beschreibung des Bausteinmodells befindet sich in der
+[Siedersleben-Vorlage von Herrn Lucke](https://github.com/carstenlucke/herold/blob/main/docs/spec/SIEDERSLEBEN.md).
 
 Quelle: SIEDERSLEBEN, J. (Hrsg.) 2003. *Softwaretechnik – Praxiswissen für Softwareingenieure.* München: Carl Hanser Verlag.
 
