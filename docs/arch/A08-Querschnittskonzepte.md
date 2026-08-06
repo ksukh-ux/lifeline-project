@@ -44,16 +44,13 @@ reine Komfortfunktion (Nachvollziehbarkeit, QG-02):
 
 ### 8.3 Authentifizierung und Session
 
-Wie in Kapitel 6.2 offengelassen, hier die konkrete Umsetzung:
+Die Entscheidung für Session-basierte Authentifizierung statt JWT ist
+mit Kontext, Alternativen und Begründung in **ADR-004** (Kapitel 9)
+festgehalten – hier nur die konkrete Realisierung:
 
 - **Passwort-Hashing:** bcrypt, niemals Klartext gespeichert oder geloggt
-- **Session-basierte Authentifizierung** (statt JWT): einfacher für den
-  Projektumfang, kein Token-Refresh nötig
 - Session-Cookie `httpOnly` und `secure` (in Produktion), Session-Secret
   aus `.env` (siehe Kapitel 7.2 – nur der Variablenname wird dokumentiert)
-- **Abgelehnte Alternative:** JWT – hätte eigene Refresh-Logik nötig
-  gemacht, ohne echten Vorteil für eine Single-Origin-Anwendung ohne
-  mobile native Clients
 
 ⚠️ **Team-Entscheidung:** persistenter Session-Store (z. B. SQLite-Tabelle)
 vs. einfacher In-Memory-Store (verliert Sessions bei Server-Neustart,

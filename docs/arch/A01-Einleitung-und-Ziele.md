@@ -1,12 +1,14 @@
-## 1.1 Aufgabenstellung
+## 1. Einführung und Ziele
 
-Lifeline ist eine webbasierte Anwendung, mit der Nutzerinnen und Nutzer
-persönliche Ziele, Ereignisse und Meilensteine auf einer interaktiven
-Timeline anlegen, anzeigen, bearbeiten und löschen können. Ziel ist eine
+### 1.1 Aufgabenstellung
+
+Lifeline ist eine webbasierte Anwendung, mit der Nutzer:innen persönliche
+Ziele, Ereignisse und Meilensteine auf einer interaktiven Timeline
+anlegen, anzeigen, bearbeiten und löschen können. Ziel ist eine
 zentrale, chronologische Übersicht anstelle verstreuter Notizen und
 Dokumente (vgl. P1, §2–3).
 
-## 1.2 Qualitätsziele
+### 1.2 Qualitätsziele
 
 | ID | Priorität | Qualitätsziel | Erläuterung |
 |---|---|---|---|
@@ -14,7 +16,7 @@ Dokumente (vgl. P1, §2–3).
 | QG-02 | 2 | Nachvollziehbarkeit | Daten korrekt und verständlich dargestellt (P1 §8.3) |
 | QG-03 | 3 | Erweiterbarkeit | modularer Aufbau für spätere Erweiterungen (P1 §8.3, §6) |
 
-## 1.3 Stakeholder
+### 1.3 Stakeholder
 
 | Rolle | Erwartung |
 |---|---|

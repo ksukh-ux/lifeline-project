@@ -1,4 +1,6 @@
-## 2.1 Technische Randbedingungen
+## 2. Randbedingungen
+
+### 2.1 Technische Randbedingungen
 
 | ID | Randbedingung | Beschreibung |
 |---|---|---|
@@ -8,7 +10,7 @@
 | TECH-04 | Versionsverwaltung | Git, GitHub |
 | TECH-05 | Entwicklungsumgebung | Visual Studio Code |
 
-## 2.2 Organisatorische Randbedingungen
+### 2.2 Organisatorische Randbedingungen
 
 | ID | Randbedingung | Beschreibung |
 |---|---|---|
@@ -17,7 +19,7 @@
 | ORG-03 | Harte Abgabefrist | 25. September 2026 (M3), Git-Tag `v1.0.0` |
 | ORG-04 | Modul | Wirtschaftsinformatik-Projekt I (WK_1106), SS 2026 |
 
-## 2.3 Konventionen
+### 2.3 Konventionen
 
 | ID | Konvention | Beschreibung |
 |---|---|---|

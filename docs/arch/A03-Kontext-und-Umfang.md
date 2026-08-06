@@ -1,4 +1,6 @@
-## 3.1 Fachlicher Kontext
+## 3. Kontextabgrenzung
+
+### 3.1 Fachlicher Kontext
 
 Lifeline wird hier als Ganzes (Black Box) betrachtet. In der aktuellen
 Projektphase ist die Nutzerin/der Nutzer der einzige externe
@@ -14,7 +16,7 @@ flowchart LR
     N[Nutzer:in] <-->|nutzt| L((Lifeline))
 ```
 
-## 3.2 Technischer Kontext
+### 3.2 Technischer Kontext
 
 | Kanal | Protokoll | Übertragene Daten |
 |---|---|---|
