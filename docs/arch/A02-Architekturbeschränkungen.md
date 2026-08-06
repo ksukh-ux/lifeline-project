@@ -27,3 +27,4 @@
 | CONV-02 | Commit-Stil | Conventional Commits (`type(scope): description`) |
 | CONV-03 | Doku-Trennung | Spezifikation nach Siedersleben (`docs/spec/`), Architektur nach arc42 (`docs/arch/`) |
 | CONV-04 | Diagramme | Mermaid direkt im Markdown |
+| CONV-05 | Secret-Handling | Secrets (Passwörter, Session-Secret, API-Keys) ausschließlich in `.env`, niemals im Repository (`.gitignore`) |

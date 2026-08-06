@@ -75,10 +75,10 @@ sequenceDiagram
     end
 ```
 
-⚠️ **Team-Entscheidung:** Genauer Auth-Mechanismus noch offen
-(Session-Cookie vs. JWT). Empfehlung: einfache Session-basierte
-Authentifizierung, da für den Projektumfang ausreichend und ohne
-Token-Refresh-Komplexität. Wird als ADR in Kapitel 9 festgehalten.
+**Auth-Mechanismus:** Session-basierte Authentifizierung – Kontext,
+Alternativen und Begründung siehe ADR-004 (Kapitel 9). Konkrete
+Realisierung (Passwort-Hashing, Cookie-Flags, Session-Store) siehe
+Kapitel 8.3.
 
 ### 6.3 Statistik berechnen
 

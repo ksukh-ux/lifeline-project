@@ -17,7 +17,7 @@
 flowchart LR
     C[Client<br/>Browser] -->|HTTPS| S
 
-    subgraph S[Anwendungsserver – ein Node]
+    subgraph S[Anwendungsserver – ein Server]
         B[Express-Prozess<br/>liefert API + gebautes Frontend]
         DB[(SQLite-Datei<br/>lokal auf demselben Server)]
         B --> DB
@@ -54,4 +54,4 @@ Netzwerk-Konfiguration zwischen mehreren Diensten.
 
 Konkrete Werte werden **nie** committet – nur die Variablennamen hier,
 die echten Werte liegen ausschließlich lokal bzw. beim Hosting-Anbieter
-(vgl. `.gitignore`-Regel aus Kapitel 2).
+(vgl. CONV-05, Kapitel 2).

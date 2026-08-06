@@ -50,12 +50,10 @@ festgehalten – hier nur die konkrete Realisierung:
 
 - **Passwort-Hashing:** bcrypt, niemals Klartext gespeichert oder geloggt
 - Session-Cookie `httpOnly` und `secure` (in Produktion), Session-Secret
-  aus `.env` (siehe Kapitel 7.2 – nur der Variablenname wird dokumentiert)
-
-⚠️ **Team-Entscheidung:** persistenter Session-Store (z. B. SQLite-Tabelle)
-vs. einfacher In-Memory-Store (verliert Sessions bei Server-Neustart,
-für Demo-Zwecke aber ausreichend). Empfehlung: In-Memory reicht für den
-Projektumfang.
+  aus `.env` (siehe Kapitel 7.2, CONV-05)
+- **Session-Store:** In-Memory (siehe D-02, Kapitel 11) – ausreichend für
+  den Projektumfang, kein persistenter Store nötig; Sessions gehen bei
+  Server-Neustart verloren, was für Demo-/Studienzwecke akzeptiert wird
 
 ### 8.4 Fehlerbehandlung
 
@@ -72,7 +70,7 @@ Einheitliches Muster für alle API-Endpunkte:
 ### 8.5 Secret-Handling und Logging
 
 - Secrets (Session-Secret, ggf. DB-Pfad) ausschließlich in `.env`,
-  niemals im Repository (siehe `.gitignore`, Kapitel 2)
+  niemals im Repository (siehe CONV-05, Kapitel 2)
 - Passwörter werden nie geloggt, nur Ereignis + Nutzer-ID bei Fehlern
   (z. B. `"Login fehlgeschlagen", { userId }` statt der Zugangsdaten)
 - Für den Projektumfang reicht einfaches Server-Logging (Konsole/Datei)
