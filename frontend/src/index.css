@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-ink-950 font-body text-slate-200 antialiased;
+  }
+}
+
+@layer utilities {
+  /* Versteckt die normale Browser-Scrollleiste */
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Eigener Slider */
+  .timeline-slider {
+    height: 16px;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  /* Dezente blaugraue Linie in Chrome, Edge und Safari */
+  .timeline-slider::-webkit-slider-runnable-track {
+    height: 1px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  /* Weißer Kreis in Chrome, Edge und Safari */
+  .timeline-slider::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    margin-top: -6.5px;
+    appearance: none;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+  }
+
+  /* Dezente blaugraue Linie in Firefox */
+  .timeline-slider::-moz-range-track {
+    height: 1px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  /* Weißer Kreis in Firefox */
+  .timeline-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+  }
+}
