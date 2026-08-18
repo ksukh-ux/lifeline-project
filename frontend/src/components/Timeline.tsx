@@ -10,6 +10,7 @@ interface Props {
 export default function Timeline({ events, onSelect }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [zoom, setZoom] = useState(1)
 
   const sorted = useMemo(
     () => [...events].sort((a, b) => a.date.localeCompare(b.date)),
@@ -60,14 +61,15 @@ export default function Timeline({ events, onSelect }: Props) {
     return 7 + percentage * 0.86
   }
 
-  const timelineWidth = Math.max(720, sorted.length * 220)
+  const timelineWidth = Math.max(720, sorted.length * 220 * zoom)
+
   const startYear = new Date(sorted[0].date).getFullYear()
   const endYear = new Date(sorted[sorted.length - 1].date).getFullYear()
 
-const years = Array.from(
-  { length: endYear - startYear + 1 },
-  (_, index) => startYear + index,
-)
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, index) => startYear + index,
+  )
 
   return (
     <div>
@@ -82,29 +84,31 @@ const years = Array.from(
         >
           {/* Horizontale Timeline-Linie */}
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
-           {/* Zeitraster */}
-{years.map((year) => {
-  const yearTime = new Date(`${year}-01-01`).getTime()
-  const percentage = ((yearTime - minTime) / span) * 100
-  const left = 7 + percentage * 0.86
 
-  return (
-    <div
-      key={year}
-      className="absolute top-4 bottom-4 w-px bg-white/10"
-      style={{ left: `${left}%` }}
-    >
-      <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
-        {year}
-      </span>
-    </div>
-  )
-})}
+          {/* Zeitraster */}
+          {years.map((year) => {
+            const yearTime = new Date(`${year}-01-01`).getTime()
+            const percentage = ((yearTime - minTime) / span) * 100
+            const left = 7 + percentage * 0.86
+
+            return (
+              <div
+                key={year}
+                className="absolute top-4 bottom-4 w-px bg-white/10"
+                style={{ left: `${left}%` }}
+              >
+                <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
+                  {year}
+                </span>
+              </div>
+            )
+          })}
+
+          {/* Ereignisse */}
           {sorted.map((event, index) => {
             const category = getCategory(event.category)
             const pointsUp = index % 2 === 0
             const left = `${posFor(event.date)}%`
-        
 
             return (
               <button
@@ -125,7 +129,7 @@ const years = Array.from(
 
                 {/* Leuchtender Ereignisbalken */}
                 <span
-                 className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 ease-out group-hover:h-14 group-hover:w-1.5 group-hover:scale-125"                 
+                  className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 ease-out group-hover:h-14 group-hover:w-1.5 group-hover:scale-125"
                   style={{
                     backgroundColor: category.color,
                     boxShadow: `0 0 8px ${category.color}`,
@@ -147,7 +151,31 @@ const years = Array.from(
         </div>
       </div>
 
-      {/* Eigener Timeline-Slider */}
+      {/* Zoom-Regler */}
+      <div className="mt-3">
+        <div className="mb-1 text-center text-[10px] uppercase tracking-wide text-slate-500">
+          Zoom
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-slate-500">−</span>
+
+          <input
+            type="range"
+            min="0.7"
+            max="2"
+            step="0.1"
+            value={zoom}
+            onChange={(event) => setZoom(Number(event.target.value))}
+            className="timeline-slider flex-1"
+            aria-label="Timeline-Zoom"
+          />
+
+          <span className="text-xs text-slate-500">+</span>
+        </div>
+      </div>
+
+      {/* Position auf der Timeline */}
       <input
         type="range"
         min="0"
