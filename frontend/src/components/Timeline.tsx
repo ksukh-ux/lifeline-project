@@ -101,7 +101,7 @@ export default function Timeline({ events, onSelect }: Props) {
 
                 {/* Leuchtender Ereignisbalken */}
                 <span
-                  className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition group-hover:scale-110"
+                 className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 ease-out group-hover:h-14 group-hover:w-1.5 group-hover:scale-125"                 
                   style={{
                     backgroundColor: category.color,
                     boxShadow: `0 0 8px ${category.color}`,
