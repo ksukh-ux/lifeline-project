@@ -61,6 +61,13 @@ export default function Timeline({ events, onSelect }: Props) {
   }
 
   const timelineWidth = Math.max(720, sorted.length * 220)
+  const startYear = new Date(sorted[0].date).getFullYear()
+  const endYear = new Date(sorted[sorted.length - 1].date).getFullYear()
+
+const years = Array.from(
+  { length: endYear - startYear + 1 },
+  (_, index) => startYear + index,
+)
 
   return (
     <div>
@@ -75,12 +82,29 @@ export default function Timeline({ events, onSelect }: Props) {
         >
           {/* Horizontale Timeline-Linie */}
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
+           {/* Zeitraster */}
+{years.map((year) => {
+  const yearTime = new Date(`${year}-01-01`).getTime()
+  const percentage = ((yearTime - minTime) / span) * 100
+  const left = 7 + percentage * 0.86
 
+  return (
+    <div
+      key={year}
+      className="absolute top-4 bottom-4 w-px bg-white/10"
+      style={{ left: `${left}%` }}
+    >
+      <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
+        {year}
+      </span>
+    </div>
+  )
+})}
           {sorted.map((event, index) => {
             const category = getCategory(event.category)
             const pointsUp = index % 2 === 0
             const left = `${posFor(event.date)}%`
-            const year = new Date(event.date).getFullYear()
+        
 
             return (
               <button
@@ -113,9 +137,6 @@ export default function Timeline({ events, onSelect }: Props) {
                   className="absolute left-1/2 w-32 -translate-x-1/2 text-left"
                   style={pointsUp ? { bottom: 52 } : { top: 52 }}
                 >
-                  <p className="font-mono text-[10px] text-slate-500">
-                    {year}
-                  </p>
                   <p className="mt-0.5 line-clamp-2 text-xs font-medium leading-snug text-slate-200 group-hover:text-brass-400">
                     {event.title}
                   </p>
