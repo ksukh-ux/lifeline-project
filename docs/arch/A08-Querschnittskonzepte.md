@@ -39,8 +39,17 @@ reine Komfortfunktion (Nachvollziehbarkeit, QG-02):
 | Grenze | Prüfung | Bei Fehler |
 |---|---|---|
 | Browser (Komfort) | HTML5-Formularvalidierung im `EventForm` (required, Datumsformat) | Inline-Hinweis, nie verbindlich |
-| Backend – Event anlegen/bearbeiten | `middleware/validation` prüft Pflichtfelder, Enddatum ≥ Startdatum, `type` gegen erlaubte Werte | 422 mit Feldfehler, nichts gespeichert |
+| Backend – Event anlegen/bearbeiten | `middleware/validation` prüft Pflichtfelder, Enddatum ≥ Startdatum, `category` gegen erlaubte Werte | 422 mit Feldfehler, nichts gespeichert |
 | Backend – Registrierung/Login | E-Mail-Format, Passwort-Mindestlänge; bei Login zusätzlich Existenz-Check | 422 bzw. 401 |
+
+**Erweiterbarkeit der Kategorien (vgl. NFA-03, QS-03):** Die zulässigen
+`category`-Werte sind bewusst zentral an einer Stelle im Backend
+definiert und werden sowohl von der Validierung als auch vom
+Datenzugriff referenziert. Eine neue Kategorie erfordert dadurch nur
+wenige, klar lokalisierte Änderungen: (1) Ergänzung in dieser zentralen
+Liste, (2) Ergänzung im Frontend, (3) Ergänzung im Glossar (E2). Damit
+bleibt die serverseitige Prüfung erhalten (Nachvollziehbarkeit, QG-02),
+ohne dem Erweiterbarkeitsziel (QG-03, NFA-03) zu widersprechen.
 
 ### 8.3 Authentifizierung und Session
 
