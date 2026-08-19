@@ -11,6 +11,8 @@ vorgesehen (vgl. P2 §3, §8).
 |---|---|---|
 | Nutzer:in | Timeline-Einträge (Titel, Beschreibung, Datum/Zeitraum, Kategorie), Zugangsdaten (Registrierung/Login), Aktionen (Anlegen/Bearbeiten/Löschen/Filtern) | Chronologische, filterbare Darstellung der Timeline, aggregierte Statistik, Zugriffsbestätigung nach Login, Rückmeldungen (Bestätigungen, Fehlermeldungen) |
 
+Login, Filterung und Statistik sind gemäß P1 §6 und ADR-004/UC-05/UC-06 fester Bestandteil des Umfangs.
+
 ```mermaid
 flowchart LR
     N[Nutzer:in] <-->|nutzt| L((Lifeline))
