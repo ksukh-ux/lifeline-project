@@ -12,6 +12,7 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   const [date, setDate] = useState(initial?.date ?? new Date().toISOString().slice(0, 10))
+  const [time, setTime] = useState(initial?.time ?? '')
   const [category, setCategory] = useState<CategoryId>(initial?.category ?? 'meilenstein')
   const [significance, setSignificance] = useState(initial?.significance ?? 50)
 
@@ -25,6 +26,7 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
       title: title.trim(),
       description: description.trim(),
       date,
+      time,
       category,
       significance,
     })
@@ -74,6 +76,15 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
                 onChange={(e) => setDate(e.target.value)}
                 required
                 className="w-full rounded-md border border-white/10 bg-ink-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-brass-500"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-slate-400">Uhrzeit</label>
+              <input
+                type="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                className="w-full rounded-md border border-white/10 bg-ink-950 px-3 py-2 text-sm text-slate-100"
               />
             </div>
             <div>

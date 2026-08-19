@@ -31,6 +31,7 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
             </span>
             <span className="font-mono text-[11px] text-slate-500">
               {dateFormatter.format(new Date(event.date))}
+              {event.time && ` · ${event.time} Uhr`}
             </span>
           </div>
           <h3 className="mt-1.5 truncate font-display text-base font-medium text-slate-100">

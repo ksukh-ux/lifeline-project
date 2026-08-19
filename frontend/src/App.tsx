@@ -66,6 +66,9 @@ export default function App() {
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="font-display text-xl font-medium text-slate-100">Lebens-Ereignisse</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Deine wichtigsten Momente auf einen Blick.
+          </p>
           <CategoryFilter active={filter} onChange={setFilter} />
         </div>
 
