@@ -16,20 +16,26 @@ erDiagram
     EVENTS {
         integer id PK
         integer user_id FK
-        string type
+        string category
         string title
         string description
         date start_date
         date end_date
         string location
         string tags
+        integer significance
         datetime created_at
     }
 ```
 
 `password_hash` enthält niemals das Klartext-Passwort (siehe 8.5).
-`type` ist ein String mit den erlaubten Werten `travel`/`job`/`project`,
-serverseitig geprüft (siehe 8.2).
+`category` ist ein String mit den erlaubten Werten `meilenstein`/`karriere`/`bildung`/`beziehung`/`reise`/`gesundheit`/`sonstiges`
+(siehe Spec D2.4), serverseitig geprüft (siehe 8.2). Jeder Kategorie ist
+im Frontend eine feste Akzentfarbe zugeordnet (siehe D2.4); die Farbe
+wird nicht in der Datenbank gespeichert, sondern beim Rendern anhand
+des Kategoriewerts nachgeschlagen. `significance` ist eine Ganzzahl
+zwischen 0 und 100 und steuert die visuelle Gewichtung eines Events in
+der Timeline.
 
 ### 8.2 Validierung
 
