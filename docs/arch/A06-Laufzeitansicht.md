@@ -66,7 +66,7 @@ sequenceDiagram
     DB-->>M: Nutzerdatensatz
     M-->>R: Nutzer + Passwort-Hash
     alt Zugangsdaten korrekt
-        R-->>AC: Session/Token
+        R-->>AC: Session-Cookie
         AC-->>AF: eingeloggt
         AF-->>N: Weiterleitung zur Timeline
     else Zugangsdaten falsch

@@ -47,7 +47,7 @@ und wird nicht weiter zerlegt.
 
 | Baustein | Verantwortlichkeit | Erfüllt Use Case |
 |---|---|---|
-| `routes/events` | REST-Endpunkte für Anlegen/Bearbeiten/Löschen/Abrufen von Events | UC-01, UC-02, UC-03, UC-04, UC-05 |
+| `routes/events` | REST-Endpunkte für Anlegen/Bearbeiten/Löschen/Abrufen von Events | UC-01, UC-02, UC-03, UC-04 |
 | `routes/auth` | Endpunkte für Registrierung und Login | UC-07 |
 | `routes/stats` | REST-Endpunkt zur Auslieferung der aggregierten Statistik | UC-06 |
 | `services/statsService` | Berechnet aggregierte Zeiträume je Kategorie | UC-06 |

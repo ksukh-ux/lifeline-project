@@ -9,7 +9,7 @@ vorgesehen (vgl. P2 §3, §8).
 
 | Kommunikationspartner | Eingaben an Lifeline | Ausgaben von Lifeline |
 |---|---|---|
-| Nutzer:in | Timeline-Einträge (Titel, Beschreibung, Datum/Zeitraum), Aktionen (Anlegen/Bearbeiten/Löschen) | Chronologische Darstellung der Timeline, Rückmeldungen (Bestätigungen, Fehlermeldungen) |
+| Nutzer:in | Timeline-Einträge (Titel, Beschreibung, Datum/Zeitraum, Kategorie), Zugangsdaten (Registrierung/Login), Aktionen (Anlegen/Bearbeiten/Löschen/Filtern) | Chronologische, filterbare Darstellung der Timeline, aggregierte Statistik, Zugriffsbestätigung nach Login, Rückmeldungen (Bestätigungen, Fehlermeldungen) |
 
 ```mermaid
 flowchart LR
