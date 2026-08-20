@@ -30,6 +30,7 @@ Die Nutzer:in kann:
 - ein Event löschen,
 - die Timeline über die Filterfunktion filtern,
 - die Filterung wieder aufheben.
+- die Timeline als Bild exportieren (PNG).
 
 ### Verhalten
 
@@ -203,7 +204,7 @@ Bei einer erfolgreichen Registrierung wird die Registrierung bestätigt.
 
 Beim Login werden die eingegebenen Zugangsdaten über den `ApiClient` an das Backend übermittelt.
 
-Das Backend prüft die Zugangsdaten. Bei einer erfolgreichen Anmeldung wird eine Session bzw. ein Token bereitgestellt und die Nutzer:in erhält Zugriff auf die Anwendung.
+Das Backend prüft die Zugangsdaten. Bei einer erfolgreichen Anmeldung wird eine Session bereitgestellt (Session-Cookie) und die Nutzer:in erhält Zugriff auf die Anwendung.
 
 ### Fehlersituationen
 
