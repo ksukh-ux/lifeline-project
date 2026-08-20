@@ -68,8 +68,6 @@ Anwendungsserver
 
 ## S3.4 Laufzeitkonfiguration
 
-## S3.4 Laufzeitkonfiguration
-
 Die Laufzeitkonfiguration erfolgt über Umgebungsvariablen.
 
 Verwendet werden insbesondere:
