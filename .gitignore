@@ -1,3 +1,9 @@
+# macOS
+.DS_Store
+
+# Archive-Dateien (sollten nicht versioniert werden)
+*.zip
+
 # Logs
 logs
 *.log
