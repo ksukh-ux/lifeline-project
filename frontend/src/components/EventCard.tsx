@@ -51,7 +51,13 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
             </span>
           </div>
         </div>
-
+        {event.image && (
+          <img
+            src={event.image}
+            alt={event.title}
+            className="h-20 w-28 shrink-0 rounded-md object-cover"
+          />
+        )}
         <div className="flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
           <button
             onClick={() => onEdit(event)}

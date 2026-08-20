@@ -19,6 +19,7 @@ export interface LifeEvent {
   description: string
   date: string // ISO date, e.g. 2025-06-14
   time?: string // e.g. 14:30
+  image?: string
   category: CategoryId
   significance: number // 0-100
 }
