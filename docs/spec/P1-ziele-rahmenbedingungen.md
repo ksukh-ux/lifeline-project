@@ -42,7 +42,7 @@ Für den ersten Projektumfang wird zunächst folgende Rolle angenommen:
 | --- | --- |
 | Nutzerin/Nutzer | Erstellt, betrachtet und verwaltet eigene Timeline-Einträge. |
 
-**Noch abzustimmen:** Ob zusätzlich eine administrative Rolle oder eine Anmeldung mit getrennten Benutzerkonten erforderlich ist.
+Eine Anmeldung mit getrennten Benutzerkonten ist erforderlich.
 
 ## 6. Vorgesehener Funktionsumfang
 
@@ -92,13 +92,15 @@ Ohne zusätzliche Vereinbarung sind insbesondere nicht Bestandteil des ersten Pr
 ### 8.2 Technische Rahmenbedingungen
 
 - Umsetzung als Webanwendung,
+- Frontend mit React, TypeScript und Vite,
+- Backend mit Node.js, TypeScript und Express,
+- SQLite als eingebettete Datenbank ohne separaten Datenbankserver,
 - Versionsverwaltung mit Git und GitHub,
 - Entwicklung unter anderem mit Visual Studio Code,
-- SQLite als vorgesehene Datenbank,
-- nachvollziehbare Versionshistorie durch Conventional Commits und
+- nachvollziehbare Versionshistorie durch Conventional Commits,
+- Bereitstellung als ein gemeinsames Deployment bei Railway und
 - Dokumentation der Anforderungen und technischen Entscheidungen im Repository.
 
-**Noch abzustimmen:** Verbindlicher Technologie-Stack für Frontend und Backend sowie Anforderungen an Hosting und Deployment.
 
 ### 8.3 Qualitätsbezogene Rahmenbedingungen
 
@@ -136,12 +138,7 @@ Das Projekt gilt fachlich als erfolgreich, wenn mindestens folgende Kriterien er
 
 Vor der Freigabe dieses Bausteins sind folgende Punkte zu klären:
 
-- Abgleich aller Inhalte mit dem Ticket- beziehungsweise Aufgabenstellungsdokument,
-- verbindliche Festlegung der Muss- und Kann-Funktionen,
-- Entscheidung über Benutzerkonten und Rollen,
-- Auswahl des vollständigen Technologie-Stacks,
-- Festlegung von Hosting und Deployment,
-- Konkretisierung nichtfunktionaler Anforderungen und
+- Abgleich aller Inhalte mit dem Ticket- beziehungsweise Aufgabenstellungsdokument und
 - Bestätigung der messbaren Erfolgskriterien durch das Projektteam.
 
 ## 12. Freigabe
