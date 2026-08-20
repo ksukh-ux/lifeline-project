@@ -37,7 +37,7 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
           <h3 className="mt-1.5 truncate font-display text-base font-medium text-slate-100">
             {event.title}
           </h3>
-          <p className="mt-1 line-clamp-2 text-sm text-slate-400">{event.description}</p>
+          <p className="mt-1 text-sm text-slate-400">{event.description}</p>
 
           <div className="mt-3 flex items-center gap-2">
             <div className="h-1 w-24 overflow-hidden rounded-full bg-white/10">
@@ -55,7 +55,7 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
           <img
             src={event.image}
             alt={event.title}
-            className="h-20 w-28 shrink-0 rounded-md object-cover"
+            className="ml-autoh-20 w-28 shrink-0 rounded-md object-cover"
           />
         )}
         <div className="flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
