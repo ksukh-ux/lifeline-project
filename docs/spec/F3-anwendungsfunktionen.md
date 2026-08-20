@@ -16,7 +16,7 @@ Die Nutzer:in kann sich registrieren oder mit bestehenden Zugangsdaten anmelden.
 
 Die eingegebenen Zugangsdaten werden über den `ApiClient` an das Backend übertragen. Das Backend verarbeitet die Anfrage über `routes/auth`.
 
-Bei erfolgreicher Anmeldung wird eine Session beziehungsweise ein Token bereitgestellt.
+Bei erfolgreicher Anmeldung wird eine Session bereitgestellt (Session-Cookie).
 
 ---
 
@@ -104,7 +104,6 @@ Die benötigten Daten werden über die Models aus der SQLite-Datenbank geladen.
 Die berechneten Statistikdaten werden an das Frontend zurückgegeben und im `StatsDashboard` dargestellt.
 
 ---
----
 
 ## F3.6 Eingabevalidierung
 
@@ -123,3 +122,11 @@ Die `middleware/validation` prüft die entsprechenden eingehenden Daten, bevor d
 Ungültige Eingaben werden abgelehnt und als Fehler an das Frontend zurückgegeben.
 
 Dadurch wird verhindert, dass ungültige Daten verarbeitet oder gespeichert werden.
+
+## F3.7 Timeline-Export
+
+Die Anwendung ermöglicht den Export der aktuell angezeigten Timeline als Bilddatei.
+
+### Funktion
+
+Die Nutzer:in kann die Timeline über eine Exportfunktion als PNG-Datei herunterladen. Der Export erfolgt clientseitig im Frontend, ohne zusätzliche Anfrage an das Backend.
