@@ -203,7 +203,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 3. Das Frontend übermittelt die Zugangsdaten über den `ApiClient`.
 4. Das Backend verarbeitet die Anfrage über `routes/auth`.
 5. Die Zugangsdaten werden geprüft.
-6. Bei korrekten Zugangsdaten wird eine Session bzw. ein Token bereitgestellt.
+6. Bei korrekten Zugangsdaten wird eine Session bereitgestellt (Session-Cookie).
 7. Die Nutzer:in erhält Zugriff auf die Anwendung.
 
 ### Ausnahmefälle
