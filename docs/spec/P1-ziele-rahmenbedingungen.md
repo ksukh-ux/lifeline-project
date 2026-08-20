@@ -4,8 +4,6 @@
 
 Dieses Dokument beschreibt die Ziele, den vorgesehenen Nutzen und die wesentlichen Rahmenbedingungen des Softwareprojekts **Lifeline**. Es bildet die fachliche Grundlage für die nachfolgenden Spezifikationsbausteine und grenzt den geplanten Projektumfang ab.
 
-> **Hinweis:** Die mit „Noch abzustimmen“ gekennzeichneten Punkte müssen nach Vorlage der offiziellen Aufgabenstellung beziehungsweise im Team verbindlich bestätigt werden.
-
 ## 2. Ausgangssituation und Problemstellung
 
 Persönliche Ziele, wichtige Ereignisse, Meilensteine und Erinnerungen werden häufig in unterschiedlichen Anwendungen oder Dokumenten festgehalten. Dadurch fehlt eine zentrale und übersichtliche Darstellung, aus der zeitliche Zusammenhänge und persönliche Fortschritte unmittelbar hervorgehen.
@@ -100,7 +98,6 @@ Ohne zusätzliche Vereinbarung sind insbesondere nicht Bestandteil des ersten Pr
 - nachvollziehbare Versionshistorie durch Conventional Commits,
 - Bereitstellung als ein gemeinsames Deployment bei Railway und
 - Dokumentation der Anforderungen und technischen Entscheidungen im Repository.
-
 
 ### 8.3 Qualitätsbezogene Rahmenbedingungen
 

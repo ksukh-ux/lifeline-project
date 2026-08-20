@@ -122,7 +122,7 @@ Folgende Punkte müssen noch im Team und gegebenenfalls mit dem Betreuer abgesti
 - genaue API-Struktur und Benennung der Endpunkte und
 - konkrete Gestaltung und Responsivität der Benutzeroberfläche.
 
-## 10. Vorläufig festgelegter Technologiestack
+## 10. Festgelegter Technologiestack
 
 | Bereich | Vorgesehene Technologie | Status |
 |---|---|---|
