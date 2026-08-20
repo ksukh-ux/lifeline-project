@@ -26,6 +26,8 @@ Die nichtfunktionalen Anforderungen beschreiben die Qualitätsanforderungen an d
 
 **Messkriterium:** Eine neue Event-Kategorie soll innerhalb von weniger als 30 Minuten und mit Änderungen an weniger als 3 Dateien ergänzt werden können.
 
+**Umsetzungshinweis:** Die zulässigen Kategoriewerte (aktuell `meilenstein`, `karriere`, `bildung`, `beziehung`, `reise`, `gesundheit`, `sonstiges`, vgl. D2.4) werden zentral an einer Stelle im Backend gepflegt; Validierung, Datenbank und Frontend referenzieren diese Liste, sodass eine neue Kategorie ohne Änderung der Kernlogik ergänzt werden kann (vgl. Architektur, Kapitel 8.2).
+
 ## N1.4 Sicherheit
 
 | ID | Anforderung | Priorität |
