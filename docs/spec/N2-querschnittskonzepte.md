@@ -13,7 +13,7 @@ Für Events gelten insbesondere folgende Validierungsregeln:
 - Pflichtfelder müssen vorhanden sein.
 - Datumsangaben müssen gültig sein.
 - `end_date` darf nicht vor `start_date` liegen.
-- Für `type` sind nur die Werte `travel`, `job` und `project` zulässig.
+- Für `category` sind nur die in D2.4 definierten Werte (`meilenstein`, `karriere`, `bildung`, `beziehung`, `reise`, `gesundheit`, `sonstiges`) zulässig.
 
 ## N2.3 Authentifizierung und Session
 
