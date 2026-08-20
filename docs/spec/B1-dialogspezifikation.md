@@ -29,7 +29,7 @@ Die Nutzer:in kann:
 - ein Event bearbeiten,
 - ein Event löschen,
 - die Timeline über die Filterfunktion filtern,
-- die Filterung wieder aufheben.
+- die Filterung wieder aufheben,
 - die Timeline als Bild exportieren (PNG).
 
 ### Verhalten
