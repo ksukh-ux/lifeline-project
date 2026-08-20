@@ -53,17 +53,17 @@ Zum grundlegenden Funktionsumfang gehören:
 - Löschen vorhandener Einträge,
 - Zuordnung eines Datums oder Zeitraums zu einem Eintrag,
 - Erfassung eines Titels und einer Beschreibung sowie
-- interaktive Anzeige zusätzlicher Informationen zu einem Eintrag, beispielsweise beim Anklicken oder Überfahren.
+- interaktive Anzeige zusätzlicher Informationen zu einem Eintrag, beispielsweise beim Anklicken oder Überfahren,
 - Zuordnung einer Kategorie zu einem Eintrag sowie Filterung der Timeline nach Kategorie,
 - Benutzerkonten mit Registrierung und Login, sodass jede Person nur die eigenen Einträge sieht,
 - aggregierte statistische Auswertung der Einträge nach Kategorie.
 
-Folgende Funktionen sind derzeit als mögliche Erweiterungen anzusehen und gehören nur nach ausdrücklicher Abstimmung zum verbindlichen Umfang:
+Folgende Funktionen sind weiterhin als mögliche Erweiterungen anzusehen und gehören nur nach ausdrücklicher Abstimmung zum verbindlichen Umfang:
 
 - separate Detailseiten für einzelne Ereignisse,
 - Erinnerungs- oder Benachrichtigungsfunktionen,
 - Medienanhänge,
-- Benutzerkonten und Authentifizierung,
+- Export der Timeline als Bild (bereits im Frontend umgesetzt),
 - gemeinsame oder öffentlich teilbare Timelines.
 
 ## 7. Abgrenzung
