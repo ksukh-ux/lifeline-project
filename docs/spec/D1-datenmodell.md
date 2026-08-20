@@ -27,7 +27,8 @@ Die Entität `EVENTS` enthält die persönlichen Ereignisse der Nutzer:innen.
 |---|---|---|
 | `id` | integer | Eindeutige ID des Events (Primärschlüssel) |
 | `user_id` | integer | Referenz auf den zugehörigen Nutzer (Fremdschlüssel) |
-| `type` | string | Kategorie des Events (`travel`, `job` oder `project`) |
+| `category` | string | Kategorie des Events (`meilenstein`, `karriere`, `bildung`, `beziehung`, `reise`, `gesundheit` oder `sonstiges`; siehe D2.4) |
+| `significance` | integer | Bedeutung/Gewichtung des Events auf einer Skala von 0–100, beeinflusst die Darstellung in der Timeline |
 | `title` | string | Titel des Events |
 | `description` | string | Beschreibung des Events |
 | `start_date` | date | Startdatum |
