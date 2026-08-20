@@ -59,7 +59,7 @@ Die Spezifikation richtet sich insbesondere an:
 | Baustein | Bezeichnung                 | Status | Datei                                                            |
 | -------- | --------------------------- | -----: | ---------------------------------------------------------------- |
 | P1       | Ziele und Rahmenbedingungen |     🛠 | [`P1-ziele-rahmenbedingungen.md`](P1-ziele-rahmenbedingungen.md) |
-| P2       | Architekturüberblick        |     🛠 | [`P2-architekturueberblick.md`](P2-architekturueberblick.md)     |
+| P2       | Architekturüberblick        |     🛠 | [`P2-architekturüberblick.md`](P2-architekturüberblick.md)     |
 
 ### 2. Prozesse und Funktionen
 
@@ -74,7 +74,7 @@ Die Spezifikation richtet sich insbesondere an:
 | Baustein | Bezeichnung     | Status | Datei                                    |
 | -------- | --------------- | -----: | ---------------------------------------- |
 | D1       | Datenmodell     |     🛠 | [`D1-datenmodell.md`](D1-datenmodell.md) |
-| D2       | Datentypkatalog |     🛠 | [`D2-datentypen.md`](D2-datentypen.md)   |
+| D2       | Datentypenverzeichnis |     🛠 | [`D2-datentypenverzeichnis.md`](D2-datentypenverzeichnis.md)   |
 
 ### 4. Benutzeroberfläche
 
