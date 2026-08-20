@@ -59,16 +59,7 @@ Zu den vorgesehenen Aufgaben des Backends gehören:
 
 Für die dauerhafte Speicherung der Anwendungsdaten ist **SQLite** vorgesehen. SQLite eignet sich für den geplanten Projektumfang, da die Datenbank ohne separaten Datenbankserver betrieben und in die Anwendung eingebunden werden kann.
 
-Voraussichtlich werden unter anderem folgende Informationen gespeichert:
-
-- Timeline-Einträge,
-- Titel und Beschreibungen,
-- Datums- und Zeitangaben,
-- Kategorien oder Arten von Einträgen,
-- Ziele und Meilensteine,
-- gegebenenfalls Benutzerinformationen.
-
-Das endgültige Datenmodell wird im weiteren Projektverlauf festgelegt.
+Gespeichert werden Timeline-Einträge mit Titel, Beschreibung, Datum bzw. Zeitraum, Kategorie und Bedeutung sowie die Benutzerinformationen für Registrierung und Login. Das vollständige Datenmodell ist in D1 und D2 festgelegt.
 
 ## 5. Zusammenspiel der Bestandteile
 
@@ -85,10 +76,10 @@ Die Kommunikation zwischen Frontend und Backend soll über eine HTTP-basierte AP
 
 ## 6. Projekt- und Codeorganisation
 
-Frontend und Backend sollen klar voneinander getrennt, aber im gemeinsamen Git-Repository verwaltet werden. Eine mögliche Projektstruktur ist:
+Frontend und Backend sollen klar voneinander getrennt, aber im gemeinsamen Git-Repository verwaltet werden. Die Projektstruktur ist:
 
 ```text
-lifeline/
+lifeline-project/
 ├── frontend/
 ├── backend/
 ├── docs/
@@ -97,7 +88,7 @@ lifeline/
 └── README.md
 ```
 
-Die endgültige Ordnerstruktur wird vor Beginn der Implementierung gemeinsam festgelegt.
+`frontend/` ist bereits angelegt, `backend/` folgt mit der Backend-Implementierung.
 
 ## 7. Sicherheit und Datenschutz
 
@@ -111,7 +102,7 @@ Vorgesehen sind insbesondere:
 - sichere Behandlung möglicher Anmeldedaten,
 - keine Speicherung sensibler Daten ohne fachliche Notwendigkeit.
 
-Ob eine Benutzeranmeldung und die Trennung der Daten mehrerer Nutzer erforderlich sind, ist noch abzustimmen.
+Die Benutzeranmeldung ist erforderlich; jede Nutzer:in sieht ausschließlich die eigenen Events.
 
 ## 8. Externe Systeme und Schnittstellen
 
@@ -128,24 +119,17 @@ Solche Erweiterungen werden nur umgesetzt, wenn sie mit der Aufgabenstellung, de
 
 Folgende Punkte müssen noch im Team und gegebenenfalls mit dem Betreuer abgestimmt werden:
 
-- genaue API-Struktur und Benennung der Endpunkte,
-- endgültiges Datenmodell der SQLite-Datenbank,
-- Notwendigkeit einer Benutzerregistrierung und Anmeldung,
-- Umfang der Unterstützung mehrerer Nutzer,
-- konkrete Gestaltung und Responsivität der Benutzeroberfläche,
-- Einsatz zusätzlicher CSS-Bibliotheken wie Tailwind CSS,
-- Hosting und Bereitstellung der Anwendung,
-- erforderliche externe Schnittstellen,
-- endgültige Ordnerstruktur des Projekts.
+- genaue API-Struktur und Benennung der Endpunkte und
+- konkrete Gestaltung und Responsivität der Benutzeroberfläche.
 
 ## 10. Vorläufig festgelegter Technologiestack
 
 | Bereich | Vorgesehene Technologie | Status |
 |---|---|---|
-| Frontend | React, TypeScript und Vite | vorläufig festgelegt |
-| Gestaltung | CSS | vorläufig festgelegt |
-| Backend | Node.js, TypeScript und Express | vorläufig festgelegt |
-| Datenbank | SQLite | vorläufig festgelegt |
+| Frontend | React, TypeScript und Vite | festgelegt |
+| Gestaltung | CSS mit Tailwind CSS | festgelegt |
+| Backend | Node.js, TypeScript und Express | festgelegt |
+| Datenbank | SQLite | festgelegt |
 | Entwicklungsumgebung | Visual Studio Code | festgelegt |
 | Versionsverwaltung | Git und GitHub | festgelegt |
 | UI-Prototyping | möglicherweise Claude/Artifacts | optional, noch zu prüfen |
