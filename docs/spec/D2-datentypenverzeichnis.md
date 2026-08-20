@@ -21,7 +21,8 @@ Die E-Mail-Adresse ist eindeutig. Passwörter werden nicht im Klartext gespeiche
 |---|---|---|
 | `id` | integer | Eindeutige ID des Events |
 | `user_id` | integer | Referenz auf den zugehörigen Nutzer |
-| `type` | string | Typ bzw. Kategorie des Events |
+| `category` | string | Kategorie des Events (siehe D2.4) |
+| `significance` | integer | Bedeutung/Gewichtung des Events, siehe D2.6 |
 | `title` | string | Titel des Events |
 | `description` | string | Beschreibung des Events |
 | `start_date` | date | Startdatum des Events |
@@ -30,18 +31,28 @@ Die E-Mail-Adresse ist eindeutig. Passwörter werden nicht im Klartext gespeiche
 | `tags` | string | Schlagwörter des Events |
 | `created_at` | datetime | Zeitpunkt der Erstellung des Events |
 
-## D2.4 Wertebereich des Event-Typs
+## D2.4 Wertebereich der Event-Kategorie
 
-Für das Attribut `type` sind folgende Werte vorgesehen:
+Für das Attribut `category` sind folgende Werte vorgesehen. Jede Kategorie ist zusätzlich einer festen Akzentfarbe für die Darstellung in der Timeline zugeordnet:
 
-- `travel`
-- `job`
-- `project`
+| Wert | Bezeichnung | Farbe (Hex) |
+|---|---|---|
+| `meilenstein` | Meilenstein | `#38BDF8` |
+| `karriere` | Karriere | `#FB923C` |
+| `bildung` | Bildung | `#8B5CF6` |
+| `beziehung` | Beziehung | `#EC4899` |
+| `reise` | Reise | `#14B8A6` |
+| `gesundheit` | Gesundheit | `#F43F5E` |
+| `sonstiges` | Sonstiges | `#94A3B8` |
 
-Andere Werte werden vom Backend abgelehnt.
+Andere Werte werden vom Backend abgelehnt. Die Zuordnung von Wert, Bezeichnung und Farbe wird zentral an einer Stelle gepflegt (siehe Architektur, Kapitel 8.2), damit neue Kategorien mit minimalem Aufwand ergänzt werden können (vgl. N1.3, NFA-03).
 
 ## D2.5 Schlüssel und Referenzen
 
 `USERS.id` und `EVENTS.id` dienen der eindeutigen Identifikation der jeweiligen Datensätze.
 
 Über `EVENTS.user_id` wird ein Event einem Nutzer bzw. einer Nutzerin zugeordnet. Dadurch können einem Nutzer mehrere Events zugeordnet werden.
+
+## D2.6 Wertebereich von significance
+
+Das Attribut `significance` ist eine Ganzzahl zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Der Wert wird für die visuelle Gewichtung des Events in der Timeline verwendet.
