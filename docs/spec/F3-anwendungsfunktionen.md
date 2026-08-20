@@ -123,6 +123,8 @@ Ungültige Eingaben werden abgelehnt und als Fehler an das Frontend zurückgegeb
 
 Dadurch wird verhindert, dass ungültige Daten verarbeitet oder gespeichert werden.
 
+---
+
 ## F3.7 Timeline-Export
 
 Die Anwendung ermöglicht den Export der aktuell angezeigten Timeline als Bilddatei.
