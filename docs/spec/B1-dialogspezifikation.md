@@ -45,6 +45,8 @@ Nach dem Anlegen, Bearbeiten oder Löschen eines Events wird die Darstellung der
 - Können die Events nicht geladen werden, wird eine Fehlermeldung angezeigt.
 - Sind keine Events vorhanden, wird eine leere Timeline dargestellt.
 
+- die Timeline horizontal verschieben,
+- die Darstellung der Timeline über einen Zoom-Regler vergrößern oder verkleinern.
 ---
 
 ## B1.2 EventForm
