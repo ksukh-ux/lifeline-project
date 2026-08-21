@@ -56,7 +56,7 @@ Zum grundlegenden Funktionsumfang gehören:
 - interaktive Anzeige zusätzlicher Informationen zu einem Eintrag, beispielsweise beim Anklicken oder Überfahren,
 - Zuordnung einer Kategorie zu einem Eintrag sowie Filterung der Timeline nach Kategorie,
 - Benutzerkonten mit Registrierung und Login, sodass jede Person nur die eigenen Einträge sieht,
-- aggregierte statistische Auswertung der Einträge nach Kategorie.
+- aggregierte statistische Auswertung der Einträge nach Kategorie,
 - Zuordnung eines optionalen Bildes zu einem Eintrag.
 
 Folgende Funktionen sind weiterhin als mögliche Erweiterungen anzusehen und gehören nur nach ausdrücklicher Abstimmung zum verbindlichen Umfang:
