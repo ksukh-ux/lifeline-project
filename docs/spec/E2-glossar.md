@@ -22,5 +22,6 @@ Das Glossar definiert die zentralen fachlichen Begriffe der Lifeline-Anwendung u
 | Startdatum | Datum, an dem ein Event beginnt. |
 | Enddatum | Datum, an dem ein Event endet. |
 | Standort | Ort, der einem Event zugeordnet werden kann. |
+| Bild (image_path) | Optional einem Event zugeordnetes Bild; wird als Datei im Backend gespeichert, in der Datenbank steht nur der Pfad. |
 | Registrierung | Vorgang zum Erstellen eines Benutzerkontos in Lifeline. |
 | Login | Anmeldung einer registrierten Nutzerin bzw. eines registrierten Nutzers bei Lifeline. |
