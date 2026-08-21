@@ -57,12 +57,13 @@ Zum grundlegenden Funktionsumfang gehören:
 - Zuordnung einer Kategorie zu einem Eintrag sowie Filterung der Timeline nach Kategorie,
 - Benutzerkonten mit Registrierung und Login, sodass jede Person nur die eigenen Einträge sieht,
 - aggregierte statistische Auswertung der Einträge nach Kategorie.
+- Zuordnung eines optionalen Bildes zu einem Eintrag.
 
 Folgende Funktionen sind weiterhin als mögliche Erweiterungen anzusehen und gehören nur nach ausdrücklicher Abstimmung zum verbindlichen Umfang:
 
 - separate Detailseiten für einzelne Ereignisse,
 - Erinnerungs- oder Benachrichtigungsfunktionen,
-- Medienanhänge,
+- mehrere Bilder pro Eintrag oder weitere Medienanhänge (z. B. Video, Audio),
 - Export der Timeline als Bild (bereits im Frontend umgesetzt),
 - gemeinsame oder öffentlich teilbare Timelines.
 
