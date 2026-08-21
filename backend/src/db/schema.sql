@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS events (
   location     TEXT,
   tags         TEXT,
   significance INTEGER CHECK (significance BETWEEN 0 AND 100),
+  image_path   TEXT,
   created_at   TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
