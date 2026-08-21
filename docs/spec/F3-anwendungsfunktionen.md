@@ -45,7 +45,7 @@ Die Speicherung und der Zugriff auf die Events erfolgen über die Models und die
 
 ## F3.3 Timeline-Darstellung
 
-Die Anwendung stellt die vorhandenen Events chronologisch in einer Timeline dar.
+Die Anwendung stellt die vorhandenen Events chronologisch in einer horizontalen Timeline dar.
 
 ### Zugehöriger Use Case
 
@@ -58,6 +58,12 @@ Die Timeline fordert die vorhandenen Events über den `ApiClient` an.
 Das Backend stellt die Daten über `routes/events` bereit.
 
 Das Frontend stellt die erhaltenen Events chronologisch in der Timeline dar.
+
+Die Timeline verwendet ein zeitliches Raster mit Jahresangaben zur Orientierung.
+
+Die Nutzer:in kann die Timeline horizontal verschieben, um unterschiedliche Zeitbereiche anzuzeigen.
+
+Über eine Zoom-Funktion kann die Darstellung der Timeline vergrößert oder verkleinert werden.
 
 Sind keine Events vorhanden, wird eine leere Timeline angezeigt.
 
