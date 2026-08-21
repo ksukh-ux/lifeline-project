@@ -151,14 +151,28 @@ export default function Timeline({ events, onSelect }: Props) {
         </div>
       </div>
 
-      {/* Zoom-Regler */}
-      <div className="mt-3">
-        <div className="mb-1 text-center text-[10px] uppercase tracking-wide text-slate-500">
-          Zoom
-        </div>
+          {/* Timeline-Steuerung */}
+      <div className="mt-3 flex items-center gap-4">
+        {/* Position auf der Timeline */}
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={scrollProgress}
+          onChange={(event) =>
+            handleSliderChange(Number(event.target.value))
+          }
+          className="timeline-slider flex-1"
+          aria-label="Position auf der Timeline"
+        />
 
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-500">−</span>
+        {/* Zoom */}
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="text-[9px] uppercase tracking-wide text-slate-500">
+            Zoom
+          </span>
+
+          <span className="text-[10px] text-slate-500">−</span>
 
           <input
             type="range"
@@ -166,27 +180,16 @@ export default function Timeline({ events, onSelect }: Props) {
             max="2"
             step="0.1"
             value={zoom}
-            onChange={(event) => setZoom(Number(event.target.value))}
-            className="timeline-slider flex-1"
+            onChange={(event) =>
+              setZoom(Number(event.target.value))
+            }
+            className="timeline-slider w-20"
             aria-label="Timeline-Zoom"
           />
 
-          <span className="text-xs text-slate-500">+</span>
+          <span className="text-[10px] text-slate-500">+</span>
         </div>
       </div>
-
-      {/* Position auf der Timeline */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={scrollProgress}
-        onChange={(event) =>
-          handleSliderChange(Number(event.target.value))
-        }
-        className="timeline-slider mt-2 w-full"
-        aria-label="Position auf der Timeline"
-      />
     </div>
   )
 }
