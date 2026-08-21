@@ -18,7 +18,7 @@ authRouter.post("/register", (req, res) => {
   const { email, password } = req.body ?? {};
 
   if (typeof email !== "string" || !email.includes("@") || typeof password !== "string" || password.length < 8) {
-    res.status(400).json({ error: "Gültige E-Mail-Adresse und Passwort (mind. 8 Zeichen) erforderlich." });
+    res.status(422).json({ error: "Gültige E-Mail-Adresse und Passwort (mind. 8 Zeichen) erforderlich." });
     return;
   }
 
@@ -42,7 +42,7 @@ authRouter.post("/login", (req, res) => {
   const { email, password } = req.body ?? {};
 
   if (typeof email !== "string" || typeof password !== "string") {
-    res.status(400).json({ error: "E-Mail und Passwort erforderlich." });
+    res.status(422).json({ error: "E-Mail und Passwort erforderlich." });
     return;
   }
 

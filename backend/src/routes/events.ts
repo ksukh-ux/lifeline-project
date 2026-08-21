@@ -56,19 +56,19 @@ eventsRouter.post("/", (req, res) => {
   const body = req.body ?? {};
   const validationError = validateEventInput(body);
   if (validationError) {
-    res.status(400).json({ error: validationError });
+    res.status(422).json({ error: validationError });
     return;
   }
 
   let imagePath: string | null = null;
   if (body.image !== undefined && body.image !== null) {
     if (typeof body.image !== "string") {
-      res.status(400).json({ error: IMAGE_ERROR });
+      res.status(422).json({ error: IMAGE_ERROR });
       return;
     }
     const parsed = parseDataUri(body.image);
     if (!parsed) {
-      res.status(400).json({ error: IMAGE_ERROR });
+      res.status(422).json({ error: IMAGE_ERROR });
       return;
     }
     imagePath = saveImage(parsed);
@@ -113,7 +113,7 @@ eventsRouter.put("/:id", (req, res) => {
   const body = req.body ?? {};
   const validationError = validateEventInput(body);
   if (validationError) {
-    res.status(400).json({ error: validationError });
+    res.status(422).json({ error: validationError });
     return;
   }
 
@@ -125,13 +125,13 @@ eventsRouter.put("/:id", (req, res) => {
     } else if (typeof body.image === "string") {
       const parsed = parseDataUri(body.image);
       if (!parsed) {
-        res.status(400).json({ error: IMAGE_ERROR });
+        res.status(422).json({ error: IMAGE_ERROR });
         return;
       }
       deleteImage(existing.image_path);
       imagePath = saveImage(parsed);
     } else {
-      res.status(400).json({ error: IMAGE_ERROR });
+      res.status(422).json({ error: IMAGE_ERROR });
       return;
     }
   }
