@@ -29,6 +29,7 @@ Die E-Mail-Adresse ist eindeutig. Passwörter werden nicht im Klartext gespeiche
 | `end_date` | date | Enddatum des Events |
 | `location` | string | Ort des Events |
 | `tags` | string | Schlagwörter des Events |
+| `image_path` | string | Pfad zu einem optional hochgeladenen Bild des Events, siehe D2.7 |
 | `created_at` | datetime | Zeitpunkt der Erstellung des Events |
 
 ## D2.4 Wertebereich der Event-Kategorie
@@ -56,3 +57,7 @@ Andere Werte werden vom Backend abgelehnt. Die Zuordnung von Wert, Bezeichnung u
 ## D2.6 Wertebereich von significance
 
 Das Attribut `significance` ist eine Ganzzahl zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Der Wert wird für die visuelle Gewichtung des Events in der Timeline verwendet.
+
+## D2.7 Bild (image_path)
+
+Ein Event kann optional genau ein Bild besitzen. Das Bild wird nicht in der Datenbank gespeichert, sondern als Datei im Backend abgelegt; `image_path` enthält lediglich den Pfad, unter dem das Bild ausgeliefert wird. Erlaubte Formate sind JPEG, PNG und WEBP mit einer maximalen Dateigröße von 5 MB. Ungültige Formate oder zu große Dateien werden vom Backend abgelehnt.

@@ -35,6 +35,7 @@ Die Entität `EVENTS` enthält die persönlichen Ereignisse der Nutzer:innen.
 | `end_date` | date | Enddatum |
 | `location` | string | Ort des Events |
 | `tags` | string | Zugeordnete Schlagwörter |
+| `image_path` | string | Pfad zu einem optional hochgeladenen Bild des Events; die Bilddatei selbst liegt im Backend, nicht in der Datenbank (siehe D2.7) |
 | `created_at` | datetime | Zeitpunkt der Erstellung |
 
 ## D1.4 Beziehungen
