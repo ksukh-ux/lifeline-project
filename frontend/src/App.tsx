@@ -220,13 +220,14 @@ export default function App() {
         </p>
       </main>
 
-      {modalEvent !== undefined && (
-        <EventFormModal
-          initial={modalEvent}
-          onSave={handleSave}
-          onClose={() => setModalEvent(undefined)}
-        />
-      )}
-    </div>
+    { modalEvent !== undefined && (
+      <EventFormModal
+        initial={modalEvent}
+        onSave={handleSave}
+        onClose={() => setModalEvent(undefined)}
+      />
+    )
+}
+    </div >
   )
 }
