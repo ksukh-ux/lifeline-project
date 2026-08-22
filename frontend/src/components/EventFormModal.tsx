@@ -12,7 +12,7 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   const [date, setDate] = useState(initial?.date ?? new Date().toISOString().slice(0, 10))
-  const [time, setTime] = useState(initial?.time ?? '')
+  const [time, setTime] = useState(initial?.time ?? new Date().toTimeString().slice(0, 5))
   const [image, setImage] = useState(initial?.image ?? '')
   const [category, setCategory] = useState<CategoryId>(initial?.category ?? 'meilenstein')
   const [significance, setSignificance] = useState(initial?.significance ?? 50)

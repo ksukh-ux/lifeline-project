@@ -65,44 +65,46 @@ export default function App() {
         </div>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-display text-xl font-medium text-slate-100">Lebens-Ereignisse</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Deine wichtigsten Momente auf einen Blick.
-          </p>
-          <CategoryFilter active={filter} onChange={setFilter} />
-        </div>
+          <h2 className="font-display text-xl font-medium text-slate-100 whitespace-nowrap">Lebens-Ereignisse</h2>
 
-        {filtered.length > 0 ? (
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[...filtered]
-              .sort((a, b) => b.date.localeCompare(a.date))
-              .map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onEdit={setModalEvent}
-                  onDelete={handleDelete}
-                />
-              ))}
-          </div>
-        ) : (
-          <p className="mt-6 text-sm text-slate-500">
-            Keine Ereignisse in dieser Kategorie.
-          </p>
-        )}
 
-        <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
-          Hinweis: Alle Daten werden lokal im Speicher deines Browsers abgelegt.
-        </p>
-      </main>
-
-      {modalEvent !== undefined && (
-        <EventFormModal
-          initial={modalEvent}
-          onSave={handleSave}
-          onClose={() => setModalEvent(undefined)}
-        />
-      )}
+        <CategoryFilter active={filter} onChange={setFilter} />
     </div>
+
+        
+    {filtered.length > 0 ? (
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {[...filtered]
+          .sort((a, b) => b.date.localeCompare(a.date))
+          .map((event) => (
+            <EventCard
+              key={event.id}
+              event={event}
+              onEdit={setModalEvent}
+              onDelete={handleDelete}
+            />
+          ))}
+      </div>
+    ) : (
+    <p className="mt-6 text-sm text-slate-500">
+      Keine Ereignisse in dieser Kategorie.
+    </p>
+  )
+  }
+
+  <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
+    Hinweis: Alle Daten werden lokal im Speicher deines Browsers abgelegt.
+  </p>
+      </main >
+
+    { modalEvent !== undefined && (
+      <EventFormModal
+        initial={modalEvent}
+        onSave={handleSave}
+        onClose={() => setModalEvent(undefined)}
+      />
+    )
+}
+    </div >
   )
 }

@@ -20,8 +20,13 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
   return (
     <div className="group relative rounded-lg border border-white/8 bg-ink-900 p-4 transition hover:border-white/15">
       <div className="absolute left-0 top-4 h-8 w-0.5 rounded-r" style={{ backgroundColor: cat.color }} />
+      {event.time && (
+        <span className="absolute right-4 top-4 shrink-0 font-mono text-[11px] text-slate-500">
+          {event.time} Uhr
+        </span>
+      )}
       <div className="flex items-start justify-between gap-3 pl-3">
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span
               className="rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide"
@@ -29,9 +34,8 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
             >
               {cat.label}
             </span>
-            <span className="font-mono text-[11px] text-slate-500">
+            <span className="shrink-0 whitespace-nowrap font-mono text-[11px] text-slate-500">
               {dateFormatter.format(new Date(event.date))}
-              {event.time && ` · ${event.time} Uhr`}
             </span>
           </div>
           <h3 className="mt-1.5 truncate font-display text-base font-medium text-slate-100">
@@ -55,10 +59,10 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
           <img
             src={event.image}
             alt={event.title}
-            className="ml-autoh-20 w-28 shrink-0 rounded-md object-cover"
+            className="ml-auto mt-7 h-28 w-24 shrink-0 rounded-md object-cover"
           />
         )}
-        <div className="flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
+        <div className="absolute bottom-3 right-3 flex gap-1 opacity-0 transition group-hover:opacity-100">
           <button
             onClick={() => onEdit(event)}
             className="rounded p-1.5 text-slate-400 hover:bg-white/5 hover:text-slate-200"
