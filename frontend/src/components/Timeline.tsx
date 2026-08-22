@@ -10,6 +10,7 @@ interface Props {
 export default function Timeline({ events, onSelect }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [zoom, setZoom] = useState(1)
 
   const sorted = useMemo(
     () => [...events].sort((a, b) => a.date.localeCompare(b.date)),
@@ -60,7 +61,15 @@ export default function Timeline({ events, onSelect }: Props) {
     return 7 + percentage * 0.86
   }
 
-  const timelineWidth = Math.max(720, sorted.length * 220)
+  const timelineWidth = Math.max(720, sorted.length * 220 * zoom)
+
+  const startYear = new Date(sorted[0].date).getFullYear()
+  const endYear = new Date(sorted[sorted.length - 1].date).getFullYear()
+
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, index) => startYear + index,
+  )
 
   return (
     <div>
@@ -76,11 +85,30 @@ export default function Timeline({ events, onSelect }: Props) {
           {/* Horizontale Timeline-Linie */}
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
 
+          {/* Zeitraster */}
+          {years.map((year) => {
+            const yearTime = new Date(`${year}-01-01`).getTime()
+            const percentage = ((yearTime - minTime) / span) * 100
+            const left = 7 + percentage * 0.86
+
+            return (
+              <div
+                key={year}
+                className="absolute top-4 bottom-4 w-px bg-white/10"
+                style={{ left: `${left}%` }}
+              >
+                <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
+                  {year}
+                </span>
+              </div>
+            )
+          })}
+
+          {/* Ereignisse */}
           {sorted.map((event, index) => {
             const category = getCategory(event.category)
             const pointsUp = index % 2 === 0
             const left = `${posFor(event.date)}%`
-            const year = new Date(event.date).getFullYear()
 
             return (
               <button
@@ -101,7 +129,7 @@ export default function Timeline({ events, onSelect }: Props) {
 
                 {/* Leuchtender Ereignisbalken */}
                 <span
-                  className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition group-hover:scale-110"
+                  className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 ease-out group-hover:h-14 group-hover:w-1.5 group-hover:scale-125"
                   style={{
                     backgroundColor: category.color,
                     boxShadow: `0 0 8px ${category.color}`,
@@ -113,9 +141,6 @@ export default function Timeline({ events, onSelect }: Props) {
                   className="absolute left-1/2 w-32 -translate-x-1/2 text-left"
                   style={pointsUp ? { bottom: 52 } : { top: 52 }}
                 >
-                  <p className="font-mono text-[10px] text-slate-500">
-                    {year}
-                  </p>
                   <p className="mt-0.5 line-clamp-2 text-xs font-medium leading-snug text-slate-200 group-hover:text-brass-400">
                     {event.title}
                   </p>
@@ -126,18 +151,45 @@ export default function Timeline({ events, onSelect }: Props) {
         </div>
       </div>
 
-      {/* Eigener Timeline-Slider */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={scrollProgress}
-        onChange={(event) =>
-          handleSliderChange(Number(event.target.value))
-        }
-        className="timeline-slider mt-2 w-full"
-        aria-label="Position auf der Timeline"
-      />
+          {/* Timeline-Steuerung */}
+      <div className="mt-3 flex items-center gap-4">
+        {/* Position auf der Timeline */}
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={scrollProgress}
+          onChange={(event) =>
+            handleSliderChange(Number(event.target.value))
+          }
+          className="timeline-slider flex-1"
+          aria-label="Position auf der Timeline"
+        />
+
+        {/* Zoom */}
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="text-[9px] uppercase tracking-wide text-slate-500">
+            Zoom
+          </span>
+
+          <span className="text-[10px] text-slate-500">−</span>
+
+          <input
+            type="range"
+            min="0.7"
+            max="2"
+            step="0.1"
+            value={zoom}
+            onChange={(event) =>
+              setZoom(Number(event.target.value))
+            }
+            className="timeline-slider w-20"
+            aria-label="Timeline-Zoom"
+          />
+
+          <span className="text-[10px] text-slate-500">+</span>
+        </div>
+      </div>
     </div>
   )
 }

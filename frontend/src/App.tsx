@@ -180,15 +180,9 @@ export default function App() {
       />
 
       <main className="mx-auto max-w-6xl px-6 py-8 sm:px-10">
-        <div
-          ref={timelineRef}
-          className="rounded-xl border border-white/8 bg-ink-900/40 p-4"
-        >
-          <Timeline
-            events={filtered}
-            onSelect={setModalEvent}
-          />
-        </div>
+      <div ref={timelineRef} className="w-full">
+      <Timeline events={filtered} onSelect={setModalEvent} />
+      </div>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="font-display text-xl font-medium text-slate-100">
