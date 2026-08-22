@@ -18,7 +18,7 @@ export default function EventCard({ event, onEdit, onDelete }: Props) {
   const cat = getCategory(event.category)
 
   return (
-    <div className="group relative rounded-lg border border-white/8 bg-ink-900 p-4 transition hover:border-white/15">
+    <div className="group relative rounded-lg border border-slate-800 bg-ink-900 p-4 transition">
       <div className="absolute left-0 top-4 h-8 w-0.5 rounded-r" style={{ backgroundColor: cat.color }} />
       {event.time && (
         <span className="absolute right-4 top-4 shrink-0 font-mono text-[11px] text-slate-500">
