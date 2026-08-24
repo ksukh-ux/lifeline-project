@@ -3,6 +3,7 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applySchema, db } from "./db/index.js";
+import { corsMiddleware } from "./middleware/cors.js";
 import { sessionMiddleware } from "./middleware/session.js";
 import { authRouter } from "./routes/auth.js";
 import { eventsRouter } from "./routes/events.js";
@@ -16,6 +17,7 @@ const app = express();
 // Limit erhöht (Standard 100kb), da hochgeladene Bilder als Base64 im
 // JSON-Body übertragen werden (siehe utils/image.ts, max. 5 MB Bild).
 app.use(express.json({ limit: "10mb" }));
+app.use(corsMiddleware);
 app.use(sessionMiddleware);
 
 // Liefert hochgeladene Event-Bilder aus (siehe utils/image.ts).
