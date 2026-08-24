@@ -1,12 +1,17 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import html2canvas from 'html2canvas'
 import Header from './components/Header'
 import Timeline from './components/Timeline'
 import CategoryFilter from './components/CategoryFilter'
 import EventCard from './components/EventCard'
 import EventFormModal from './components/EventFormModal'
-import { useLocalStorage } from './hooks/useLocalStorage'
-import { sampleEvents } from './data/sampleEvents'
+import {
+  createEvent,
+  deleteEvent as deleteEventOnServer,
+  ensureSession,
+  fetchEvents,
+  updateEvent as updateEventOnServer,
+} from './api/client'
 import type { CategoryId, LifeEvent } from './types'
 
 interface LifelineBackup {
@@ -43,10 +48,48 @@ const isLifeEvent = (value: unknown): value is LifeEvent => {
 }
 
 export default function App() {
-  const [events, setEvents] = useLocalStorage<LifeEvent[]>(
-    'lifeline:events',
-    sampleEvents,
-  )
+  // Einträge kommen jetzt vom Backend (SQLite), nicht mehr aus dem
+  // localStorage des Browsers. Beim Start wird einmal geladen (siehe
+  // useEffect unten); jede Änderung (Speichern/Löschen) geht sofort ans
+  // Backend, die Anzeige wird danach mit der Antwort des Servers
+  // aktualisiert.
+  const [events, setEvents] = useState<LifeEvent[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadFromBackend() {
+      try {
+        // Übergangslösung: automatische Demo-Anmeldung, siehe api/client.ts.
+        // Es gibt noch keine echte Login-Seite im Frontend.
+        await ensureSession()
+        const loaded = await fetchEvents()
+        if (!cancelled) {
+          setEvents(loaded)
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setLoadError(
+            error instanceof Error
+              ? error.message
+              : 'Verbindung zum Backend fehlgeschlagen. Läuft der Server (npm run dev im backend/-Ordner)?',
+          )
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadFromBackend()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const [filter, setFilter] = useState<CategoryId | 'alle'>('alle')
   const [modalEvent, setModalEvent] = useState<
@@ -63,35 +106,65 @@ export default function App() {
     [events, filter],
   )
 
-  const handleSave = (event: LifeEvent) => {
-    setEvents((previousEvents) => {
-      const exists = previousEvents.some(
-        (existingEvent) => existingEvent.id === event.id,
+  const handleSave = async (event: LifeEvent) => {
+    const exists = events.some(
+      (existingEvent) => existingEvent.id === event.id,
+    )
+
+    try {
+      const saved = exists
+        ? await updateEventOnServer(event)
+        : await createEvent(event)
+
+      setEvents((previousEvents) =>
+        exists
+          ? previousEvents.map((existingEvent) =>
+              existingEvent.id === saved.id ? saved : existingEvent,
+            )
+          : [...previousEvents, saved],
       )
 
-      return exists
-        ? previousEvents.map((existingEvent) =>
-            existingEvent.id === event.id ? event : existingEvent,
-          )
-        : [...previousEvents, event]
-    })
-
-    setModalEvent(undefined)
+      setModalEvent(undefined)
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : 'Ereignis konnte nicht gespeichert werden.',
+      )
+    }
   }
 
-  const handleDelete = (id: string) => {
-    setEvents((previousEvents) =>
-      previousEvents.filter((event) => event.id !== id),
-    )
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteEventOnServer(id)
+      setEvents((previousEvents) =>
+        previousEvents.filter((event) => event.id !== id),
+      )
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : 'Ereignis konnte nicht gelöscht werden.',
+      )
+    }
   }
 
-  const handleClearAll = () => {
+  const handleClearAll = async () => {
     if (
       confirm(
         'Wirklich alle Ereignisse unwiderruflich löschen?',
       )
     ) {
-      setEvents([])
+      try {
+        await Promise.all(events.map((event) => deleteEventOnServer(event.id)))
+        setEvents([])
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : 'Ereignisse konnten nicht vollständig gelöscht werden.',
+        )
+      }
     }
   }
 
@@ -136,6 +209,12 @@ export default function App() {
     URL.revokeObjectURL(url)
   }
 
+  // Hinweis für's Team: Der Import ersetzt aktuell nur die lokale Anzeige,
+  // schreibt die importierten Einträge aber noch NICHT ins Backend — nach
+  // einem Neuladen der Seite sind sie wieder weg, weil dann erneut vom
+  // Server geladen wird. Für einen echten Import müssten die Einträge
+  // hier per createEvent() einzeln ans Backend geschickt werden. Bewusst
+  // nicht mit umgebaut, um den Eingriff klein zu halten.
   const handleDataImport = async (file: File) => {
     try {
       const parsed: unknown = JSON.parse(await file.text())
@@ -195,7 +274,11 @@ export default function App() {
           />
         </div>
 
-        {filtered.length > 0 ? (
+        {isLoading ? (
+          <p className="mt-6 text-sm text-slate-500">Lade Ereignisse …</p>
+        ) : loadError ? (
+          <p className="mt-6 text-sm text-red-400">{loadError}</p>
+        ) : filtered.length > 0 ? (
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[...filtered]
               .sort((a, b) => b.date.localeCompare(a.date))
@@ -215,8 +298,7 @@ export default function App() {
         )}
 
         <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
-          Hinweis: Alle Daten werden lokal im Speicher deines Browsers
-          abgelegt.
+          Hinweis: Alle Daten werden im Backend gespeichert (SQLite).
         </p>
       </main>
 
