@@ -16,10 +16,8 @@ CREATE TABLE IF NOT EXISTS events (
                  ('meilenstein', 'karriere', 'bildung', 'beziehung', 'reise', 'gesundheit', 'sonstiges')),
   title        TEXT NOT NULL,
   description  TEXT,
-  start_date   TEXT NOT NULL,
-  end_date     TEXT NOT NULL CHECK (end_date >= start_date),
-  location     TEXT,
-  tags         TEXT,
+  date         TEXT NOT NULL,
+  time         TEXT,
   significance INTEGER CHECK (significance BETWEEN 0 AND 100),
   image_path   TEXT,
   created_at   TEXT NOT NULL DEFAULT (datetime('now'))

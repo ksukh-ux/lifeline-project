@@ -12,10 +12,8 @@ interface EventRow {
   category: string;
   title: string;
   description: string | null;
-  start_date: string;
-  end_date: string;
-  location: string | null;
-  tags: string | null;
+  date: string;
+  time: string | null;
   significance: number | null;
   image_path: string | null;
   created_at: string;
@@ -31,7 +29,7 @@ eventsRouter.use(requireAuth);
 // GET /api/events — alle Einträge der angemeldeten Person.
 eventsRouter.get("/", (req, res) => {
   const rows = db
-    .prepare("SELECT * FROM events WHERE user_id = ? ORDER BY start_date DESC")
+    .prepare("SELECT * FROM events WHERE user_id = ? ORDER BY date DESC, time DESC")
     .all(req.userId);
   res.json(rows);
 });
@@ -76,18 +74,16 @@ eventsRouter.post("/", (req, res) => {
 
   const result = db
     .prepare(
-      `INSERT INTO events (user_id, category, title, description, start_date, end_date, location, tags, significance, image_path)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO events (user_id, category, title, description, date, time, significance, image_path)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       req.userId,
       body.category,
       body.title,
       body.description ?? null,
-      body.start_date,
-      body.end_date,
-      body.location ?? null,
-      body.tags ?? null,
+      body.date,
+      body.time ?? null,
       body.significance ?? null,
       imagePath
     );
@@ -137,16 +133,14 @@ eventsRouter.put("/:id", (req, res) => {
   }
 
   db.prepare(
-    `UPDATE events SET category = ?, title = ?, description = ?, start_date = ?, end_date = ?, location = ?, tags = ?, significance = ?, image_path = ?
+    `UPDATE events SET category = ?, title = ?, description = ?, date = ?, time = ?, significance = ?, image_path = ?
      WHERE id = ? AND user_id = ?`
   ).run(
     body.category,
     body.title,
     body.description ?? null,
-    body.start_date,
-    body.end_date,
-    body.location ?? null,
-    body.tags ?? null,
+    body.date,
+    body.time ?? null,
     body.significance ?? null,
     imagePath,
     req.params.id,
