@@ -11,7 +11,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 | **Akteur** | Nutzer:in |
 | **Beschreibung** | Die Nutzer:in legt ein neues Event an und fügt es der persönlichen Timeline hinzu. |
 | **Trigger** | Die Nutzer:in möchte ein neues Event erstellen. |
-| **Vorbedingung** | Die Nutzer:in befindet sich in der Lifeline-Anwendung. |
+| **Vorbedingung** | Die Nutzer:in ist angemeldet und befindet sich in der Lifeline-Anwendung. |
 | **Nachbedingung** | Das neue Event wurde erfolgreich gespeichert und erscheint in der Timeline. |
 
 ### Hauptablauf
@@ -22,7 +22,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 4. Das Frontend übermittelt die Daten über den `ApiClient` an das Backend.
 5. Die Eingaben werden durch die Validierung geprüft.
 6. Das Backend verarbeitet die Anfrage über `routes/events`.
-7. Das Event wird in der Datenbank gespeichert.
+7. Das Event wird dem Benutzerkonto zugeordnet und in der Datenbank gespeichert.
 8. Das Backend meldet den erfolgreichen Vorgang zurück.
 9. Die Timeline wird aktualisiert.
 
@@ -42,7 +42,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 | **Akteur** | Nutzer:in |
 | **Beschreibung** | Die Nutzer:in verändert die Informationen eines bestehenden Events. |
 | **Trigger** | Die Nutzer:in möchte ein bestehendes Event ändern. |
-| **Vorbedingung** | Das zu bearbeitende Event existiert. |
+| **Vorbedingung** | Die Nutzer:in ist angemeldet und das zu bearbeitende Event gehört zu ihrem Benutzerkonto. |
 | **Nachbedingung** | Die Änderungen wurden gespeichert und werden in der Timeline angezeigt. |
 
 ### Hauptablauf
@@ -73,7 +73,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 | **Akteur** | Nutzer:in |
 | **Beschreibung** | Die Nutzer:in entfernt ein bestehendes Event aus der Timeline. |
 | **Trigger** | Die Nutzer:in möchte ein Event löschen. |
-| **Vorbedingung** | Das Event existiert. |
+| **Vorbedingung** | Die Nutzer:in ist angemeldet und das zu löschende Event gehört zu ihrem Benutzerkonto. |
 | **Nachbedingung** | Das Event wurde aus der Datenbank und der Timeline entfernt. |
 
 ### Hauptablauf
@@ -102,7 +102,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 | **Akteur** | Nutzer:in |
 | **Beschreibung** | Die Nutzer:in betrachtet die vorhandenen Events in chronologischer Darstellung. |
 | **Trigger** | Die Nutzer:in öffnet die Timeline. |
-| **Vorbedingung** | Die Lifeline-Anwendung ist erreichbar. |
+| **Vorbedingung** | Die Nutzer:in ist angemeldet und die Lifeline-Anwendung ist erreichbar. |
 | **Nachbedingung** | Die vorhandenen Events werden in der Timeline dargestellt. |
 
 ### Hauptablauf
@@ -129,7 +129,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 | **Akteur** | Nutzer:in |
 | **Beschreibung** | Die Nutzer:in filtert die bereits geladenen Events nach einer Kategorie. |
 | **Trigger** | Die Nutzer:in möchte nur Events einer bestimmten Kategorie sehen. |
-| **Vorbedingung** | Events wurden bereits geladen und werden in der Timeline angezeigt. |
+| **Vorbedingung** | Die Nutzer:in ist angemeldet und Events ihres Benutzerkontos wurden geladen. |
 | **Nachbedingung** | Die Timeline zeigt nur die zur Auswahl passenden Events. |
 
 ### Hauptablauf
@@ -155,7 +155,7 @@ Die folgenden Anwendungsfälle beschreiben die Interaktionen zwischen dem Nutzer
 | **Akteur** | Nutzer:in |
 | **Beschreibung** | Die Nutzer:in lässt eine aggregierte Statistik auf Basis der vorhandenen Events erstellen. |
 | **Trigger** | Die Nutzer:in öffnet die Statistikansicht. |
-| **Vorbedingung** | Events sind im System vorhanden. |
+| **Vorbedingung** | Die Nutzer:in ist angemeldet und es sind Events ihres Benutzerkontos vorhanden. |
 | **Nachbedingung** | Die berechnete Statistik wird in der Statistikansicht dargestellt. |
 
 ### Hauptablauf
