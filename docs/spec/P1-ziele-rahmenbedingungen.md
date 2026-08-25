@@ -34,15 +34,13 @@ Die Anwendung richtet sich an Personen, die persönliche Ereignisse, Ziele, Meil
 
 ### 5.2 Benutzerrollen
 
-Für den ersten Projektumfang wird zunächst folgende Rolle angenommen:
+Für den aktuellen Projektumfang wird folgende Benutzerrolle vorgesehen:
 
 | Rolle | Beschreibung |
 | --- | --- |
-| Nutzerin/Nutzer | Erstellt, betrachtet und verwaltet eigene Timeline-Einträge. |
+| Nutzerin/Nutzer | Registriert sich, meldet sich an und erstellt, betrachtet und verwaltet eigene Timeline-Einträge. |
 
-Für den MVP wird zunächst eine allgemeine Benutzerrolle ohne verpflichtende
-Registrierung und Anmeldung angenommen. Eine Anmeldung mit getrennten
-Benutzerkonten kann als spätere Erweiterung umgesetzt werden.
+Alle Events werden einem Benutzerkonto zugeordnet. Nutzer:innen dürfen ausschließlich auf ihre eigenen Events zugreifen.
 
 ## 6. Vorgesehener Funktionsumfang
 
@@ -137,8 +135,6 @@ die SQLite-Datenbank ersetzt.
 Folgende Funktionen können den Funktionsumfang der Anwendung erweitern, sind
 jedoch nicht erforderlich, um den beschriebenen MVP-Kern zu erfüllen:
 
-- Benutzerkonten mit Registrierung und Anmeldung,
-- Trennung der Ereignisse nach Benutzerkonten,
 - statistische Auswertungen der Ereignisse,
 - Hochladen und Anzeigen von Bildern,
 - Import und Export einer Datensicherung,
