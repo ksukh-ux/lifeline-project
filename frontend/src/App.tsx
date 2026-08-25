@@ -8,8 +8,10 @@ import EventFormModal from './components/EventFormModal'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { sampleEvents } from './data/sampleEvents'
 import type { CategoryId, LifeEvent } from './types'
+import AuthForms from './components/AuthForms'
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [events, setEvents] = useLocalStorage<LifeEvent[]>('lifeline:events', sampleEvents)
   const [filter, setFilter] = useState<CategoryId | 'alle'>('alle')
   const [modalEvent, setModalEvent] = useState<LifeEvent | null | undefined>(undefined)
@@ -48,6 +50,10 @@ export default function App() {
     link.download = 'lifeline-timeline.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
+  }
+
+    if (!isLoggedIn) {
+    return <AuthForms onLogin={() => setIsLoggedIn(true)} />
   }
 
   return (
@@ -102,4 +108,5 @@ export default function App() {
       )}
     </div>
   )
+
 }
