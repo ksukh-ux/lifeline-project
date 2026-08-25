@@ -75,8 +75,6 @@ Zum grundlegenden Funktionsumfang gehören:
 Weiterführende Funktionen können im Projektverlauf als Erweiterungen umgesetzt
 werden. Dazu gehören insbesondere:
 
-- Benutzerkonten mit Registrierung und Anmeldung,
-- Trennung der Ereignisse nach Benutzerkonten,
 - aggregierte statistische Auswertungen der Ereignisse,
 - Zuordnung eines oder mehrerer Bilder zu einem Ereignis,
 - separate Detailseiten für einzelne Ereignisse,
@@ -120,6 +118,8 @@ Das MVP umfasst folgende Muss-Funktionen:
 - Filterung der Ereignisse nach Kategorien,
 - horizontale Navigation innerhalb der Zeitleiste,
 - Validierung verpflichtender Eingabefelder,
+- Registrierung und Anmeldung von Nutzerinnen und Nutzern,
+- Zuordnung der Ereignisse zu einem Benutzerkonto,
 - Übertragung der Ereignisdaten zwischen Frontend und Backend über eine
   REST-Schnittstelle sowie
 - dauerhafte Speicherung der Ereignisse in einer SQLite-Datenbank.
