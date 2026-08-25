@@ -22,10 +22,8 @@ interface ApiEventRow {
   category: CategoryId
   title: string
   description: string | null
-  start_date: string
-  end_date: string
-  location: string | null
-  tags: string | null
+  date: string
+  time: string | null
   significance: number | null
   image_path: string | null
   created_at: string
@@ -68,18 +66,14 @@ function toImageUrl(imagePath: string | null): string | undefined {
   return `${API_BASE_URL}${imagePath}`
 }
 
-// Backend-Zeile -> Frontend-Datentyp. Das Backend trennt start_date/end_date
-// (Zeitraum), das Frontend kennt bisher nur ein einzelnes "date" — wir
-// verwenden hier start_date. Diese Vereinfachung ist ein bekannter,
-// dokumentierter Unterschied (siehe D1/D2 vs. frontend/src/types.ts) und
-// müsste bei einer echten Zeitraum-Unterstützung im Frontend nachgezogen
-// werden.
+// Backend-Zeile -> Frontend-Datentyp.
 function fromApiRow(row: ApiEventRow): LifeEvent {
   return {
     id: String(row.id),
     title: row.title,
     description: row.description ?? '',
-    date: row.start_date,
+    date: row.date,
+    time: row.time ?? undefined,
     image: toImageUrl(row.image_path),
     category: row.category,
     significance: row.significance ?? 50,
@@ -98,8 +92,8 @@ function toApiPayload(event: LifeEvent) {
     category: event.category,
     title: event.title,
     description: event.description,
-    start_date: event.date,
-    end_date: event.date,
+    date: event.date,
+    time: event.time || null,
     significance: event.significance,
     image: toApiImageField(event.image),
   }
