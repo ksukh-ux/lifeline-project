@@ -19,10 +19,8 @@ erDiagram
         string category
         string title
         string description
-        date start_date
-        date end_date
-        string location
-        string tags
+        date date
+        time time
         integer significance
         string image_path
         datetime created_at
@@ -36,9 +34,10 @@ im Frontend eine feste Akzentfarbe zugeordnet (siehe D2.4); die Farbe
 wird nicht in der Datenbank gespeichert, sondern beim Rendern anhand
 des Kategoriewerts nachgeschlagen. `significance` ist eine Ganzzahl
 zwischen 0 und 100 und steuert die visuelle Gewichtung eines Events in
-der Timeline. `image_path` verweist auf ein optionales, vom Backend als
-Datei gespeichertes Bild (JPEG/PNG/WEBP, max. 5 MB); das Bild selbst
-liegt nicht in der Datenbank (siehe Spec D2.7).
+der Timeline. `time` ist optional (Format `HH:MM`) – ein Event kann
+ohne Uhrzeit angelegt werden. `image_path` verweist auf ein optionales,
+vom Backend als Datei gespeichertes Bild (JPEG/PNG/WEBP, max. 5 MB);
+das Bild selbst liegt nicht in der Datenbank (siehe Spec D2.7).
 
 ### 8.2 Validierung
 
@@ -48,7 +47,7 @@ reine Komfortfunktion (Nachvollziehbarkeit, QG-02):
 | Grenze | Prüfung | Bei Fehler |
 |---|---|---|
 | Browser (Komfort) | HTML5-Formularvalidierung im `EventForm` (required, Datumsformat) | Inline-Hinweis, nie verbindlich |
-| Backend – Event anlegen/bearbeiten | `middleware/validation` prüft Pflichtfelder, Enddatum ≥ Startdatum, `category` gegen erlaubte Werte | 422 mit Feldfehler, nichts gespeichert |
+| Backend – Event anlegen/bearbeiten | `middleware/validation` prüft Pflichtfelder, Datums-/Uhrzeitformat (`date`: `YYYY-MM-DD`, `time`: `HH:MM`), `category` gegen erlaubte Werte | 422 mit Feldfehler, nichts gespeichert |
 | Backend – Registrierung/Login | E-Mail-Format, Passwort-Mindestlänge; bei Login zusätzlich Existenz-Check | 422 bzw. 401 |
 | Backend – Bild-Upload | Dateiformat (JPEG/PNG/WEBP) und Dateigröße (max. 5 MB) werden geprüft | 422, nichts gespeichert |
 
