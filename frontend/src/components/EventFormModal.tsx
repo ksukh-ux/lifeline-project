@@ -17,11 +17,18 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
   const [category, setCategory] = useState<CategoryId>(initial?.category ?? 'meilenstein')
   const [significance, setSignificance] = useState(initial?.significance ?? 50)
 
+  // Das Einlesen eines Bildes (FileReader) läuft asynchron ab. Ohne diese
+  // Sperre konnte man vor Fertigstellung schon auf "Speichern" klicken —
+  // dann wurde das Ereignis ohne Bild angelegt (image war noch leer),
+  // besonders auffällig bei größeren Foto-Dateien, die länger zum Einlesen
+  // brauchen als kleine Testbilder.
+  const [isReadingImage, setIsReadingImage] = useState(false)
+
   const isEdit = Boolean(initial)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (!title.trim() || !date) return
+    if (!title.trim() || !date || isReadingImage) return
     onSave({
       id: initial?.id ?? crypto.randomUUID(),
       title: title.trim(),
@@ -80,14 +87,23 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
                 const file = e.target.files?.[0]
                 if (!file) return
 
+                setIsReadingImage(true)
                 const reader = new FileReader()
                 reader.onloadend = () => {
                   setImage(reader.result as string)
+                  setIsReadingImage(false)
+                }
+                reader.onerror = () => {
+                  setIsReadingImage(false)
+                  alert('Bild konnte nicht gelesen werden. Bitte versuche es erneut.')
                 }
                 reader.readAsDataURL(file)
               }}
               className="w-full text-sm text-slate-300"
             />
+            {isReadingImage && (
+              <p className="mt-1 text-xs text-slate-500">Bild wird geladen …</p>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -150,9 +166,10 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-brass-500 px-4 py-2 text-sm font-medium text-ink-950 hover:bg-brass-400"
+              disabled={isReadingImage}
+              className="rounded-md bg-brass-500 px-4 py-2 text-sm font-medium text-ink-950 hover:bg-brass-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isEdit ? 'Speichern' : 'Hinzufügen'}
+              {isReadingImage ? 'Bild wird geladen …' : isEdit ? 'Speichern' : 'Hinzufügen'}
             </button>
           </div>
         </form>
