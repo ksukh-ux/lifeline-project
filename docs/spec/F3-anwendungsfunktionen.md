@@ -39,7 +39,7 @@ Die Anfragen werden über den `ApiClient` an das Backend übertragen und über `
 
 Die eingehenden Daten werden durch die `middleware/validation` geprüft.
 
-Die Speicherung und der Zugriff auf die Events erfolgen über die Models und die SQLite-Datenbank.
+Die Speicherung und der Zugriff auf die Events erfolgen über die Models und die SQLite-Datenbank. Dabei werden die Events dem jeweiligen Benutzerkonto zugeordnet.
 
 ---
 
@@ -53,7 +53,7 @@ Die Anwendung stellt die vorhandenen Events chronologisch in einer horizontalen 
 
 ### Funktion
 
-Die Timeline fordert die vorhandenen Events über den `ApiClient` an.
+Die Timeline fordert die Events des angemeldeten Benutzerkontos über den `ApiClient` an.
 
 Das Backend stellt die Daten über `routes/events` bereit.
 
@@ -103,7 +103,7 @@ Das `StatsDashboard` fordert die Statistikdaten über den `ApiClient` an.
 
 Die Anfrage wird über `routes/stats` verarbeitet.
 
-Der `statsService` berechnet die aggregierten Werte auf Grundlage der vorhandenen Events.
+Der `statsService` berechnet die aggregierten Werte auf Grundlage der Events des angemeldeten Benutzerkontos.
 
 Die benötigten Daten werden über die Models aus der SQLite-Datenbank geladen.
 
