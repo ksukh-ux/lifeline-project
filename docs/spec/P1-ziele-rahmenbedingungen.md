@@ -231,4 +231,6 @@ Repository nachvollziehbar dokumentiert.
 | --- | --- | --- | --- |
 | 0.1 | 01.08.2026 | Entwurf – noch mit Aufgabenstellung abzugleichen | Projektteam Lifeline |
 | 0.2 | 21.08.2026 | Überarbeitet – MVP-Abgrenzung ergänzt und an den aktuellen Entwicklungsstand angepasst | Sukhmani Kaur |
+| 0.3 | 25.08.2026 | Überarbeitet – Benutzerregistrierung und Anmeldung als Bestandteil des MVP ergänzt | Mary Rose Alghanem |
+
 
