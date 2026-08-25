@@ -25,10 +25,8 @@ Die E-Mail-Adresse ist eindeutig. Passwörter werden nicht im Klartext gespeiche
 | `significance` | integer | Bedeutung/Gewichtung des Events, siehe D2.6 |
 | `title` | string | Titel des Events |
 | `description` | string | Beschreibung des Events |
-| `start_date` | date | Startdatum des Events |
-| `end_date` | date | Enddatum des Events |
-| `location` | string | Ort des Events |
-| `tags` | string | Schlagwörter des Events |
+| `date` | date | Datum des Events (Format `YYYY-MM-DD`) |
+| `time` | time | Uhrzeit des Events (optional, Format `HH:MM`) |
 | `image_path` | string | Pfad zu einem optional hochgeladenen Bild des Events, siehe D2.7 |
 | `created_at` | datetime | Zeitpunkt der Erstellung des Events |
 

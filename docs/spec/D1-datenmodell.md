@@ -31,10 +31,8 @@ Die Entität `EVENTS` enthält die persönlichen Ereignisse der Nutzer:innen.
 | `significance` | integer | Bedeutung/Gewichtung des Events auf einer Skala von 0–100, beeinflusst die Darstellung in der Timeline |
 | `title` | string | Titel des Events |
 | `description` | string | Beschreibung des Events |
-| `start_date` | date | Startdatum |
-| `end_date` | date | Enddatum |
-| `location` | string | Ort des Events |
-| `tags` | string | Zugeordnete Schlagwörter |
+| `date` | date | Datum des Events |
+| `time` | time | Uhrzeit des Events (optional) |
 | `image_path` | string | Pfad zu einem optional hochgeladenen Bild des Events; die Bilddatei selbst liegt im Backend, nicht in der Datenbank (siehe D2.7) |
 | `created_at` | datetime | Zeitpunkt der Erstellung |
 
