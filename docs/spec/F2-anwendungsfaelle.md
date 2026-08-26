@@ -8,15 +8,15 @@ Jeder Anwendungsfall wird mit derselben tabellarischen Vorlage beschrieben. Die 
 
 ## F2.1 Anwendungsfall-Übersicht
 
-| ID | Anwendungsfall | Gruppe | Bezug zu F1 |
-|----|----------------|--------|-------------|
-| [UC-07](#uc-07--registrieren-und-login) | Registrieren und Login | Zugang | F1.1 |
-| [UC-01](#uc-01--event-anlegen) | Event anlegen | Event-Verwaltung | F1.2 |
-| [UC-02](#uc-02--event-bearbeiten) | Event bearbeiten | Event-Verwaltung | F1.2 |
-| [UC-03](#uc-03--event-löschen) | Event löschen | Event-Verwaltung | F1.2 |
-| [UC-04](#uc-04--timeline-ansehen) | Timeline ansehen | Event-Verwaltung | F1.2 |
-| [UC-05](#uc-05--timeline-filtern) | Timeline filtern | Auswertung | F1.3 |
-| [UC-06](#uc-06--statistik-berechnen) | Statistik berechnen | Auswertung | F1.4 |
+| ID | Anwendungsfall | Akteur | Gruppe | Bezug zu F1 |
+|----|----------------|--------|--------|-------------|
+| [UC-07](#uc-07--registrieren-und-login) | Registrieren und Login | Nutzer:in | Zugang | F1.1 |
+| [UC-01](#uc-01--event-anlegen) | Event anlegen | Nutzer:in | Event-Verwaltung | F1.2 |
+| [UC-02](#uc-02--event-bearbeiten) | Event bearbeiten | Nutzer:in | Event-Verwaltung | F1.2 |
+| [UC-03](#uc-03--event-löschen) | Event löschen | Nutzer:in | Event-Verwaltung | F1.2 |
+| [UC-04](#uc-04--timeline-ansehen) | Timeline ansehen | Nutzer:in | Event-Verwaltung | F1.2 |
+| [UC-05](#uc-05--timeline-filtern) | Timeline filtern | Nutzer:in | Auswertung | F1.3 |
+| [UC-06](#uc-06--statistik-berechnen) | Statistik berechnen | Nutzer:in | Auswertung | F1.4 |
 
 ![F2 Anwendungsfalldiagramm – Lifeline](./diagrams-png/diagrams-png/f2-use-cases.png)
 
