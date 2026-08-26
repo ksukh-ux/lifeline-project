@@ -18,7 +18,7 @@ Jeder Anwendungsfall wird mit derselben tabellarischen Vorlage beschrieben. Die 
 | [UC-05](#uc-05--timeline-filtern) | Timeline filtern | Auswertung | F1.3 |
 | [UC-06](#uc-06--statistik-berechnen) | Statistik berechnen | Auswertung | F1.4 |
 
-![F2 Anwendungsfalldiagramm – Lifeline](./diagrams-png/f2-use-cases.png)
+![F2 Anwendungsfalldiagramm – Lifeline](./diagrams-png/diagrams-png/f2-use-cases.png)
 
 Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne bestehende Session erreichbar), *Event-Verwaltung* (UC-01 bis UC-04, das CRUD auf eigenen Events) und *Auswertung* (UC-05, UC-06, arbeiten auf den bereits geladenen bzw. gespeicherten Events). Die `<<precedes>>`-Beziehungen von UC-01 bis UC-03 zu UC-04 markieren, dass jede Änderung an einem Event zu einer aktualisierten Timeline-Darstellung führt; die `<<extend>>`-Beziehung von UC-04 zu UC-05 zeigt, dass Filterung eine optionale Erweiterung der Timeline-Ansicht ist. Die Randnotiz fasst zusammen, dass alle Anwendungsfälle außer UC-07 eine bestehende Session voraussetzen ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)), statt dies als sechs wiederholte Kanten darzustellen.
 
