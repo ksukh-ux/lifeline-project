@@ -14,10 +14,10 @@ Was bleibt, sind zwei Wertebereiche, die tatsächlich eine fachliche Regel auf e
 
 ## D2.1 Übersicht
 
-| ID | Datentyp | Verwendet in |
-|----|----------|--------------|
-| [D2.2](#d22-wertebereich-von-significance) | Wertebereich `significance` | `EVENTS.significance` |
-| [D2.3](#d23-bild-image_path) | Bild (`image_path`) | `EVENTS.image_path` |
+| ID | Datentyp | Art | Verwendet in |
+|----|----------|-----|--------------|
+| [D2.2](#d22-wertebereich-von-significance) | Wertebereich `significance` | Ganzzahliger Wertebereich (0–100) | `EVENTS.significance` |
+| [D2.3](#d23-bild-image_path) | Bild (`image_path`) | Formatregel für Datei-Upload | `EVENTS.image_path` |
 
 ---
 
@@ -39,10 +39,27 @@ Ein Event kann optional genau ein Bild besitzen. Das Bild wird nicht in der Date
 
 ---
 
-## D2.4 Querverweise
+## D2.4 Notationskonventionen
+
+Die folgende Notation wird im ER-Diagramm und in den Attributtabellen von [D1](D1-datenmodell.md) verwendet.
+
+| Notation | Wo | Bedeutung |
+|---|---|---|
+| `●` vor dem Attributnamen | ER-Diagramm (D1) | Pflichtfeld — muss beim Anlegen gesetzt sein bzw. ist nie `null`. Kein `●`: optionales Attribut. |
+| `[0..1]` nach dem Typ | Attributtabellen (D1, D2) | Optionales Attribut, höchstens ein Wert vorhanden. Fehlt die Angabe, ist das Attribut Pflicht (siehe erklärender Text in der Spalte „Hinweise"). |
+| `1 -- n` / `n -- 1` bei Assoziationen | D1-Text | Kardinalität einer Beziehung, gelesen von links nach rechts (z. B. `USERS 1 -- n EVENTS`: eine Nutzer:in besitzt n Events). |
+| `<<PK>>` / `<<FK>>` | ER-Diagramm | Primär- bzw. Fremdschlüssel. |
+
+`●` und `[0..1]` drücken dieselbe Optionalität aus, einmal im Diagramm, einmal in der Tabelle — sie werden bewusst konsistent gehalten, damit Diagramm und Text nicht widersprechen.
+
+---
+
+## D2.5 Querverweise
 
 | Baustein | Bezug zu D2 |
 |---|---|
-| [D1](D1-datenmodell.md) | `EVENTS.significance`, `EVENTS.image_path` referenzieren D2.2–D2.3. Die Event-Kategorien selbst sind als Entität `CATEGORIES` in D1.2 modelliert, nicht hier. |
+| [D1](D1-datenmodell.md) | `EVENTS.significance`, `EVENTS.image_path` referenzieren D2.2–D2.3. Die Event-Kategorien selbst sind als Entität `CATEGORIES` in D1.2 modelliert, nicht hier. D2.4 definiert die in D1 verwendete Notation. |
 | [F3](F3-anwendungsfunktionen.md) | AF-02 mittelt `significance`. |
+| [B1](B1-dialogspezifikation.md) | Der Bedeutung-Slider und der Bildupload in `EventForm` ([DLG-04](B1-dialogspezifikation.md#dlg-04--eventform)) setzen D2.2 bzw. D2.3 um. |
 | [N2](N2-querschnittskonzepte.md) | N2.2 *Validierung* prüft Bild-Uploads gegen D2.3 und den Wertebereich von `significance` gegen D2.2. |
+
