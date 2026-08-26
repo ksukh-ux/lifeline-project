@@ -1,63 +1,48 @@
 # D2 – Datentypenverzeichnis
 
+D2 erklärt **fachliche, domänenspezifische Datentypen** — Wertebereiche und Formatregeln, die einem sonst trivialen Typ (`integer`, `string`) eine über die Technik hinausgehende Bedeutung geben. Ein klassisches Beispiel für diese Art von Datentyp wäre eine ISBN: technisch eine Zeichenkette, fachlich aber ein Format mit Prüfsumme und Bedeutung.
+
+D2 dokumentiert **nicht**:
+
+- **Entitäten und ihre Attributlisten.** Das steht in [D1](D1-datenmodell.md). Eine Aufzählung „Attribut / Datentyp / Beschreibung" für eine ganze Entität ist keine Erklärung eines Datentyps, sondern eine Wiederholung von D1.
+- **Allgemeine technische Typen** wie `int`, `string`, `date`, `datetime` ohne zusätzliche fachliche Bedeutung. Diese werden in D1 direkt verwendet und nicht gesondert definiert.
+- **Aufzählungen, die eine eigene Lebensdauer und Pflege haben** (z. B. die Event-Kategorien) — diese sind als eigene Entität in [D1.2](D1-datenmodell.md#d12-entität-categories) modelliert, nicht als Datentyp hier. Ein Datentyp beschreibt eine *Form von Werten*; die Kategorienliste ist dagegen *veränderlicher Dateninhalt* und gehört damit ins Datenmodell.
+
+Was bleibt, sind zwei Wertebereiche, die tatsächlich eine fachliche Regel auf einem sonst trivialen Typ ausdrücken.
+
+---
+
 ## D2.1 Übersicht
 
-Das Datentypenverzeichnis beschreibt die im Datenmodell der Lifeline-Anwendung verwendeten Datentypen. Grundlage bildet das in der Architektur definierte Datenmodell. Die persistente Speicherung erfolgt in einer SQLite-Datenbank.
+| ID | Datentyp | Verwendet in |
+|----|----------|--------------|
+| [D2.2](#d22-wertebereich-von-significance) | Wertebereich `significance` | `EVENTS.significance` |
+| [D2.3](#d23-bild-image_path) | Bild (`image_path`) | `EVENTS.image_path` |
 
-## D2.2 Entität USERS
+---
 
-| Attribut | Datentyp | Beschreibung |
-|---|---|---|
-| `id` | integer | Eindeutige ID des Nutzers |
-| `email` | string | E-Mail-Adresse des Nutzers |
-| `password_hash` | string | Hash des Benutzerpassworts |
-| `created_at` | datetime | Zeitpunkt der Erstellung des Benutzerkontos |
+## D2.2 Wertebereich von significance
 
-Die E-Mail-Adresse ist eindeutig. Passwörter werden nicht im Klartext gespeichert, sondern ausschließlich als Hash.
+`EVENTS.significance` ist eine Ganzzahl zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Der Wert wird für die visuelle Gewichtung des Events in der Timeline verwendet (z. B. Größe oder Hervorhebung des Eintrags) und fließt in die Durchschnittsbildung von [F3.AF-02](F3-anwendungsfunktionen.md#af-02--statistik-aggregation) ein. Werte außerhalb von 0–100 werden vom Backend abgelehnt.
 
-## D2.3 Entität EVENTS
+---
 
-| Attribut | Datentyp | Beschreibung |
-|---|---|---|
-| `id` | integer | Eindeutige ID des Events |
-| `user_id` | integer | Referenz auf den zugehörigen Nutzer |
-| `category` | string | Kategorie des Events (siehe D2.4) |
-| `significance` | integer | Bedeutung/Gewichtung des Events, siehe D2.6 |
-| `title` | string | Titel des Events |
-| `description` | string | Beschreibung des Events |
-| `start_date` | date | Startdatum des Events |
-| `end_date` | date | Enddatum des Events |
-| `location` | string | Ort des Events |
-| `tags` | string | Schlagwörter des Events |
-| `image_path` | string | Pfad zu einem optional hochgeladenen Bild des Events, siehe D2.7 |
-| `created_at` | datetime | Zeitpunkt der Erstellung des Events |
+## D2.3 Bild (image_path)
 
-## D2.4 Wertebereich der Event-Kategorie
+Ein Event kann optional genau ein Bild besitzen. Das Bild wird nicht in der Datenbank gespeichert, sondern als Datei im Backend abgelegt; `EVENTS.image_path` enthält lediglich den Pfad, unter dem das Bild ausgeliefert wird.
 
-Für das Attribut `category` sind folgende Werte vorgesehen. Jede Kategorie ist zusätzlich einer festen Akzentfarbe für die Darstellung in der Timeline zugeordnet:
+| Regel | Wert |
+|---|---|
+| Erlaubte Formate | JPEG, PNG, WEBP |
+| Maximale Dateigröße | 5 MB |
+| Verhalten bei Verstoß | Backend lehnt Upload ab, `image_path` bleibt leer. |
 
-| Wert | Bezeichnung | Farbe (Hex) |
-|---|---|---|
-| `meilenstein` | Meilenstein | `#38BDF8` |
-| `karriere` | Karriere | `#FB923C` |
-| `bildung` | Bildung | `#8B5CF6` |
-| `beziehung` | Beziehung | `#EC4899` |
-| `reise` | Reise | `#14B8A6` |
-| `gesundheit` | Gesundheit | `#F43F5E` |
-| `sonstiges` | Sonstiges | `#94A3B8` |
+---
 
-Andere Werte werden vom Backend abgelehnt. Die Zuordnung von Wert, Bezeichnung und Farbe wird zentral an einer Stelle gepflegt (siehe Architektur, Kapitel 8.2), damit neue Kategorien mit minimalem Aufwand ergänzt werden können (vgl. N1.3, NFA-03).
+## D2.4 Querverweise
 
-## D2.5 Schlüssel und Referenzen
-
-`USERS.id` und `EVENTS.id` dienen der eindeutigen Identifikation der jeweiligen Datensätze.
-
-Über `EVENTS.user_id` wird ein Event einem Nutzer bzw. einer Nutzerin zugeordnet. Dadurch können einem Nutzer mehrere Events zugeordnet werden.
-
-## D2.6 Wertebereich von significance
-
-Das Attribut `significance` ist eine Ganzzahl zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Der Wert wird für die visuelle Gewichtung des Events in der Timeline verwendet.
-
-## D2.7 Bild (image_path)
-
-Ein Event kann optional genau ein Bild besitzen. Das Bild wird nicht in der Datenbank gespeichert, sondern als Datei im Backend abgelegt; `image_path` enthält lediglich den Pfad, unter dem das Bild ausgeliefert wird. Erlaubte Formate sind JPEG, PNG und WEBP mit einer maximalen Dateigröße von 5 MB. Ungültige Formate oder zu große Dateien werden vom Backend abgelehnt.
+| Baustein | Bezug zu D2 |
+|---|---|
+| [D1](D1-datenmodell.md) | `EVENTS.significance`, `EVENTS.image_path` referenzieren D2.2–D2.3. Die Event-Kategorien selbst sind als Entität `CATEGORIES` in D1.2 modelliert, nicht hier. |
+| [F3](F3-anwendungsfunktionen.md) | AF-02 mittelt `significance`. |
+| [N2](N2-querschnittskonzepte.md) | N2.2 *Validierung* prüft Bild-Uploads gegen D2.3 und den Wertebereich von `significance` gegen D2.2. |
