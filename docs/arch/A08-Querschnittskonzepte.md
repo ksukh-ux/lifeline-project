@@ -36,7 +36,7 @@ aufgerufen wird – es gibt dadurch keine zwei unterschiedlichen
 Prüf-Implementierungen, die auseinanderlaufen könnten (Erweiterbarkeit,
 QG-03).
 
-**Erweiterbarkeit der Kategorien (vgl. NFA-03, QS-03):** Die zulässigen
+**Erweiterbarkeit der Kategorien (vgl. QG-03):** Die zulässigen
 `category`-Werte sind bewusst zentral an einer Stelle im Backend
 definiert und werden sowohl von der Validierung als auch vom
 Datenzugriff referenziert. Eine neue Kategorie erfordert dadurch nur
@@ -53,7 +53,8 @@ festgehalten – hier die konkrete technische Realisierung:
 - **Session-Cookie:** `httpOnly` (kein Zugriff per JavaScript),
   `SameSite=Lax`, `secure` in Produktion; Session-Secret aus `.env`
   (siehe Kapitel 7.2, CONV-05)
-- **Session-Store:** In-Memory (siehe D-02, Kapitel 11) – ausreichend für
+- **Session-Store:** In-Memory (bewusst als technische Schuld in Kauf
+  genommen) – ausreichend für
   den Projektumfang, kein persistenter Store nötig; Sessions gehen bei
   Server-Neustart verloren, was für Demo-/Studienzwecke akzeptiert wird
 - **Cross-Origin-Zugriff:** Frontend (Port 5173) und Backend (Port 3000)
