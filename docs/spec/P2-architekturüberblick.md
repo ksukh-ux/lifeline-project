@@ -14,54 +14,15 @@ Die Anwendung wird in drei Hauptbereiche gegliedert:
 2. **Backend** für Anwendungslogik und Datenzugriff,
 3. **Datenbank** für die dauerhafte Speicherung der Daten.
 
+Die konkrete Realisierung dieser drei Bausteine (Technologiewahl, Verantwortlichkeiten, Schnittstellen) ist Teil der Architekturdokumentation und dort in ADR-001 bis ADR-003 sowie in der Bausteinsicht beschrieben (`docs/arch/A05-Bausteinansicht.md`, `docs/arch/A09-Architekturentscheidungen.md`).
+
 ## 3. Systemkontext
 
 Die Nutzerinnen und Nutzer greifen über einen Webbrowser auf Lifeline zu. Die Bedienung erfolgt über das Frontend. Das Frontend sendet Anfragen an das Backend, welches die Eingaben verarbeitet und die benötigten Daten in der Datenbank speichert oder daraus abruft.
 
 In der ersten Projektphase sind keine zwingend erforderlichen externen Systeme vorgesehen. Mögliche spätere Schnittstellen, beispielsweise für Benachrichtigungen oder Kalenderfunktionen, werden erst nach einer Abstimmung im Team berücksichtigt.
 
-## 4. Hauptbestandteile
-
-### 4.1 Frontend
-
-Das Frontend bildet die sichtbare und bedienbare Oberfläche der Anwendung. Es stellt insbesondere die Timeline, Meilensteine, Ziele, Detailansichten und Eingabeformulare dar.
-
-Für das Frontend sind folgende Technologien vorgesehen:
-
-- **React** zur komponentenbasierten Entwicklung der Benutzeroberfläche,
-- **TypeScript** zur typisierten und besser wartbaren Programmierung,
-- **Vite** als Entwicklungs- und Build-Werkzeug,
-- **CSS** für die Gestaltung der Oberfläche,
-- **Visual Studio Code** als Entwicklungsumgebung.
-
-Der Einsatz von Claude beziehungsweise Claude Artifacts kann während der Entwurfsphase zur Erstellung und Erprobung visueller Prototypen geprüft werden. Die eigentliche Implementierung und Verwaltung des Quellcodes erfolgt im gemeinsamen Git-Projekt.
-
-### 4.2 Backend
-
-Das Backend stellt die Verbindung zwischen Frontend und Datenbank her. Es verarbeitet die vom Frontend gesendeten Anfragen, prüft Eingaben und führt die erforderlichen Datenbankoperationen aus.
-
-Für das Backend sind folgende Technologien vorgesehen:
-
-- **Node.js** als Laufzeitumgebung,
-- **TypeScript** als Programmiersprache,
-- **Express** zur Bereitstellung einer Programmierschnittstelle (API).
-
-Zu den vorgesehenen Aufgaben des Backends gehören:
-
-- Timeline-Einträge abrufen,
-- neue Einträge anlegen,
-- vorhandene Einträge bearbeiten,
-- Einträge löschen,
-- Eingaben validieren,
-- Daten für das Frontend bereitstellen.
-
-### 4.3 Datenbank
-
-Für die dauerhafte Speicherung der Anwendungsdaten ist **SQLite** vorgesehen. SQLite eignet sich für den geplanten Projektumfang, da die Datenbank ohne separaten Datenbankserver betrieben und in die Anwendung eingebunden werden kann.
-
-Gespeichert werden Timeline-Einträge mit Titel, Beschreibung, Datum bzw. Zeitraum, Kategorie und Bedeutung sowie die Benutzerinformationen für Registrierung und Login. Das vollständige Datenmodell ist in D1 und D2 festgelegt.
-
-## 5. Zusammenspiel der Bestandteile
+## 4. Zusammenspiel der Bestandteile
 
 Der grundlegende Ablauf ist wie folgt vorgesehen:
 
@@ -74,7 +35,7 @@ Der grundlegende Ablauf ist wie folgt vorgesehen:
 
 Die Kommunikation zwischen Frontend und Backend soll über eine HTTP-basierte API erfolgen. Das genaue API-Design wird später festgelegt.
 
-## 6. Projekt- und Codeorganisation
+## 5. Projekt- und Codeorganisation
 
 Frontend und Backend sollen klar voneinander getrennt, aber im gemeinsamen Git-Repository verwaltet werden. Die Projektstruktur ist:
 
@@ -90,21 +51,7 @@ lifeline-project/
 
 `frontend/` ist bereits angelegt, `backend/` folgt mit der Backend-Implementierung.
 
-## 7. Sicherheit und Datenschutz
-
-Da Lifeline persönliche Ziele und Lebensereignisse enthalten kann, müssen Datenschutz und ein angemessener Schutz der gespeicherten Daten berücksichtigt werden.
-
-Vorgesehen sind insbesondere:
-
-- Prüfung und Validierung von Eingaben im Backend,
-- kontrollierter Zugriff auf die Datenbank ausschließlich über das Backend,
-- Vermeidung unnötiger personenbezogener Daten,
-- sichere Behandlung möglicher Anmeldedaten,
-- keine Speicherung sensibler Daten ohne fachliche Notwendigkeit.
-
-Die Benutzeranmeldung ist erforderlich; jede Nutzer:in sieht ausschließlich die eigenen Events.
-
-## 8. Externe Systeme und Schnittstellen
+## 6. Externe Systeme und Schnittstellen
 
 Für die erste Version sind zunächst keine externen Systeme zwingend vorgesehen. Folgende Erweiterungen sind denkbar, aber noch nicht Bestandteil des verbindlichen Umfangs:
 
@@ -115,14 +62,14 @@ Für die erste Version sind zunächst keine externen Systeme zwingend vorgesehen
 
 Solche Erweiterungen werden nur umgesetzt, wenn sie mit der Aufgabenstellung, dem verfügbaren Zeitrahmen und dem Team abgestimmt wurden.
 
-## 9. Offene Architekturentscheidungen
+## 7. Offene Architekturentscheidungen
 
 Folgende Punkte müssen noch im Team und gegebenenfalls mit dem Betreuer abgestimmt werden:
 
 - genaue API-Struktur und Benennung der Endpunkte und
 - konkrete Gestaltung und Responsivität der Benutzeroberfläche.
 
-## 10. Festgelegter Technologiestack
+## 8. Festgelegter Technologiestack
 
 | Bereich | Vorgesehene Technologie | Status |
 |---|---|---|
@@ -134,6 +81,8 @@ Folgende Punkte müssen noch im Team und gegebenenfalls mit dem Betreuer abgesti
 | Versionsverwaltung | Git und GitHub | festgelegt |
 | UI-Prototyping | möglicherweise Claude/Artifacts | optional, noch zu prüfen |
 
-## 11. Abgrenzung
+## 9. Abgrenzung
 
 Dieser Architekturüberblick beschreibt den gegenwärtig geplanten technischen Aufbau auf einer groben Ebene. Er ersetzt weder ein detailliertes Datenmodell noch eine vollständige Beschreibung der API oder der einzelnen Komponenten. Änderungen können sich durch die weitere Anforderungsanalyse und die Abstimmung im Projektteam ergeben.
+
+Sicherheits- und Datenschutzaspekte sind nicht Gegenstand dieses Überblicks, sondern Teil der Architekturdokumentation (`docs/arch/A02-Architekturbeschränkungen.md`, `docs/arch/A08-Querschnittskonzepte.md`).
