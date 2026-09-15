@@ -1,236 +1,118 @@
 # P1 – Ziele und Rahmenbedingungen
 
-## 1. Dokumentzweck
+## P1.1 Mission
 
-Dieses Dokument beschreibt die Ziele, den vorgesehenen Nutzen und die wesentlichen Rahmenbedingungen des Softwareprojekts **Lifeline**. Es bildet die fachliche Grundlage für die nachfolgenden Spezifikationsbausteine und grenzt den geplanten Projektumfang ab.
+**Lifeline** ist eine webbasierte Anwendung zur zentralen Erfassung, Verwaltung und chronologischen Darstellung persönlicher Lebensereignisse.
 
-## 2. Ausgangssituation und Problemstellung
+Die Anwendung ermöglicht es Nutzerinnen und Nutzern, wichtige Ereignisse, Ziele, Meilensteine und Erinnerungen an einem zentralen Ort zu dokumentieren und deren zeitlichen Zusammenhang über eine interaktive Timeline nachvollziehbar darzustellen.
 
-Persönliche Ziele, wichtige Ereignisse, Meilensteine und Erinnerungen werden häufig in unterschiedlichen Anwendungen oder Dokumenten festgehalten. Dadurch fehlt eine zentrale und übersichtliche Darstellung, aus der zeitliche Zusammenhänge und persönliche Fortschritte unmittelbar hervorgehen.
+Lifeline soll damit eine übersichtliche und intuitive Möglichkeit schaffen, persönliche Ereignisse strukturiert entlang einer Zeitachse zu erfassen und wiederzufinden.
 
-Lifeline soll diese Informationen in einer gemeinsamen, chronologisch aufgebauten Timeline zusammenführen. Nutzerinnen und Nutzer sollen dadurch vergangene Ereignisse, aktuelle Vorhaben und zukünftige Ziele übersichtlich erfassen und betrachten können.
+---
 
-## 3. Projektziel
+## P1.2 Projektziele
 
-Ziel des Projekts ist die Entwicklung einer webbasierten Anwendung, mit der persönliche Einträge auf einer interaktiven Timeline angelegt, dargestellt und verwaltet werden können.
+| ID   | Ziel                                                                                    |
+| ---- | --------------------------------------------------------------------------------------- |
+| G-01 | Persönliche Ereignisse zentral und strukturiert erfassen.                               |
+| G-02 | Ereignisse chronologisch und übersichtlich auf einer interaktiven Timeline darstellen.  |
+| G-03 | Nutzerinnen und Nutzern die Verwaltung ihrer eigenen Timeline-Einträge ermöglichen.     |
+| G-04 | Zeitliche Zusammenhänge zwischen persönlichen Ereignissen verständlich sichtbar machen. |
+| G-05 | Eine intuitive und nachvollziehbare Bedienung der Anwendung ermöglichen.                |
+| G-06 | Eine technisch erweiterbare Grundlage für zukünftige Funktionen schaffen.               |
 
-Die Anwendung soll insbesondere:
+---
 
-- zeitbezogene Informationen übersichtlich visualisieren,
-- persönliche Meilensteine, Ziele und Erinnerungen an einer zentralen Stelle bündeln,
-- eine intuitive Navigation entlang der Timeline ermöglichen,
-- Einträge mit den zugehörigen Informationen verständlich darstellen und
-- als technisch nachvollziehbarer und erweiterbarer Prototyp umgesetzt werden.
-
-## 4. Nutzen
-
-Lifeline unterstützt Nutzerinnen und Nutzer dabei, ihre persönliche Entwicklung und Planung strukturiert nachzuvollziehen. Der zentrale Nutzen liegt in der visuellen Verbindung einzelner Einträge mit ihrem zeitlichen Kontext. Dadurch können Zusammenhänge schneller erkannt und wichtige Ereignisse leichter wiedergefunden werden.
-
-## 5. Zielgruppe und Benutzerrollen
-
-### 5.1 Zielgruppe
+## P1.3 Zielgruppe und Benutzerrollen
 
 Die Anwendung richtet sich an Personen, die persönliche Ereignisse, Ziele, Meilensteine oder Erinnerungen chronologisch dokumentieren und übersichtlich betrachten möchten.
 
-### 5.2 Benutzerrollen
+Für den aktuellen Projektumfang ist eine Benutzerrolle vorgesehen:
 
-Für den aktuellen Projektumfang wird folgende Benutzerrolle vorgesehen:
+| Rolle     | Beschreibung                                                                  |
+| --------- | ----------------------------------------------------------------------------- |
+| Nutzer/in | Registriert sich, meldet sich an und verwaltet die eigenen Timeline-Einträge. |
 
-| Rolle | Beschreibung |
-| --- | --- |
-| Nutzerin/Nutzer | Registriert sich, meldet sich an und erstellt, betrachtet und verwaltet eigene Timeline-Einträge. |
+Jeder Timeline-Eintrag wird einem Benutzerkonto zugeordnet. Nutzerinnen und Nutzer dürfen ausschließlich auf ihre eigenen Einträge zugreifen.
 
-Alle Events werden einem Benutzerkonto zugeordnet. Nutzer:innen dürfen ausschließlich auf ihre eigenen Events zugreifen.
+---
 
-## 6. Vorgesehener Funktionsumfang
+## P1.4 Projektumfang
 
-Der vorgesehene Funktionsumfang der Lifeline-Anwendung konzentriert sich auf die
-Erfassung, Verwaltung und chronologische Darstellung persönlicher Ereignisse.
+### Im Umfang
 
-Nutzerinnen und Nutzer sollen Ereignisse über die Benutzeroberfläche anlegen,
-betrachten, bearbeiten und löschen können. Die Ereignisse werden chronologisch
-auf einer horizontalen Zeitleiste dargestellt und können anhand ihrer Kategorie
-gefiltert werden.
+Zum verbindlichen Projektumfang gehören die fachlichen Anwendungsfälle, die in **F2 – Anwendungsfälle** beschrieben sind.
 
-Zum grundlegenden Funktionsumfang gehören:
+Der dort definierte MVP bildet den verbindlichen funktionalen Umfang von Lifeline. P1 beschreibt bewusst nicht nochmals die einzelnen Funktionen der Anwendung; deren detaillierte Beschreibung erfolgt in F2.
 
-- Darstellung einer chronologisch aufgebauten horizontalen Zeitleiste,
-- Anzeige persönlicher Ereignisse auf der Zeitleiste,
-- Anlegen neuer Ereignisse,
-- Bearbeiten vorhandener Ereignisse,
-- Löschen einzelner Ereignisse,
-- Löschen aller Ereignisse nach einer vorherigen Bestätigung,
-- Zuordnung eines Datums oder Zeitraums zu einem Ereignis,
-- Erfassung eines Titels und einer Beschreibung,
-- Zuordnung einer Kategorie zu einem Ereignis,
-- Filterung der Zeitleiste nach Kategorien,
-- Festlegung und Anzeige der persönlichen Bedeutung eines Ereignisses,
-- interaktive Anzeige zusätzlicher Informationen zu einem Ereignis,
-- horizontale Navigation innerhalb der Zeitleiste,
-- Validierung verpflichtender Eingabefelder,
-- Übertragung der Ereignisdaten zwischen Frontend und Backend über eine
-  REST-Schnittstelle sowie
-- dauerhafte Speicherung der Ereignisse in einer SQLite-Datenbank.
+### Außerhalb des verbindlichen MVP
 
-Weiterführende Funktionen können im Projektverlauf als Erweiterungen umgesetzt
-werden. Dazu gehören insbesondere:
+Funktionen, die nicht Bestandteil der in F2 definierten MVP-Anwendungsfälle sind, gelten nicht automatisch als verbindlicher Bestandteil des Projekts.
 
-- aggregierte statistische Auswertungen der Ereignisse,
-- Zuordnung eines oder mehrerer Bilder zu einem Ereignis,
-- separate Detailseiten für einzelne Ereignisse,
-- Erinnerungs- und Benachrichtigungsfunktionen,
-- Import und Export einer Datensicherung,
-- Export der Zeitleiste als Bild,
-- weitere Medienanhänge wie Videos oder Audiodateien sowie
-- gemeinsame oder öffentlich teilbare Timelines.
+Mögliche Erweiterungen können beispielsweise statistische Auswertungen, zusätzliche Medien, Erinnerungen, Im- und Exportfunktionen oder eine gemeinsame Nutzung von Timelines umfassen. Solche Erweiterungen werden getrennt betrachtet und verändern den verbindlichen MVP-Umfang nicht automatisch.
 
-Die konkrete Abgrenzung zwischen dem verbindlichen MVP und den optionalen
-Erweiterungen wird in Abschnitt 7 beschrieben. Bereits umgesetzte
-Zusatzfunktionen können Bestandteil der Anwendung bleiben, ohne dadurch
-automatisch zu Muss-Funktionen des MVP zu werden.
+---
 
-## 7. Abgrenzung des Minimum Viable Product (MVP)
+## P1.5 Constraints
 
-Das Minimum Viable Product (MVP) der Lifeline-Anwendung beschreibt den kleinsten
-verbindlichen und funktionsfähigen Projektumfang. Mit diesem Umfang können
-persönliche Lebensereignisse erfasst, verwaltet und chronologisch auf einer
-interaktiven Zeitleiste dargestellt werden.
+Die verbindlichen Rahmenbedingungen des Projekts werden durch eindeutig vergebene Constraint-IDs beschrieben.
 
-Ziel des MVP ist die Umsetzung eines durchgängigen Full-Stack-Prozesses.
-Ereignisse werden über die Benutzeroberfläche erfasst, über eine
-REST-Schnittstelle an das Backend übertragen und dauerhaft in einer
-SQLite-Datenbank gespeichert. Gespeicherte Ereignisse werden anschließend über
-die REST-Schnittstelle abgerufen und im Frontend auf der Zeitleiste dargestellt.
+| ID     | Constraint                                                                                                              |
+| ------ | ----------------------------------------------------------------------------------------------------------------------- |
+| CON-01 | Lifeline wird als webbasierte Anwendung umgesetzt.                                                                      |
+| CON-02 | Die Anwendung verwendet eine zentrale persistente Datenhaltung für die persönlichen Timeline-Daten.                     |
+| CON-03 | Timeline-Einträge werden eindeutig einem Benutzerkonto zugeordnet.                                                      |
+| CON-04 | Nutzerinnen und Nutzer dürfen ausschließlich auf ihre eigenen Timeline-Einträge zugreifen.                              |
+| CON-05 | Die Anwendung wird über einen modernen Webbrowser verwendet.                                                            |
+| CON-06 | Die Anwendung wird als Full-Stack-Anwendung mit getrenntem Frontend und Backend umgesetzt.                              |
+| CON-07 | Die Entwicklung und Dokumentation erfolgen innerhalb der vorgegebenen Projektbedingungen und im gemeinsamen Repository. |
 
-### 7.1 Verbindlicher Funktionsumfang
+Die ausführliche Beschreibung und Begründung der Constraints befindet sich in **P1-constraints.md**.
 
-Das MVP umfasst folgende Muss-Funktionen:
+Technische Detailentscheidungen wie konkrete Framework-Versionen, Bibliotheken oder Implementierungsdetails gehören nicht in P1, sondern werden in der Architektur dokumentiert.
 
-- chronologische Darstellung persönlicher Ereignisse auf einer horizontalen
-  Zeitleiste,
-- Erstellen neuer Ereignisse,
-- Anzeigen und Bearbeiten vorhandener Ereignisse,
-- Löschen einzelner Ereignisse,
-- Löschen aller Ereignisse nach einer vorherigen Bestätigung,
-- Erfassung eines Titels, eines Datums oder Zeitraums, einer Beschreibung und
-  einer Kategorie,
-- Festlegung und Anzeige der persönlichen Bedeutung eines Ereignisses,
-- Filterung der Ereignisse nach Kategorien,
-- horizontale Navigation innerhalb der Zeitleiste,
-- Validierung verpflichtender Eingabefelder,
-- Registrierung und Anmeldung von Nutzerinnen und Nutzern,
-- Zuordnung der Ereignisse zu einem Benutzerkonto,
-- Übertragung der Ereignisdaten zwischen Frontend und Backend über eine
-  REST-Schnittstelle sowie
-- dauerhafte Speicherung der Ereignisse in einer SQLite-Datenbank.
+---
 
-Das Frontend wird mit React und TypeScript umgesetzt. Das Backend wird mit
-Node.js, TypeScript und Express entwickelt. Die derzeitige Speicherung im
-`localStorage` dient ausschließlich als Zwischenlösung für den
-UI-Prototyp und wird im vollständigen MVP durch die Anbindung an das Backend und
-die SQLite-Datenbank ersetzt.
+## P1.6 Erfolgskriterien
 
-### 7.2 Abgrenzung zu Erweiterungen
+| ID    | Erfolgskriterium                                                                                    |
+| ----- | --------------------------------------------------------------------------------------------------- |
+| SC-01 | Nutzerinnen und Nutzer können die Anwendung über einen Webbrowser verwenden.                        |
+| SC-02 | Die im MVP definierten Anwendungsfälle können vollständig durchgeführt werden.                      |
+| SC-03 | Persönliche Timeline-Einträge werden korrekt dem jeweiligen Benutzerkonto zugeordnet.               |
+| SC-04 | Die gespeicherten Ereignisse werden chronologisch und nachvollziehbar auf der Timeline dargestellt. |
+| SC-05 | Die zentralen Nutzungsvorgänge werden durch geeignete Tests überprüft.                              |
+| SC-06 | Spezifikation und Architektur sind konsistent mit den im MVP definierten Anwendungsfällen.          |
 
-Folgende Funktionen können den Funktionsumfang der Anwendung erweitern, sind
-jedoch nicht erforderlich, um den beschriebenen MVP-Kern zu erfüllen:
+---
 
-- statistische Auswertungen der Ereignisse,
-- Hochladen und Anzeigen von Bildern,
-- Import und Export einer Datensicherung,
-- Export der Zeitleiste als Bild,
-- Erinnerungen und Benachrichtigungen,
-- Synchronisation zwischen mehreren Geräten,
-- individuelle Kategorien sowie
-- öffentliche oder gemeinsam verwendete Timelines.
+## P1.7 Annahmen
 
-Bereits implementierte Zusatzfunktionen können Bestandteil der Anwendung
-bleiben, gelten jedoch nicht automatisch als Voraussetzung für die Erfüllung
-des MVP.
+| ID    | Annahme                                                                                              |
+| ----- | ---------------------------------------------------------------------------------------------------- |
+| AS-01 | Die Anwendung wird über einen modernen Webbrowser genutzt.                                           |
+| AS-02 | Nutzerinnen und Nutzer erfassen ihre persönlichen Ereignisse selbst.                                 |
+| AS-03 | Die für die Nutzung und Entwicklung erforderlichen technischen Voraussetzungen stehen zur Verfügung. |
+| AS-04 | Die in F2 definierten MVP-Anwendungsfälle bilden den verbindlichen funktionalen Umfang des Projekts. |
 
-Der dargestellte MVP-Umfang bildet den verbindlichen funktionalen Kern der
-Lifeline-Anwendung. Im weiteren Projektverlauf können zusätzliche Funktionen
-und gestalterische Verbesserungen umgesetzt werden. Diese Erweiterungen
-verändern den definierten MVP-Umfang nicht automatisch, sondern werden
-gesondert dokumentiert und hinsichtlich ihrer Auswirkungen auf Spezifikation
-und Architektur geprüft.
+---
 
-## 8. Rahmenbedingungen
+## P1.8 Risiken
 
-### 8.1 Organisatorische Rahmenbedingungen
+| ID   | Risiko                                                                                    | Gegenmaßnahme                                                                                 |
+| ---- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| R-01 | Änderungen am MVP können zu Inkonsistenzen zwischen Spezifikation und Architektur führen. | Änderungen werden in den betroffenen Spezifikations- und Architekturbausteinen nachvollzogen. |
+| R-02 | Unterschiedliche Beschreibungen derselben Funktion können zu Widersprüchen führen.        | Use Cases, Daten, Dialoge und Architektur werden regelmäßig auf Konsistenz geprüft.           |
+| R-03 | Zusätzliche Funktionen können den verbindlichen MVP unnötig erweitern.                    | Erweiterungen werden vom verbindlichen MVP getrennt dokumentiert.                             |
 
-- Das Projekt wird im Modul **Wirtschaftsinformatik Projekt 1** durchgeführt.
-- Das Projektteam besteht aus vier Personen.
-- Die fachliche Betreuung erfolgt durch **Prof. Carsten Lucke**.
-- Die Projektarbeit und Aufgabenverteilung werden innerhalb des Teams abgestimmt.
-- Änderungen am vereinbarten Umfang sollen dokumentiert und gemeinsam beschlossen werden.
+---
 
-### 8.2 Technische Rahmenbedingungen
+## P1.9 Freigabe und Versionierung
 
-- Umsetzung als Webanwendung,
-- Frontend mit React, TypeScript und Vite,
-- Backend mit Node.js, TypeScript und Express,
-- SQLite als eingebettete Datenbank ohne separaten Datenbankserver,
-- Versionsverwaltung mit Git und GitHub,
-- Entwicklung unter anderem mit Visual Studio Code,
-- nachvollziehbare Versionshistorie durch Conventional Commits,
-- Bereitstellung als ein gemeinsames Deployment bei Railway und
-- Dokumentation der Anforderungen und technischen Entscheidungen im Repository.
+Änderungen an den Zielen, dem Umfang oder den verbindlichen Rahmenbedingungen werden versioniert dokumentiert.
 
-### 8.3 Qualitätsbezogene Rahmenbedingungen
-
-Die Anwendung soll:
-
-- verständlich und möglichst intuitiv bedienbar sein,
-- Daten korrekt und nachvollziehbar verarbeiten,
-- eine konsistente Benutzeroberfläche besitzen,
-- modular und erweiterbar aufgebaut sein und
-- durch geeignete Tests überprüfbar sein.
-
-## 9. Annahmen und Abhängigkeiten
-
-Für die derzeitige Planung gelten folgende Annahmen:
-
-- Die Anwendung wird über einen modernen Webbrowser verwendet.
-- Einträge werden durch die Nutzerinnen und Nutzer selbst erfasst.
-- Die für die Entwicklung notwendigen Werkzeuge stehen dem Projektteam zur Verfügung.
-- Der genaue Funktionsumfang wird anhand der offiziellen Aufgabenstellung und der Abstimmung mit dem Betreuer verbindlich festgelegt.
-- Die rechtzeitige Fertigstellung hängt von einer klaren Aufgabenverteilung und regelmäßigen Abstimmungen innerhalb des Teams ab.
-
-## 10. Erfolgskriterien
-
-Das Projekt gilt fachlich als erfolgreich, wenn mindestens folgende Kriterien erfüllt sind:
-
-1. Die Webanwendung kann gestartet und über einen Browser verwendet werden.
-2. Timeline-Einträge können angelegt, angezeigt, bearbeitet und gelöscht werden.
-3. Jeder Eintrag wird dem vorgesehenen Datum beziehungsweise Zeitraum korrekt zugeordnet.
-4. Die Einträge werden in einer verständlichen chronologischen Darstellung angezeigt.
-5. Die zentralen Nutzungsvorgänge sind anhand definierter Testfälle erfolgreich überprüft.
-6. Quellcode und Projektdokumentation sind im Repository nachvollziehbar versioniert.
-7. Die Muss-Anforderungen aus der noch abzugleichenden offiziellen Aufgabenstellung sind erfüllt.
-
-## 11. Offene Abstimmungspunkte
-
-Vor der Freigabe dieses Bausteins sind folgende Punkte zu klären:
-
-- Abgleich aller Inhalte mit dem Ticket- beziehungsweise Aufgabenstellungsdokument und
-- Bestätigung der messbaren Erfolgskriterien durch das Projektteam.
-
-## 12. Freigabe
-
-Die Spezifikation wurde zunächst als fachlicher Entwurf erstellt. Auf dieser
-Grundlage wurde ein erster MVP-Prototyp der Lifeline-Anwendung entwickelt.
-
-Im weiteren Projektverlauf wurden die Anforderungen anhand der Erkenntnisse aus
-der Implementierung konkretisiert. Dabei wurde zwischen dem verbindlichen
-Funktionsumfang des MVP und weiterführenden Erweiterungen unterschieden.
-Änderungen am Funktionsumfang werden weiterhin im Projektteam abgestimmt und im
-Repository nachvollziehbar dokumentiert.
-
-| Version | Datum | Status | Verantwortlich |
-| --- | --- | --- | --- |
-| 0.1 | 01.08.2026 | Entwurf – noch mit Aufgabenstellung abzugleichen | Projektteam Lifeline |
-| 0.2 | 21.08.2026 | Überarbeitet – MVP-Abgrenzung ergänzt und an den aktuellen Entwicklungsstand angepasst | Sukhmani Kaur |
-| 0.3 | 25.08.2026 | Überarbeitet – Benutzerregistrierung und Anmeldung als Bestandteil des MVP ergänzt | Mary Rose Alghanem |
-
-
+| Version | Status                                |
+| ------- | ------------------------------------- |
+| 0.1     | Entwurf                               |
+| 0.2     | Überarbeitet nach Review und Feedback |
+| 1.0     | Freigegebene Version                  |
