@@ -1,98 +1,170 @@
-# S3 – Inbetriebnahme und Bereitstellung
+# S3 — Inbetriebnahme und Bereitstellung
 
-Die Lifeline-Anwendung kann lokal für die Entwicklung sowie als einzelne Anwendung für eine Demo- oder Produktionsumgebung betrieben werden.
+S3 beschreibt, wie Lifeline in den produktiven Betrieb gebracht wird und wie spätere
+Stände dieselbe Umgebung erreichen, im Sinne von Siedersleben (Kap. 4.6): der Baustein
+*Inbetriebnahme* benennt die **Voraussetzungen an die Umgebung**, die **persistenten
+Zustandsflächen**, die jede Auslieferung überdauern müssen, den Ablauf der
+**Erstinbetriebnahme** und den leichteren Ablauf **folgender Auslieferungen**.
 
-## S3.1 Entwicklungsumgebung
+S3 bleibt auf der Ebene *was* geschehen muss und *welche Bedingungen* dabei gelten. *Wie*
+konkret ausgeliefert wird — Befehle, Pfade, Build-Schritte, Plattformeinstellungen —
+gehört in die Verteilungssicht [A07](../arch/A07-Bereitstellungsansicht.md) und in die
+Skripte selbst. **S3 ist kein Runbook.**
 
-Für die lokale Entwicklung werden Frontend, Backend und Datenbank auf dem Entwicklungsrechner betrieben.
-
-### Frontend
-
-Das Frontend basiert auf React, TypeScript und Vite.
-
-Der Entwicklungsserver wird mit `npm run dev` gestartet und stellt die Anwendung lokal im Browser bereit.
-
-### Backend
-
-Das Backend basiert auf Node.js und Express.
-
-Der Backend-Prozess wird lokal über `npm run dev` gestartet und stellt die API über einen lokalen Port bereit.
-
-### Datenbank
-
-Als Datenbank wird SQLite verwendet.
-
-Die SQLite-Datenbank wird lokal als Datei im Projektverzeichnis gespeichert.
-
-### Voraussetzungen
-
-Für den lokalen Betrieb muss Node.js installiert sein.
-
-Docker ist für den Betrieb der Anwendung nicht erforderlich.
+Dieser Baustein liegt als eigener Bereich `docs/betrieb/` auf derselben Ebene wie
+`docs/spec/` und `docs/arch/`, weil er beide Seiten adressiert: er fordert von der
+Umgebung, was die Spezifikation an Dauerhaftigkeit verlangt, und übergibt die konkrete
+Umsetzung an die Architektur.
 
 ---
 
-## S3.2 Zielumgebung
+## S3.1 Konventionen
 
-Für eine Demo- oder Produktionsumgebung wird Lifeline auf einem einzelnen Anwendungsserver betrieben.
-
-Auf diesem Server laufen:
-
-- der Express-Prozess,
-- das gebaute Frontend,
-- die SQLite-Datenbank.
-
-Der Browser der Nutzer:in greift über HTTPS auf den Anwendungsserver zu.
-
-Das Backend stellt dabei sowohl die API als auch das gebaute Frontend bereit.
+- **Kein Vorgängersystem.** Lifeline ist Greenfield. Kein Parallelbetrieb, kein
+  Umstellungstermin, keine Datenübernahme; Baustein S2 entfällt.
+- **Ein gemeinsames Deployment.** Oberfläche, Anwendungslogik und Datenhaltung werden als
+  **eine** Einheit betrieben
+  ([CON-3a-03](../spec/P1-constraints.md#con-3a-03-ein-gemeinsames-deployment)). Damit
+  gibt es keine getrennt auszurollenden Bestandteile und keine Versionskompatibilität
+  zwischen ihnen zu verwalten.
+- **Kein Scheduler im Laufzeitpfad.** Jede Verarbeitung läuft synchron innerhalb einer
+  Anfrage ([CON-3b-02](../spec/P1-constraints.md#con-3b-02-kein-scheduler-kein-hintergrundprozess)).
+- **Keine Mehrmandantenfähigkeit.** Eine Installation bedient beliebig viele
+  Benutzerkonten, aber es gibt keinen Mandantenbegriff und keine mandantenweise
+  Einrichtung.
 
 ---
 
-## S3.3 Bereitstellungsstruktur
+## S3.2 Voraussetzungen an den Host
 
-Die Anwendung wird als ein gemeinsames Deployment bereitgestellt.
+| ID | Voraussetzung | Begründung |
+|---|---|---|
+| HOST-01 | Erreichbarkeit über HTTPS an der öffentlichen Kante. | Zugangsdaten und persönliche Ereignisse werden übertragen ([NFR-15b-01](../spec/N1-nichtfunktional.md)). |
+| HOST-02 | Laufzeitumgebung, die die Anwendung als langlaufenden Serverprozess ausführt. | Die Anwendung bedient Anfragen und hält die Datenhaltung. |
+| HOST-03 | **Ein über Neustart und Neu-Deployment hinweg persistenter Speicherbereich**, beschreibbar durch den Anwendungsprozess. | Siehe S3.3. Ohne ihn ist [SC-04](../spec/P1-ziele-rahmenbedingungen.md#p16-erfolgskriterien) nicht erfüllbar. |
+| HOST-04 | Konfiguration über Umgebungsvariablen außerhalb des Quellcodes. | Geheimnisse dürfen nicht im Repository liegen ([N2.8](../spec/N2-querschnittskonzepte.md), CONV-05 in A02). |
+| HOST-05 | Möglichkeit, den Inhalt des persistenten Bereichs zu sichern und zurückzuspielen. | Voraussetzung für S3.6. |
+| HOST-06 | Kein zeitgesteuerter Dienst und kein Hintergrundarbeiter erforderlich. | Negativvoraussetzung: einfache Umgebungen ohne diese Möglichkeiten sind ausdrücklich geeignet ([CON-3g-01](../spec/P1-constraints.md#con-3g-01-kein-budget-für-infrastruktur)). |
 
-```text
-Nutzer:in
-    |
-    | HTTPS
-    v
-Anwendungsserver
-    |
-    +-- Express / Node.js
-    |     +-- REST-API
-    |     +-- gebautes React-Frontend
-    |
-    +-- SQLite-Datenbank
-```
+**`HOST-03` ist die kritische Voraussetzung.** Viele kostenfreie Plattformen stellen ein
+**flüchtiges** Container-Dateisystem bereit: dort ist der Zustand nach jedem Deployment
+zurückgesetzt. Die Eignung der gewählten Plattform ist vor der Inbetriebnahme
+**nachzuweisen**, nicht anzunehmen — siehe
+[CON-3b-01](../spec/P1-constraints.md#con-3b-01-persistenter-speicher-in-der-zielumgebung)
+und die Konsequenzen von ADR-003.
 
-## S3.4 Laufzeitkonfiguration
+---
 
-Die Laufzeitkonfiguration erfolgt über Umgebungsvariablen.
+## S3.3 Persistente Zustandsflächen
 
-Verwendet werden insbesondere:
+Flächen, deren Inhalt **jede** Auslieferung und jeden Neustart überdauern muss. Alles
+andere darf ohne Weiteres neu erzeugt werden.
 
-| Einstellung | Zweck |
+| Fläche | Inhalt | Verlust bedeutet |
+|---|---|---|
+| **Chronikbestand** | Benutzerkonten, Kategorien, Events ([D1.1](../spec/D1-datenmodell.md#d11-übersicht)) | Totalverlust aller Chroniken. Nicht wiederherstellbar. |
+| **Bildablage** | Die zu Events hochgeladenen Bilddateien ([D1.5](../spec/D1-datenmodell.md#d15-bildablage)) | Events bleiben erhalten, ihre Bilder fehlen; `INV-E5` ist verletzt. |
+| **Session-Geheimnis** | Der Schlüssel, mit dem Session-Nachweise signiert werden | Alle bestehenden Sessions werden ungültig; Nutzer:innen müssen sich neu anmelden. Kein Datenverlust. |
+
+Zwei Folgerungen, die leicht übersehen werden:
+
+1. **Eine Sicherung der Datenbank allein sichert die Chronik nicht vollständig.** Bilder
+   liegen außerhalb. Beide Flächen sind gemeinsam zu sichern und gemeinsam
+   zurückzuspielen, sonst entstehen Verweise auf fehlende Dateien.
+2. **Das Session-Geheimnis darf sich nicht bei jeder Auslieferung ändern.** Wird es
+   zufällig beim Start erzeugt, werden alle Nutzer:innen bei jedem Deployment abgemeldet.
+
+---
+
+## S3.4 Erstinbetriebnahme
+
+Jede Zeile ist eine Bedingung, nicht ein Befehl.
+
+| # | Aktivität | Ergebnis |
+|---|---|---|
+| I1 | Voraussetzungen `HOST-01` bis `HOST-06` prüfen und nachweisen. | Umgebung geeignet. |
+| I2 | Persistenten Speicherbereich einrichten und der Anwendung zuweisen. | Beide Flächen aus S3.3 liegen dort. |
+| I3 | Laufzeitkonfiguration setzen (S3.7), insbesondere ein **dauerhaftes** Session-Geheimnis. | Anwendung startfähig. |
+| I4 | Auslieferungsartefakt bereitstellen und Anwendung starten. | Anwendung erreichbar. |
+| I5 | Leeres Datenschema anlegen, einschließlich der vorbelegten Standardkategorien ([D1.3](../spec/D1-datenmodell.md#d13-categories)). | Leere Datenbank mit nutzbaren Kategorien. |
+| I6 | Abnahme: Konto anlegen, Event erfassen, **Anwendung neu starten**, Event ist noch vorhanden. | `SC-01` und **`SC-04`** nachgewiesen. |
+
+Schritt I6 ist kein Formalismus: er ist der einzige Test, der die Gefahr aus `HOST-03`
+tatsächlich ausschließt.
+
+---
+
+## S3.5 Folgende Auslieferungen
+
+| # | Aktivität | Bedingung |
+|---|---|---|
+| R1 | Neues Artefakt bereitstellen. | Konfiguration bleibt unverändert, sofern sich keine Variable geändert hat. |
+| R2 | Schemaänderungen anwenden, falls sich das Datenmodell geändert hat. | Muss auf einem **bestehenden** Bestand laufen, nicht nur auf einem leeren. |
+| R3 | Anwendung neu starten. | Persistente Flächen aus S3.3 bleiben unberührt. |
+| R4 | Kurzabnahme: anmelden, vorhandenes Event anzeigen. | Bestand unversehrt. |
+
+Eine Auslieferung ist nur dann unkritisch, wenn sie **keine** der Flächen aus S3.3
+berührt. Sobald eine Schemaänderung ansteht, gilt S3.6.
+
+---
+
+## S3.6 Rückfall und Punkt ohne Wiederkehr
+
+| Lage | Vorgehen |
 |---|---|
-| `PORT` | Port, auf dem der Express-Server lauscht |
-| `DATABASE_PATH` | Pfad zur SQLite-Datenbank |
-| `SESSION_SECRET` | Signaturschlüssel für Sessions |
-| `NODE_ENV` | Laufzeitumgebung, z. B. `development` oder `production` |
+| Auslieferung ohne Schemaänderung schlägt fehl | Vorheriges Artefakt erneut bereitstellen. Bestand unberührt, kein Datenverlust. |
+| Auslieferung **mit** Schemaänderung schlägt fehl | Rückfall nur zusammen mit dem Rückspielen der vor der Änderung erstellten Sicherung möglich. |
+| **Punkt ohne Wiederkehr** | Sobald eine Schemaänderung ausgeführt wurde und danach Nutzerdaten geschrieben wurden. Ab hier bedeutet Rückfall Datenverlust. |
 
-Konkrete Werte werden nicht in das Repository eingecheckt. Die Werte werden lokal beziehungsweise in der jeweiligen Hosting-Umgebung konfiguriert.
+Daraus folgt die einzige zwingende Regel dieses Bausteins: **vor jeder Auslieferung mit
+Schemaänderung wird eine Sicherung beider Flächen aus S3.3 erstellt und ihre
+Rückspielbarkeit geprüft** (`HOST-05`).
+
+Praktisch relevant wird das bei der Einführung der Entität `CATEGORIES`: bestehende Events
+müssen dabei von einem Kategoriewert auf einen Kategorieverweis umgestellt werden. Das ist
+eine Schemaänderung auf bestehendem Bestand und damit der erste echte Anwendungsfall
+dieser Regel.
 
 ---
 
-## S3.5 Inbetriebnahme
+## S3.7 Laufzeitkonfiguration
 
-Für die lokale Inbetriebnahme sind folgende Schritte erforderlich:
+Konfiguriert wird ausschließlich über Umgebungsvariablen; konkrete Werte liegen nie im
+Repository.
 
-1. Node.js installieren.
-2. Abhängigkeiten des Projekts installieren.
-3. Die benötigten Umgebungsvariablen konfigurieren.
-4. Frontend und Backend mit `npm run dev` starten.
-5. Die Anwendung über den lokalen Browser aufrufen.
+| Einstellung | Zweck | Änderung/Verlust bedeutet |
+|---|---|---|
+| Netzwerkport | Port, auf dem die Anwendung Anfragen annimmt | Anwendung nicht erreichbar. |
+| Pfad des Chronikbestands | Ablageort der Datenbank | Muss auf die persistente Fläche zeigen, sonst Datenverlust bei jedem Deployment. |
+| Pfad der Bildablage | Ablageort der Bilddateien | Muss auf die persistente Fläche zeigen, sonst fehlende Bilder. |
+| Session-Geheimnis | Signatur der Session-Nachweise | Änderung meldet alle Nutzer:innen ab (S3.3). |
+| Betriebsmodus | Unterscheidung Entwicklung/Produktion | Im Produktionsmodus dürfen keine internen Fehlerdetails ausgeliefert werden ([N2.5](../spec/N2-querschnittskonzepte.md)). |
 
-Für die Zielumgebung wird das Frontend gebaut und zusammen mit dem Express-Prozess auf dem Anwendungsserver bereitgestellt.
+Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansicht.md).
 
-Die SQLite-Datenbank wird auf demselben Server betrieben.
+---
+
+## S3.8 Nicht Teil von S3
+
+- **Konkrete Befehle, Pfade, Build-Schritte, Plattformeinstellungen** —
+  [A07](../arch/A07-Bereitstellungsansicht.md) und die README des Repositorys.
+- **Einrichtung der Entwicklungsumgebung.** Arbeitsmittel des Teams, nicht Teil der
+  Inbetriebnahme des Produkts.
+- **Datenübernahme aus einem Altsystem.** Baustein S2, nicht anwendbar.
+- **Parallelbetrieb und Umstellungsplanung.** Es gibt kein abzulösendes System.
+- **Überwachung im laufenden Betrieb.** Im aktuellen Umfang nicht spezifiziert; das
+  Protokollierungskonzept steht in [N2.6](../spec/N2-querschnittskonzepte.md).
+
+---
+
+## S3.9 Querverweise
+
+| Baustein | Bezug zu S3 |
+|---|---|
+| [P1](../spec/P1-ziele-rahmenbedingungen.md) | `SC-04` wird in I6 nachgewiesen; `AS-04` ist die Annahme, die `HOST-03` prüft. |
+| [P1-constraints](../spec/P1-constraints.md) | `CON-3a-02`, `CON-3a-03`, `CON-3b-01`, `CON-3b-02`, `CON-3g-01` prägen diesen Baustein. |
+| [D1](../spec/D1-datenmodell.md) | Die beiden Datenspeicher aus D1.1 sind die Flächen aus S3.3. |
+| [N1](../spec/N1-nichtfunktional.md) | `NFR-12d-01` Dauerhaftigkeit, `NFR-13b-01` Betrieb ohne Zusatzdienste, `NFR-15b-01` Verschlüsselung. |
+| [N2](../spec/N2-querschnittskonzepte.md) | N2.8 bestimmt, was über die Laufzeitkonfiguration bereitzustellen ist. |
+| [A07](../arch/A07-Bereitstellungsansicht.md) | Die konkrete Umsetzung dessen, was hier gefordert wird. |
+| ADR-003 (A09) | Die Konsequenz „Hosting muss persistenten Speicher bieten" ist der Ursprung von `HOST-03`. |
