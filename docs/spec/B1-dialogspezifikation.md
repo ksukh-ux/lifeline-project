@@ -16,7 +16,7 @@ aus F2 von genau einem Dialog dargestellt. Die Dialogkennungen (`DLG-xx`) sind s
 
 ---
 
-## B1.1 Dialogindex
+### B1.1 Dialogindex
 
 | ID | Dialog | Gruppe | Realisiert | Session nötig |
 |---|---|---|---|:--:|
@@ -27,26 +27,26 @@ aus F2 von genau einem Dialog dargestellt. Die Dialogkennungen (`DLG-xx`) sind s
 | [DLG-05](#dlg-05--zugangsformular) | Zugangsformular | Zugang | UC-07 | nein |
 | [DLG-06](#dlg-06--kategorieverwaltung) | Kategorieverwaltung | Stammdaten | — (siehe unten) | ja |
 
-**Navigationskarte**
+### Navigationskarte
 
 ```mermaid
 flowchart TD
     A["DLG-05 Zugangsformular<br/>(einziger Dialog ohne Session)"]
     B["DLG-01 Timeline<br/>Einstiegs- und Rückkehrpunkt"]
     C["DLG-03 Filterleiste<br/>eingebettet in DLG-01"]
-    D["DLG-02 Ereignisformular<br/>anlegen / bearbeiten"]
+    D["DLG-02 Ereignisformular<br/>Anlegen / Bearbeiten"]
     E["DLG-04 Auswertungsansicht"]
     F["DLG-06 Kategorieverwaltung"]
 
     A -->|nach Anmeldung| B
     B --- C
-    B --> D
-    D -->|speichern / abbrechen| B
-    B --> E
-    E --> B
-    B --> F
-    D -->|neue Kategorie anlegen| F
-    F --> B
+    B -->|Neues Event / Bearbeiten| D
+    D -->|Speichern / Abbrechen| B
+    B -->|Auswertung öffnen| E
+    E -->|Zurück| B
+    B -->|Kategorien verwalten| F
+    D -->|Neue Kategorie anlegen| F
+    F -->|Zurück| D
 ```
 
 DLG-01 ist Einstiegs- und Rückkehrpunkt: jede Aktion in DLG-02, DLG-04 und DLG-06 endet
