@@ -5,16 +5,11 @@ import type { CategoryId, LifeEvent } from '../types'
 // Entwicklungsserver aus "npm run dev" im backend/-Ordner.
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
-// --- Übergangslösung: automatische Demo-Anmeldung ---
-// Es gibt noch keine echte Registrierungs-/Login-Seite im Frontend. Damit
-// man trotzdem end-to-end testen kann ("Eintrag auf der Webseite anlegen
-// -> landet wirklich in der Datenbank"), meldet sich die App beim Start
-// automatisch mit einem festen Demo-Konto an (wird beim allerersten Mal
-// automatisch im Backend angelegt). Das ist bewusst eine Übergangslösung
-// für lokales Testen, KEIN Ersatz für eine echte Login-Seite — die ist
-// weiterhin offen und sollte vor einem echten Launch ergänzt werden.
-const DEMO_EMAIL = 'demo@lifeline.local'
-const DEMO_PASSWORD = 'lifeline-demo-2026'
+export interface AuthUser {
+  id: number
+  email: string
+  created_at: string
+}
 
 interface ApiEventRow {
   id: number
@@ -40,25 +35,44 @@ async function apiFetch(path: string, options: RequestInit = {}): Promise<Respon
   })
 }
 
-// Stellt sicher, dass eine angemeldete Session besteht (siehe Kommentar
-// oben). Sollte einmal beim Start der App aufgerufen werden.
-export async function ensureSession(): Promise<void> {
-  const me = await apiFetch('/api/auth/me')
-  if (me.ok) return
+// Echte Registrierung/Anmeldung (UC-07, ADR-004). Ersetzt die frühere
+// automatische Demo-Anmeldung — es gibt jetzt eine echte Login-/
+// Registrierungsseite (siehe components/AuthForms.tsx).
 
-  const login = await apiFetch('/api/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email: DEMO_EMAIL, password: DEMO_PASSWORD }),
-  })
-  if (login.ok) return
+// Prüft, ob bereits eine gültige Session besteht (z. B. nach einem
+// Seiten-Reload). Gibt bei fehlender/abgelaufener Session `null` zurück,
+// statt einen Fehler zu werfen — das ist der normale, erwartete Fall beim
+// ersten Aufruf der Seite.
+export async function getCurrentUser(): Promise<AuthUser | null> {
+  const response = await apiFetch('/api/auth/me')
+  if (!response.ok) return null
+  return response.json()
+}
 
-  const register = await apiFetch('/api/auth/register', {
+export async function login(email: string, password: string): Promise<AuthUser> {
+  const response = await apiFetch('/api/auth/login', {
     method: 'POST',
-    body: JSON.stringify({ email: DEMO_EMAIL, password: DEMO_PASSWORD }),
+    body: JSON.stringify({ email, password }),
   })
-  if (!register.ok) {
-    throw new Error('Konnte keine Verbindung zum Backend herstellen (Anmeldung fehlgeschlagen).')
+  if (!response.ok) {
+    throw new Error(await readErrorMessage(response, 'Anmeldung fehlgeschlagen.'))
   }
+  return response.json()
+}
+
+export async function register(email: string, password: string): Promise<AuthUser> {
+  const response = await apiFetch('/api/auth/register', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  })
+  if (!response.ok) {
+    throw new Error(await readErrorMessage(response, 'Registrierung fehlgeschlagen.'))
+  }
+  return response.json()
+}
+
+export async function logout(): Promise<void> {
+  await apiFetch('/api/auth/logout', { method: 'POST' })
 }
 
 function toImageUrl(imagePath: string | null): string | undefined {

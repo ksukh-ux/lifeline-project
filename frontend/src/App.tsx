@@ -5,12 +5,15 @@ import Timeline from './components/Timeline'
 import CategoryFilter from './components/CategoryFilter'
 import EventCard from './components/EventCard'
 import EventFormModal from './components/EventFormModal'
+import AuthForms from './components/AuthForms'
 import {
   createEvent,
   deleteEvent as deleteEventOnServer,
-  ensureSession,
   fetchEvents,
+  getCurrentUser,
+  logout as logoutOnServer,
   updateEvent as updateEventOnServer,
+  type AuthUser,
 } from './api/client'
 import type { CategoryId, LifeEvent } from './types'
 
@@ -48,48 +51,66 @@ const isLifeEvent = (value: unknown): value is LifeEvent => {
 }
 
 export default function App() {
-  // Einträge kommen jetzt vom Backend (SQLite), nicht mehr aus dem
-  // localStorage des Browsers. Beim Start wird einmal geladen (siehe
-  // useEffect unten); jede Änderung (Speichern/Löschen) geht sofort ans
-  // Backend, die Anzeige wird danach mit der Antwort des Servers
-  // aktualisiert.
+  // Anmeldezustand (UC-07). `undefined` = wird gerade geprüft (z. B. nach
+  // Seiten-Reload, ob noch eine Session besteht), `null` = nicht angemeldet
+  // (zeigt AuthForms), sonst die angemeldete Person.
+  const [user, setUser] = useState<AuthUser | null | undefined>(undefined)
+
+  // Einträge kommen vom Backend (SQLite), nicht mehr aus dem localStorage
+  // des Browsers. Werden erst geladen, sobald eine Session besteht; jede
+  // Änderung (Speichern/Löschen) geht sofort ans Backend, die Anzeige wird
+  // danach mit der Antwort des Servers aktualisiert.
   const [events, setEvents] = useState<LifeEvent[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
 
+  const loadEvents = async () => {
+    setIsLoading(true)
+    setLoadError(null)
+    try {
+      setEvents(await fetchEvents())
+    } catch (error) {
+      setLoadError(
+        error instanceof Error
+          ? error.message
+          : 'Verbindung zum Backend fehlgeschlagen. Läuft der Server (npm run dev im backend/-Ordner)?',
+      )
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Beim Start einmal prüfen, ob bereits eine gültige Session besteht
+  // (z. B. nach einem Seiten-Reload) — falls ja, direkt die Timeline laden,
+  // sonst die Anmeldeseite (AuthForms) zeigen.
   useEffect(() => {
     let cancelled = false
 
-    async function loadFromBackend() {
-      try {
-        // Übergangslösung: automatische Demo-Anmeldung, siehe api/client.ts.
-        // Es gibt noch keine echte Login-Seite im Frontend.
-        await ensureSession()
-        const loaded = await fetchEvents()
-        if (!cancelled) {
-          setEvents(loaded)
-        }
-      } catch (error) {
-        if (!cancelled) {
-          setLoadError(
-            error instanceof Error
-              ? error.message
-              : 'Verbindung zum Backend fehlgeschlagen. Läuft der Server (npm run dev im backend/-Ordner)?',
-          )
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false)
-        }
+    getCurrentUser().then((currentUser) => {
+      if (cancelled) return
+      setUser(currentUser)
+      if (currentUser) {
+        loadEvents()
+      } else {
+        setIsLoading(false)
       }
-    }
-
-    loadFromBackend()
+    })
 
     return () => {
       cancelled = true
     }
   }, [])
+
+  const handleAuthenticated = (authenticatedUser: AuthUser) => {
+    setUser(authenticatedUser)
+    loadEvents()
+  }
+
+  const handleLogout = async () => {
+    await logoutOnServer()
+    setUser(null)
+    setEvents([])
+  }
 
   const [filter, setFilter] = useState<CategoryId | 'alle'>('alle')
   const [modalEvent, setModalEvent] = useState<
@@ -247,9 +268,23 @@ export default function App() {
     }
   }
 
+  if (user === undefined) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-ink-950">
+        <p className="text-sm text-slate-500">Lade …</p>
+      </div>
+    )
+  }
+
+  if (user === null) {
+    return <AuthForms onAuthenticated={handleAuthenticated} />
+  }
+
   return (
     <div className="min-h-screen bg-ink-950">
       <Header
+        userEmail={user.email}
+        onLogout={handleLogout}
         onAdd={() => setModalEvent(null)}
         onExport={handleImageExport}
         onDataExport={handleDataExport}

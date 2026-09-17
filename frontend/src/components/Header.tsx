@@ -4,11 +4,14 @@ import {
   EllipsisVertical,
   FileDown,
   FileUp,
+  LogOut,
   Plus,
   Trash2,
 } from 'lucide-react'
 
 interface HeaderProps {
+  userEmail: string
+  onLogout: () => void
   onAdd: () => void
   onExport: () => void
   onDataExport: () => void
@@ -18,6 +21,8 @@ interface HeaderProps {
 }
 
 export default function Header({
+  userEmail,
+  onLogout,
   onAdd,
   onExport,
   onDataExport,
@@ -61,7 +66,7 @@ export default function Header({
       <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-brass-500">
-            {eventCount} Ereignis{eventCount === 1 ? '' : 'se'} erfasst
+            {eventCount} Ereignis{eventCount === 1 ? '' : 'se'} erfasst · {userEmail}
           </p>
 
           <h1 className="mt-2 bg-gradient-to-r from-orange-400 via-pink-500 to-violet-500 bg-clip-text font-display text-4xl font-medium text-transparent sm:text-5xl">
@@ -143,6 +148,18 @@ export default function Header({
                 >
                   <Trash2 size={16} />
                   Alle Daten löschen
+                </button>
+
+                <div className="my-1.5 border-t border-white/10" />
+
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => runAndClose(onLogout)}
+                  className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm text-slate-200 transition hover:bg-white/5"
+                >
+                  <LogOut size={16} className="text-slate-400" />
+                  Abmelden
                 </button>
               </div>
             )}
