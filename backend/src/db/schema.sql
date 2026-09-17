@@ -1,6 +1,5 @@
 -- Lifeline database schema
--- Must stay in sync with docs/spec/D1-datenmodell.md, docs/spec/D2-datentypenverzeichnis.md
--- and docs/arch/A08-Querschnittskonzepte.md (8.1 Datenmodell und Persistenz).
+-- Categories are stored as data and are no longer hardcoded.
 
 CREATE TABLE IF NOT EXISTS users (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -9,11 +8,17 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS categories (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  label         TEXT NOT NULL UNIQUE,
+  color         TEXT NOT NULL,
+  is_default    INTEGER NOT NULL DEFAULT 0
+);
+
 CREATE TABLE IF NOT EXISTS events (
-  id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  category     TEXT NOT NULL CHECK (category IN
-                 ('meilenstein', 'karriere', 'bildung', 'beziehung', 'reise', 'gesundheit', 'sonstiges')),
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  category_id   INTEGER NOT NULL REFERENCES categories(id),
   title        TEXT NOT NULL,
   description  TEXT,
   start_date   TEXT NOT NULL,
@@ -25,4 +30,8 @@ CREATE TABLE IF NOT EXISTS events (
   created_at   TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-CREATE INDEX IF NOT EXISTS idx_events_user_id ON events(user_id);
+CREATE INDEX IF NOT EXISTS idx_events_user_id
+  ON events(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_events_category_id
+  ON events(category_id);
