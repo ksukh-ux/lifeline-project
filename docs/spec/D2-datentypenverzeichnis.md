@@ -24,6 +24,6 @@ Andere Werte werden vom Backend abgelehnt. Die Zuordnung von Wert, Bezeichnung u
 
 Das Attribut `significance` ist eine Ganzzahl zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Der Wert wird für die visuelle Gewichtung des Events in der Timeline verwendet.
 
-## D2.7 Bild (image_path)
+## D2.4 Bild (image_path)
 
 Ein Event kann optional genau ein Bild besitzen. Das Bild wird nicht in der Datenbank gespeichert, sondern als Datei im Backend abgelegt; `image_path` enthält lediglich den Pfad, unter dem das Bild ausgeliefert wird. Erlaubte Formate sind JPEG, PNG und WEBP mit einer maximalen Dateigröße von 5 MB. Ungültige Formate oder zu große Dateien werden vom Backend abgelehnt.
