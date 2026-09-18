@@ -4,7 +4,7 @@
 
 Das Datentypenverzeichnis beschreibt die im Datenmodell der Lifeline-Anwendung verwendeten Datentypen. Grundlage bildet das in der Architektur definierte Datenmodell. Die persistente Speicherung erfolgt in einer SQLite-Datenbank.
 
-## D2.4 Wertebereich der Event-Kategorie
+## D2.2 Wertebereich der Event-Kategorie
 
 Für das Attribut `category` sind folgende Werte vorgesehen. Jede Kategorie ist zusätzlich einer festen Akzentfarbe für die Darstellung in der Timeline zugeordnet:
 
@@ -20,7 +20,7 @@ Für das Attribut `category` sind folgende Werte vorgesehen. Jede Kategorie ist 
 
 Andere Werte werden vom Backend abgelehnt. Die Zuordnung von Wert, Bezeichnung und Farbe wird zentral an einer Stelle gepflegt (siehe Architektur, Kapitel 8.2), damit neue Kategorien mit minimalem Aufwand ergänzt werden können (vgl. N1.3, NFA-03).
 
-## D2.6 Wertebereich von significance
+## D2.3 Wertebereich von significance
 
 Das Attribut `significance` ist eine Ganzzahl zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Der Wert wird für die visuelle Gewichtung des Events in der Timeline verwendet.
 
