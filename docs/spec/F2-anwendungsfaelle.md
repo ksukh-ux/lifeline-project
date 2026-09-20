@@ -1,6 +1,10 @@
 # F2 – Anwendungsfälle
 
-Anwendungsfälle im Sinne von Siedersleben (Kap. 4.4): konkrete Interaktionsszenarien zwischen der Nutzer:in und Lifeline, die jeweils genau ein für die Nutzer:in bedeutsames Ziel verfolgen und in einem stabilen Endzustand münden. F2 ist die **systemgestützte Teilmenge** des in F1 beschriebenen Geschäftsprozesses: jeder Schritt aus F1, der eine Interaktion der Nutzer:in mit Lifeline umfasst, erscheint hier als Anwendungsfall; rein systeminterne Berechnungen (z. B. Statistik-Aggregation, Filterung) sind keine Anwendungsfälle – sie stehen als Anwendungsfunktionen in [F3](F3-anwendungsfunktionen.md).
+F2 beschreibt die Interaktionen zwischen Nutzer:in und Lifeline. Jeder Anwendungsfall beschreibt ein konkretes Nutzerziel und die dafür erforderlichen Interaktionen mit dem System.
+
+Anwendungsfälle im Sinne von Siedersleben (Kap. 4.4) sind konkrete Interaktionsszenarien zwischen der Nutzer:in und Lifeline, die jeweils genau ein für die Nutzer:in bedeutsames Ziel verfolgen und in einem stabilen Endzustand münden.
+
+Rein systeminterne Berechnungen und Verarbeitungen (z. B. Statistik-Aggregation oder Filterung) sind keine Anwendungsfälle; sie werden als Anwendungsfunktionen in [F3](F3-anwendungsfunktionen.md) beschrieben.
 
 Jeder Anwendungsfall wird mit derselben tabellarischen Vorlage beschrieben. Die Nummerierung ist stabil; ein einmal referenzierter UC wird nicht umnummeriert.
 
@@ -8,15 +12,15 @@ Jeder Anwendungsfall wird mit derselben tabellarischen Vorlage beschrieben. Die 
 
 ## F2.1 Anwendungsfall-Übersicht
 
-| ID | Anwendungsfall | Akteur | Gruppe | Bezug zu F1 |
-|----|----------------|--------|--------|-------------|
-| [UC-07](#uc-07--registrieren-und-login) | Registrieren und Login | Nutzer:in | Zugang | F1.1 |
-| [UC-01](#uc-01--event-anlegen) | Event anlegen | Nutzer:in | Event-Verwaltung | F1.2 |
-| [UC-02](#uc-02--event-bearbeiten) | Event bearbeiten | Nutzer:in | Event-Verwaltung | F1.2 |
-| [UC-03](#uc-03--event-löschen) | Event löschen | Nutzer:in | Event-Verwaltung | F1.2 |
-| [UC-04](#uc-04--timeline-ansehen) | Timeline ansehen | Nutzer:in | Event-Verwaltung | F1.2 |
-| [UC-05](#uc-05--timeline-filtern) | Timeline filtern | Nutzer:in | Auswertung | F1.3 |
-| [UC-06](#uc-06--statistik-berechnen) | Statistik berechnen | Nutzer:in | Auswertung | F1.4 |
+| ID | Anwendungsfall | Akteur | Gruppe |
+|---|---|---|---|
+| UC-07 | Registrieren und Login | Nutzer:in | Zugang |
+| UC-01 | Event anlegen | Nutzer:in | Event-Verwaltung |
+| UC-02 | Event bearbeiten | Nutzer:in | Event-Verwaltung |
+| UC-03 | Event löschen | Nutzer:in | Event-Verwaltung |
+| UC-04 | Timeline ansehen | Nutzer:in | Event-Verwaltung |
+| UC-05 | Timeline filtern | Nutzer:in | Auswertung |
+| UC-06 | Statistik berechnen | Nutzer:in | Auswertung |
 
 ![F2 Anwendungsfalldiagramm – Lifeline](./diagrams-png/diagrams-png/f2-use-cases.png)
 
