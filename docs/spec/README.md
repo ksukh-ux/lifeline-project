@@ -2,7 +2,7 @@
 
 Die Spezifikation des Lifeline-Projekts ist nach dem Bausteinmodell von **Johannes Siedersleben** strukturiert. Jeder Baustein beschreibt eine klar abgegrenzte Sicht auf das System und wird in einer eigenen Datei dokumentiert.
 
-Dieses Dokument dient als zentrale Übersicht: Es erläutert das verwendete Modell, verweist auf alle Spezifikationsbausteine und dokumentiert, welche Bausteine für das Lifeline-Projekt nicht relevant sind.
+Dieses Dokument dient als zentrale Übersicht: Es erläutert das verwendete Modell und verweist auf alle Spezifikationsbausteine.
 
 Eine Beschreibung des Bausteinmodells befindet sich in der
 [Siedersleben-Vorlage von Herrn Lucke](https://github.com/carstenlucke/herold/blob/main/docs/spec/SIEDERSLEBEN.md).
@@ -48,7 +48,6 @@ Die Spezifikation richtet sich insbesondere an:
 | ------ | ----------------------------------------------------------------------------------------------------- |
 | ✅      | Der Baustein wurde erstellt und inhaltlich ausgearbeitet.                                             |
 | 🛠     | Der Baustein ist vorgesehen, wurde aber noch nicht vollständig ausgearbeitet.                         |
-| ⛔      | Der Baustein ist für das Lifeline-Projekt nicht relevant. Eine Begründung befindet sich weiter unten. |
 
 ---
 
@@ -57,14 +56,14 @@ Die Spezifikation richtet sich insbesondere an:
 ### 1. Projektgrundlagen
 
 | Baustein | Bezeichnung                 | Status | Datei                                                            |
-| -------- | --------------------------- | -----: | ---------------------------------------------------------------- |
+| -------- | ---------------------------- | -----: | ----------------------------------------------------------------- |
 | P1       | Ziele und Rahmenbedingungen |     🛠 | [`P1-ziele-rahmenbedingungen.md`](P1-ziele-rahmenbedingungen.md) |
 | P2       | Architekturüberblick        |     🛠 | [`P2-architekturüberblick.md`](P2-architekturüberblick.md)     |
 
 ### 2. Prozesse und Funktionen
 
 | Baustein | Bezeichnung          | Status | Datei                                                      |
-| -------- | -------------------- | -----: | ---------------------------------------------------------- |
+| -------- | --------------------- | -----: | ------------------------------------------------------------ |
 | F1       | Geschäftsprozesse    |     🛠 | [`F1-geschaeftsprozesse.md`](F1-geschaeftsprozesse.md)     |
 | F2       | Anwendungsfälle      |     🛠 | [`F2-anwendungsfaelle.md`](F2-anwendungsfaelle.md)         |
 | F3       | Anwendungsfunktionen |     🛠 | [`F3-anwendungsfunktionen.md`](F3-anwendungsfunktionen.md) |
@@ -72,62 +71,33 @@ Die Spezifikation richtet sich insbesondere an:
 ### 3. Daten
 
 | Baustein | Bezeichnung     | Status | Datei                                    |
-| -------- | --------------- | -----: | ---------------------------------------- |
+| -------- | ---------------- | -----: | ------------------------------------------ |
 | D1       | Datenmodell     |     🛠 | [`D1-datenmodell.md`](D1-datenmodell.md) |
 | D2       | Datentypenverzeichnis |     🛠 | [`D2-datentypenverzeichnis.md`](D2-datentypenverzeichnis.md)   |
 
 ### 4. Benutzeroberfläche
 
 | Baustein | Bezeichnung         | Status | Datei                                                    |
-| -------- | ------------------- | -----: | -------------------------------------------------------- |
+| -------- | -------------------- | -----: | ----------------------------------------------------------- |
 | B1       | Dialogspezifikation |     🛠 | [`B1-dialogspezifikation.md`](B1-dialogspezifikation.md) |
-| B2       | Batchverarbeitung   |      ⛔ | –                                                        |
-| B3       | Druckausgabe        |      ⛔ | –                                                        |
 
 ### 5. Schnittstellen zu Nachbar- und Altsystemen
 
 | Baustein | Bezeichnung                       | Status | Datei                                          |
-| -------- | --------------------------------- | -----: | ---------------------------------------------- |
+| -------- | ----------------------------------- | -----: | ------------------------------------------------- |
 | S1       | Schnittstellen zu Nachbarsystemen |     🛠 | [`S1-nachbarsysteme.md`](S1-nachbarsysteme.md) |
-| S2       | Datenmigration                    |      ⛔ | –                                              |
 | S3       | Inbetriebnahme und Bereitstellung |     🛠 | [`S3-inbetriebnahme.md`](S3-inbetriebnahme.md) |
 
 ### 6. Übergreifende Aspekte
 
 | Baustein | Bezeichnung                    | Status | Datei                                                      |
-| -------- | ------------------------------ | -----: | ---------------------------------------------------------- |
+| -------- | -------------------------------- | -----: | ------------------------------------------------------------ |
 | N1       | Nichtfunktionale Anforderungen |     🛠 | [`N1-nichtfunktional.md`](N1-nichtfunktional.md)           |
 | N2       | Querschnittskonzepte           |     🛠 | [`N2-querschnittskonzepte.md`](N2-querschnittskonzepte.md) |
 
 ### 7. Ergänzende Bausteine
 
 | Baustein | Bezeichnung   | Status | Datei                            |
-| -------- | ------------- | -----: | -------------------------------- |
+| -------- | -------------- | -----: | ----------------------------------- |
 | E1       | Leseleitfaden |      ✅ | Dieses Dokument                  |
 | E2       | Glossar       |     🛠 | [`E2-glossar.md`](E2-glossar.md) |
-
----
-
-## Nicht relevante Bausteine
-
-Die folgenden Bausteine des Bausteinmodells nach Siedersleben werden für das Lifeline-Projekt nicht ausgearbeitet. Die Gründe werden dokumentiert, damit nachvollziehbar ist, dass diese Bausteine bewusst ausgeschlossen wurden.
-
-### B2 – Batchverarbeitung
-
-Lifeline ist als interaktive Anwendung vorgesehen. Die Benutzerinnen und Benutzer führen Aktionen wie das Anlegen, Bearbeiten und Anzeigen von Ereignissen, Meilensteinen, Zielen und Erinnerungen unmittelbar über die Benutzeroberfläche aus.
-
-Eine Verarbeitung großer Datenmengen in automatisierten, zeitlich gebündelten Stapelläufen ist im derzeit vorgesehenen Funktionsumfang nicht erforderlich.
-
-Die konkrete technische Umsetzung zeitabhängiger Erinnerungen wird im Architekturdokument beschrieben. Erinnerungen allein stellen nicht automatisch eine Batchverarbeitung dar.
-
-### B3 – Druckausgabe
-
-Für Lifeline sind derzeit keine speziell für den Druck erzeugten Berichte, PDF-Dokumente oder sonstigen Druckausgaben vorgesehen.
-
-Die Inhalte werden innerhalb der Anwendung dargestellt. Sollte später eine Export- oder Druckfunktion ergänzt werden, muss dieser Baustein erneut geprüft und gegebenenfalls aufgenommen werden.
-
-### S2 – Datenmigration
-
-Lifeline wird als neues System ohne ein bestehendes Vorgängersystem entwickelt. Daher müssen keine vorhandenen Daten aus einem Altsystem übernommen oder in ein neues Datenformat migriert werden.
-
-Die Anwendung startet bei der ersten Verwendung mit einer neuen beziehungsweise leeren Datenbank. Beispieldaten, die möglicherweise für Entwicklung, Vorführung oder Tests angelegt werden, gelten nicht als Migration aus einem Altsystem.
