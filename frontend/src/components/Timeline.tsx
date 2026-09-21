@@ -1,14 +1,15 @@
 import { useMemo, useRef, useState } from 'react'
-import type { Category, LifeEvent } from '../types'
+import type { Category, Holiday, LifeEvent } from '../types'
 import { getCategory } from '../types'
 
 interface Props {
   categories: Category[]
   events: LifeEvent[]
+  holidays?: Holiday[]
   onSelect: (event: LifeEvent) => void
 }
 
-export default function Timeline({ categories, events, onSelect }: Props) {
+export default function Timeline({ categories, events, holidays = [], onSelect }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [zoom, setZoom] = useState(1)
@@ -72,6 +73,14 @@ export default function Timeline({ categories, events, onSelect }: Props) {
     (_, index) => startYear + index,
   )
 
+  // S1.3 NB-02 — Feiertagsdienst: rein dekorative Hintergrundmarkierung,
+  // siehe S1.3.1. Nur Feiertage innerhalb des aktuell sichtbaren Zeitraums
+  // werden positioniert; außerhalb liegende werden hier bewusst ignoriert.
+  const visibleHolidays = holidays.filter((holiday) => {
+    const time = new Date(holiday.date).getTime()
+    return time >= minTime && time <= maxTime
+  })
+
   return (
     <div>
       <div
@@ -100,6 +109,27 @@ export default function Timeline({ categories, events, onSelect }: Props) {
               >
                 <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
                   {year}
+                </span>
+              </div>
+            )
+          })}
+
+          {/* Feiertage (S1.3, NB-02) — dezente Hintergrundmarkierung, nicht
+              interaktiv und ohne Einfluss auf die Anordnung der Events. */}
+          {visibleHolidays.map((holiday) => {
+            const left = `${posFor(holiday.date)}%`
+
+            return (
+              <div
+                key={holiday.date}
+                title={holiday.name}
+                className="group/holiday absolute top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+                style={{ left }}
+              >
+                <span className="block h-5 w-px border-l border-dashed border-amber-400/70" />
+                <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-amber-400/80" />
+                <span className="pointer-events-none absolute top-6 hidden whitespace-nowrap rounded bg-ink-950/90 px-1.5 py-0.5 font-mono text-[9px] text-amber-300 group-hover/holiday:block">
+                  {holiday.name}
                 </span>
               </div>
             )

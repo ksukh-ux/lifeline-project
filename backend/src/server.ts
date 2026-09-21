@@ -9,6 +9,7 @@ import { sessionMiddleware } from "./middleware/session.js";
 import { authRouter } from "./routes/auth.js";
 import { categoriesRouter } from "./routes/categories.js";
 import { eventsRouter } from "./routes/events.js";
+import { holidaysRouter } from "./routes/holidays.js";
 import { statsRouter } from "./routes/stats.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -36,6 +37,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/events", eventsRouter);
 app.use("/api/stats", statsRouter);
+app.use("/api/holidays", holidaysRouter);
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => {

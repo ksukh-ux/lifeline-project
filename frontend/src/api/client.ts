@@ -1,4 +1,4 @@
-import type { Category, LifeEvent } from '../types'
+import type { Category, Holiday, LifeEvent } from '../types'
 
 // Verbindung zu unserem Backend (siehe backend/, Branch feat/backend-db).
 // Adresse per .env konfigurierbar (VITE_API_URL), Standard ist der lokale
@@ -95,6 +95,23 @@ export async function createCategory(label: string, color: string): Promise<Cate
     throw new Error(await readErrorMessage(response, 'Konnte Kategorie nicht anlegen.'))
   }
   return response.json()
+}
+
+// S1.3 NB-02 — Feiertagsdienst. Anders als die übrigen fetch*-Funktionen
+// dieser Datei wirft diese Funktion absichtlich nie: S1.3.2 verlangt, dass
+// der Ausfall dieses Nachbarsystems niemals eine Fehlermeldung an die
+// Nutzer:in erzeugt. Bei jedem Problem (Netzwerk, Serverfehler, unerwartete
+// Antwort) wird einfach eine leere Liste geliefert — Feiertage erscheinen
+// dann schlicht nicht.
+export async function fetchHolidays(year: number): Promise<Holiday[]> {
+  try {
+    const response = await apiFetch(`/api/holidays?year=${year}`)
+    if (!response.ok) return []
+    const holidays: unknown = await response.json()
+    return Array.isArray(holidays) ? holidays : []
+  } catch {
+    return []
+  }
 }
 
 function toImageUrl(imagePath: string | null): string | undefined {

@@ -12,12 +12,13 @@ import {
   deleteEvent as deleteEventOnServer,
   fetchCategories,
   fetchEvents,
+  fetchHolidays,
   getCurrentUser,
   logout as logoutOnServer,
   updateEvent as updateEventOnServer,
   type AuthUser,
 } from './api/client'
-import type { Category, LifeEvent } from './types'
+import type { Category, Holiday, LifeEvent } from './types'
 
 interface LifelineBackup {
   version: 1
@@ -63,6 +64,32 @@ export default function App() {
   // Kategorien sind eine eigene Entität (D1.3, N1 NFR-14c-01) und werden pro
   // Person vom Backend geladen — genau wie die Events selbst.
   const [categories, setCategories] = useState<Category[]>([])
+
+  // S1.3 NB-02 — Feiertagsdienst: rein dekorative Anreicherung der Timeline,
+  // siehe S1.3.2 "Bindende Regel". Wird bewusst NICHT über loadEvents()
+  // geladen und beeinflusst weder isLoading noch loadError — die Timeline
+  // erscheint, sobald die eigenen Events da sind; Feiertage erscheinen
+  // nachträglich, sobald die Antwort da ist, oder gar nicht.
+  const [holidays, setHolidays] = useState<Holiday[]>([])
+
+  useEffect(() => {
+    if (events.length === 0) {
+      setHolidays([])
+      return
+    }
+
+    let cancelled = false
+    const years = [...new Set(events.map((event) => new Date(event.date).getFullYear()))]
+
+    Promise.all(years.map((year) => fetchHolidays(year))).then((results) => {
+      if (cancelled) return
+      setHolidays(results.flat())
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [events])
 
   const loadEvents = async () => {
     setIsLoading(true)
@@ -311,7 +338,7 @@ export default function App() {
 
       <main className="mx-auto max-w-6xl px-6 py-8 sm:px-10">
       <div ref={timelineRef} className="w-full">
-      <Timeline categories={categories} events={filtered} onSelect={setModalEvent} />
+      <Timeline categories={categories} events={filtered} holidays={holidays} onSelect={setModalEvent} />
       </div>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
