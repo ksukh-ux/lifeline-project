@@ -63,7 +63,7 @@ andere darf ohne Weiteres neu erzeugt werden.
 | Fläche | Inhalt | Verlust bedeutet |
 |---|---|---|
 | **Chronikbestand** | Benutzerkonten, Kategorien, Events ([D1.1](../spec/D1-datenmodell.md#d11-übersicht)) | Totalverlust aller Chroniken. Nicht wiederherstellbar. |
-| **Bildablage** | Die zu Events hochgeladenen Bilddateien ([D1.5](../spec/D1-datenmodell.md#d15-bildablage)) | Events bleiben erhalten, ihre Bilder fehlen; `INV-E5` ist verletzt. |
+| **Bildablage** | Die zu Events hochgeladenen Bilddateien ([D2.3](../spec/D2-datentypenverzeichnis.md#d23-bild-image_path)) | Events bleiben erhalten, ihre Bilder fehlen; `INV-E5` ist verletzt. |
 | **Session-Geheimnis** | Der Schlüssel, mit dem Session-Nachweise signiert werden | Alle bestehenden Sessions werden ungültig; Nutzer:innen müssen sich neu anmelden. Kein Datenverlust. |
 
 Zwei Folgerungen, die leicht übersehen werden:

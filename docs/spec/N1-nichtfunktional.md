@@ -180,6 +180,13 @@ Das setzt eine Code-Änderung voraus und ist damit keine Erweiterbarkeit zur Lau
 Anforderung ist deshalb neu formuliert und der Wertebereich in eine eigene Entität
 überführt ([D1.3](D1-datenmodell.md#d13-categories)).
 
+**Status:** Erfüllt. Kategorie ist als eigene Entität `CATEGORIES` umgesetzt
+(Datenmodell, Backend-Endpunkte `GET`/`POST /api/categories`, Frontend). Neue
+Kategorien werden über die Oberfläche angelegt (`CategoryFilter`), sofort im
+Event-Formular auswählbar und in der Timeline filterbar — ohne Neustart oder
+Code-Änderung. Bestehende Installationen mit der alten, fest codierten
+Kategorie-Liste werden beim Serverstart automatisch migriert.
+
 ---
 
 ## 15. Anforderungen an Sicherheit

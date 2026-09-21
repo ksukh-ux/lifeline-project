@@ -6,7 +6,7 @@ D2 dokumentiert **nicht**:
 
 - **Entitäten und ihre Attributlisten.** Das steht in [D1](D1-datenmodell.md). Eine Aufzählung „Attribut / Datentyp / Beschreibung" für eine ganze Entität ist keine Erklärung eines Datentyps, sondern eine Wiederholung von D1.
 - **Allgemeine technische Typen** wie `int`, `string`, `date`, `datetime` ohne zusätzliche fachliche Bedeutung. Diese werden in D1 direkt verwendet und nicht gesondert definiert.
-- **Aufzählungen, die eine eigene Lebensdauer und Pflege haben** (z. B. die Event-Kategorien) — diese sind als eigene Entität in [D1.2](D1-datenmodell.md#d12-entität-categories) modelliert, nicht als Datentyp hier. Ein Datentyp beschreibt eine *Form von Werten*; die Kategorienliste ist dagegen *veränderlicher Dateninhalt* und gehört damit ins Datenmodell.
+- **Aufzählungen, die eine eigene Lebensdauer und Pflege haben** (z. B. die Event-Kategorien) — diese sind als eigene Entität in [D1.3](D1-datenmodell.md#d13-categories) modelliert, nicht als Datentyp hier. Ein Datentyp beschreibt eine *Form von Werten*; die Kategorienliste ist dagegen *veränderlicher Dateninhalt* und gehört damit ins Datenmodell.
 
 Was bleibt, sind zwei Wertebereiche, die tatsächlich eine fachliche Regel auf einem sonst trivialen Typ ausdrücken.
 
@@ -58,7 +58,7 @@ Die folgende Notation wird im ER-Diagramm und in den Attributtabellen von [D1](D
 
 | Baustein | Bezug zu D2 |
 |---|---|
-| [D1](D1-datenmodell.md) | `EVENTS.significance`, `EVENTS.image_path` referenzieren D2.2–D2.3. Die Event-Kategorien selbst sind als Entität `CATEGORIES` in D1.2 modelliert, nicht hier. D2.4 definiert die in D1 verwendete Notation. |
+| [D1](D1-datenmodell.md) | `EVENTS.significance`, `EVENTS.image_path` referenzieren D2.2–D2.3. Die Event-Kategorien selbst sind als Entität `CATEGORIES` in D1.3 modelliert, nicht hier. D2.4 definiert die in D1 verwendete Notation. |
 | [F3](F3-anwendungsfunktionen.md) | AF-02 mittelt `significance`. |
 | [B1](B1-dialogspezifikation.md) | Der Bedeutung-Slider und der Bildupload in `EventForm` ([DLG-04](B1-dialogspezifikation.md#dlg-04--eventform)) setzen D2.2 bzw. D2.3 um. |
 | [N2](N2-querschnittskonzepte.md) | N2.2 *Validierung* prüft Bild-Uploads gegen D2.3 und den Wertebereich von `significance` gegen D2.2. |
