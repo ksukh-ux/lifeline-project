@@ -1,14 +1,10 @@
-export type CategoryId =
-  | 'meilenstein'
-  | 'karriere'
-  | 'bildung'
-  | 'beziehung'
-  | 'reise'
-  | 'gesundheit'
-  | 'sonstiges'
-
+// Kategorie ist eine eigene Entität (siehe docs/spec/D1-datenmodell.md, D1.3;
+// N1 NFR-14c-01 "Erweiterbarkeit der Kategorien"): keine feste Werteliste
+// mehr im Code, sondern pro Person vom Backend geladen (GET /api/categories)
+// und über die Oberfläche erweiterbar (POST /api/categories), ganz ohne
+// Code-Änderung oder Neu-Deployment.
 export interface Category {
-  id: CategoryId
+  id: number
   label: string
   color: string // hex, used for dots/lines/badges
 }
@@ -20,19 +16,18 @@ export interface LifeEvent {
   date: string // ISO date, e.g. 2025-06-14
   time?: string // e.g. 14:30
   image?: string
-  category: CategoryId
+  category: number // Fremdschlüssel auf Category.id
   significance: number // 0-100
 }
 
-export const CATEGORIES: Category[] = [
-  { id: 'meilenstein', label: 'Meilenstein', color: '#38BDF8' },
-  { id: 'karriere', label: 'Karriere', color: '#FB923C' },
-  { id: 'bildung', label: 'Bildung', color: '#8B5CF6' },
-  { id: 'beziehung', label: 'Beziehung', color: '#EC4899' },
-  { id: 'reise', label: 'Reise', color: '#14B8A6' },
-  { id: 'gesundheit', label: 'Gesundheit', color: '#F43F5E' },
-  { id: 'sonstiges', label: 'Sonstiges', color: '#94A3B8' },
-]
+const FALLBACK_CATEGORY: Category = {
+  id: -1,
+  label: 'Unbekannt',
+  color: '#94A3B8',
+}
 
-export const getCategory = (id: CategoryId): Category =>
-  CATEGORIES.find((c) => c.id === id) ?? CATEGORIES[CATEGORIES.length - 1]
+// Sucht eine Kategorie in der (vom Backend geladenen) Liste der Kategorien
+// dieser Person. Fällt auf einen neutralen Platzhalter zurück, falls die ID
+// nicht (mehr) existiert, z. B. weil sie gerade erst geladen wird.
+export const getCategory = (categories: Category[], id: number): Category =>
+  categories.find((c) => c.id === id) ?? FALLBACK_CATEGORY

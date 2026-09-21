@@ -1,4 +1,4 @@
-import type { CategoryId, LifeEvent } from '../types'
+import type { Category, LifeEvent } from '../types'
 
 // Verbindung zu unserem Backend (siehe backend/, Branch feat/backend-db).
 // Adresse per .env konfigurierbar (VITE_API_URL), Standard ist der lokale
@@ -14,7 +14,7 @@ export interface AuthUser {
 interface ApiEventRow {
   id: number
   user_id: number
-  category: CategoryId
+  category_id: number
   title: string
   description: string | null
   date: string
@@ -75,6 +75,28 @@ export async function logout(): Promise<void> {
   await apiFetch('/api/auth/logout', { method: 'POST' })
 }
 
+// Kategorien sind eine eigene Entität (siehe D1.3, N1 NFR-14c-01
+// "Erweiterbarkeit der Kategorien") — werden pro Person vom Backend
+// geladen, keine feste Liste mehr im Frontend-Code.
+export async function fetchCategories(): Promise<Category[]> {
+  const response = await apiFetch('/api/categories')
+  if (!response.ok) {
+    throw new Error(await readErrorMessage(response, 'Konnte Kategorien nicht laden.'))
+  }
+  return response.json()
+}
+
+export async function createCategory(label: string, color: string): Promise<Category> {
+  const response = await apiFetch('/api/categories', {
+    method: 'POST',
+    body: JSON.stringify({ label, color }),
+  })
+  if (!response.ok) {
+    throw new Error(await readErrorMessage(response, 'Konnte Kategorie nicht anlegen.'))
+  }
+  return response.json()
+}
+
 function toImageUrl(imagePath: string | null): string | undefined {
   if (!imagePath) return undefined
   return `${API_BASE_URL}${imagePath}`
@@ -89,7 +111,7 @@ function fromApiRow(row: ApiEventRow): LifeEvent {
     date: row.date,
     time: row.time ?? undefined,
     image: toImageUrl(row.image_path),
-    category: row.category,
+    category: row.category_id,
     significance: row.significance ?? 50,
   }
 }
@@ -103,7 +125,7 @@ function toApiImageField(image: string | undefined): string | null | undefined {
 
 function toApiPayload(event: LifeEvent) {
   return {
-    category: event.category,
+    category_id: event.category,
     title: event.title,
     description: event.description,
     date: event.date,

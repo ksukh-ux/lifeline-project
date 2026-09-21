@@ -1,8 +1,9 @@
 import { Pencil, Trash2 } from 'lucide-react'
-import type { LifeEvent } from '../types'
+import type { Category, LifeEvent } from '../types'
 import { getCategory } from '../types'
 
 interface Props {
+  categories: Category[]
   event: LifeEvent
   onEdit: (event: LifeEvent) => void
   onDelete: (id: string) => void
@@ -14,8 +15,8 @@ const dateFormatter = new Intl.DateTimeFormat('de-DE', {
   year: 'numeric',
 })
 
-export default function EventCard({ event, onEdit, onDelete }: Props) {
-  const cat = getCategory(event.category)
+export default function EventCard({ categories, event, onEdit, onDelete }: Props) {
+  const cat = getCategory(categories, event.category)
 
   return (
     <div className="group relative rounded-lg border border-slate-800 bg-ink-900 p-4 transition">

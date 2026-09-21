@@ -3,15 +3,18 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applySchema, db } from "./db/index.js";
+import { runDataMigrations } from "./db/migrateCategories.js";
 import { corsMiddleware } from "./middleware/cors.js";
 import { sessionMiddleware } from "./middleware/session.js";
 import { authRouter } from "./routes/auth.js";
+import { categoriesRouter } from "./routes/categories.js";
 import { eventsRouter } from "./routes/events.js";
 import { statsRouter } from "./routes/stats.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 applySchema();
+runDataMigrations(db);
 
 const app = express();
 // Limit erhöht (Standard 100kb), da hochgeladene Bilder als Base64 im
@@ -30,6 +33,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/categories", categoriesRouter);
 app.use("/api/events", eventsRouter);
 app.use("/api/stats", statsRouter);
 

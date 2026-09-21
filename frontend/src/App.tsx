@@ -7,15 +7,17 @@ import EventCard from './components/EventCard'
 import EventFormModal from './components/EventFormModal'
 import AuthForms from './components/AuthForms'
 import {
+  createCategory,
   createEvent,
   deleteEvent as deleteEventOnServer,
+  fetchCategories,
   fetchEvents,
   getCurrentUser,
   logout as logoutOnServer,
   updateEvent as updateEventOnServer,
   type AuthUser,
 } from './api/client'
-import type { CategoryId, LifeEvent } from './types'
+import type { Category, LifeEvent } from './types'
 
 interface LifelineBackup {
   version: 1
@@ -23,30 +25,24 @@ interface LifelineBackup {
   events: LifeEvent[]
 }
 
-const isLifeEvent = (value: unknown): value is LifeEvent => {
+// validCategoryIds kommt aus dem gerade geladenen Kategorien-Stand dieser
+// Person (siehe D1.3) — Kategorien sind jetzt pro Person frei erweiterbar,
+// eine feste Werteliste im Frontend-Code gibt es nicht mehr.
+const isLifeEvent = (value: unknown, validCategoryIds: number[]): value is LifeEvent => {
   if (!value || typeof value !== 'object') {
     return false
   }
 
   const event = value as Partial<LifeEvent>
 
-  const categories: CategoryId[] = [
-    'meilenstein',
-    'karriere',
-    'bildung',
-    'beziehung',
-    'reise',
-    'gesundheit',
-    'sonstiges',
-  ]
-
-    return (
+  return (
     typeof event.id === 'string' &&
     typeof event.title === 'string' &&
     typeof event.description === 'string' &&
     typeof event.date === 'string' &&
     typeof event.significance === 'number' &&
-    categories.includes(event.category as CategoryId)
+    typeof event.category === 'number' &&
+    validCategoryIds.includes(event.category)
   )
 }
 
@@ -64,11 +60,20 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
 
+  // Kategorien sind eine eigene Entität (D1.3, N1 NFR-14c-01) und werden pro
+  // Person vom Backend geladen — genau wie die Events selbst.
+  const [categories, setCategories] = useState<Category[]>([])
+
   const loadEvents = async () => {
     setIsLoading(true)
     setLoadError(null)
     try {
-      setEvents(await fetchEvents())
+      const [loadedCategories, loadedEvents] = await Promise.all([
+        fetchCategories(),
+        fetchEvents(),
+      ])
+      setCategories(loadedCategories)
+      setEvents(loadedEvents)
     } catch (error) {
       setLoadError(
         error instanceof Error
@@ -110,9 +115,19 @@ export default function App() {
     await logoutOnServer()
     setUser(null)
     setEvents([])
+    setCategories([])
   }
 
-  const [filter, setFilter] = useState<CategoryId | 'alle'>('alle')
+  // Neue Kategorie anlegen (UC, siehe N1 NFR-14c-01 "Erweiterbarkeit der
+  // Kategorien"): läuft komplett über die Oberfläche, ohne Code-Änderung
+  // oder Neu-Deployment. Wirft bei Fehlern (z. B. Name schon vergeben)
+  // weiter, damit CategoryFilter das dem UI anzeigen kann.
+  const handleCreateCategory = async (label: string, color: string) => {
+    const created = await createCategory(label, color)
+    setCategories((previous) => [...previous, created])
+  }
+
+  const [filter, setFilter] = useState<number | 'alle'>('alle')
   const [modalEvent, setModalEvent] = useState<
     LifeEvent | null | undefined
   >(undefined)
@@ -244,9 +259,10 @@ export default function App() {
         ? parsed
         : (parsed as Partial<LifelineBackup>)?.events
 
+      const validCategoryIds = categories.map((c) => c.id)
       if (
         !Array.isArray(importedEvents) ||
-        !importedEvents.every(isLifeEvent)
+        !importedEvents.every((event) => isLifeEvent(event, validCategoryIds))
       ) {
         throw new Error('Ungültiges Sicherungsformat')
       }
@@ -295,7 +311,7 @@ export default function App() {
 
       <main className="mx-auto max-w-6xl px-6 py-8 sm:px-10">
       <div ref={timelineRef} className="w-full">
-      <Timeline events={filtered} onSelect={setModalEvent} />
+      <Timeline categories={categories} events={filtered} onSelect={setModalEvent} />
       </div>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -304,8 +320,10 @@ export default function App() {
           </h2>
 
           <CategoryFilter
+            categories={categories}
             active={filter}
             onChange={setFilter}
+            onCreateCategory={handleCreateCategory}
           />
         </div>
 
@@ -320,6 +338,7 @@ export default function App() {
               .map((event) => (
                 <EventCard
                   key={event.id}
+                  categories={categories}
                   event={event}
                   onEdit={setModalEvent}
                   onDelete={handleDelete}
@@ -339,6 +358,7 @@ export default function App() {
 
     { modalEvent !== undefined && (
       <EventFormModal
+        categories={categories}
         initial={modalEvent}
         onSave={handleSave}
         onClose={() => setModalEvent(undefined)}

@@ -1,20 +1,21 @@
 import { useState, type FormEvent } from 'react'
 import { X } from 'lucide-react'
-import { CATEGORIES, type CategoryId, type LifeEvent } from '../types'
+import type { Category, LifeEvent } from '../types'
 
 interface Props {
+  categories: Category[]
   initial?: LifeEvent | null
   onSave: (event: LifeEvent) => void
   onClose: () => void
 }
 
-export default function EventFormModal({ initial, onSave, onClose }: Props) {
+export default function EventFormModal({ categories, initial, onSave, onClose }: Props) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   const [date, setDate] = useState(initial?.date ?? new Date().toISOString().slice(0, 10))
   const [time, setTime] = useState(initial?.time ?? new Date().toTimeString().slice(0, 5))
   const [image, setImage] = useState(initial?.image ?? '')
-  const [category, setCategory] = useState<CategoryId>(initial?.category ?? 'meilenstein')
+  const [category, setCategory] = useState<number>(initial?.category ?? categories[0]?.id ?? -1)
   const [significance, setSignificance] = useState(initial?.significance ?? 50)
 
   // Das Einlesen eines Bildes (FileReader) läuft asynchron ab. Ohne diese
@@ -129,10 +130,10 @@ export default function EventFormModal({ initial, onSave, onClose }: Props) {
               <label className="mb-1 block text-xs font-medium text-slate-400">Kategorie</label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value as CategoryId)}
+                onChange={(e) => setCategory(Number(e.target.value))}
                 className="w-full rounded-md border border-white/10 bg-ink-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-brass-500"
               >
-                {CATEGORIES.map((c) => (
+                {categories.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.label}
                   </option>

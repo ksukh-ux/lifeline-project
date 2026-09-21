@@ -9,7 +9,7 @@ export const eventsRouter = Router();
 interface EventRow {
   id: number;
   user_id: number;
-  category: string;
+  category_id: number;
   title: string;
   description: string | null;
   date: string;
@@ -20,6 +20,18 @@ interface EventRow {
 }
 
 const IMAGE_ERROR = "Ungültiges Bildformat (erlaubt: JPEG, PNG, WEBP, max. 5 MB).";
+const CATEGORY_ERROR = "Ungültige Kategorie.";
+
+// category_id ist ein Fremdschlüssel auf die eigene Entität `categories`
+// (siehe D1.3, N1 NFR-14c-01) — hier wird geprüft, dass die angegebene ID
+// wirklich einer Kategorie der angemeldeten Person entspricht, statt (wie
+// vorher) gegen eine feste Werteliste zu validieren.
+function categoryBelongsToUser(categoryId: number, userId: number): boolean {
+  const row = db
+    .prepare("SELECT id FROM categories WHERE id = ? AND user_id = ?")
+    .get(categoryId, userId);
+  return Boolean(row);
+}
 
 // Alle Event-Routen setzen eine angemeldete Person voraus; jede Abfrage ist
 // zusätzlich auf req.userId eingeschränkt, sodass niemand fremde Einträge
@@ -57,6 +69,10 @@ eventsRouter.post("/", (req, res) => {
     res.status(422).json({ error: validationError });
     return;
   }
+  if (!categoryBelongsToUser(body.category_id, req.userId!)) {
+    res.status(422).json({ error: CATEGORY_ERROR });
+    return;
+  }
 
   let imagePath: string | null = null;
   if (body.image !== undefined && body.image !== null) {
@@ -74,12 +90,12 @@ eventsRouter.post("/", (req, res) => {
 
   const result = db
     .prepare(
-      `INSERT INTO events (user_id, category, title, description, date, time, significance, image_path)
+      `INSERT INTO events (user_id, category_id, title, description, date, time, significance, image_path)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       req.userId,
-      body.category,
+      body.category_id,
       body.title,
       body.description ?? null,
       body.date,
@@ -112,6 +128,10 @@ eventsRouter.put("/:id", (req, res) => {
     res.status(422).json({ error: validationError });
     return;
   }
+  if (!categoryBelongsToUser(body.category_id, req.userId!)) {
+    res.status(422).json({ error: CATEGORY_ERROR });
+    return;
+  }
 
   let imagePath = existing.image_path;
   if (body.image !== undefined) {
@@ -133,10 +153,10 @@ eventsRouter.put("/:id", (req, res) => {
   }
 
   db.prepare(
-    `UPDATE events SET category = ?, title = ?, description = ?, date = ?, time = ?, significance = ?, image_path = ?
+    `UPDATE events SET category_id = ?, title = ?, description = ?, date = ?, time = ?, significance = ?, image_path = ?
      WHERE id = ? AND user_id = ?`
   ).run(
-    body.category,
+    body.category_id,
     body.title,
     body.description ?? null,
     body.date,

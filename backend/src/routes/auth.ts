@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { db } from "../db/index.js";
+import { DEFAULT_CATEGORIES } from "../constants/categories.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { createSession, destroySession } from "../middleware/session.js";
 import { hashPassword, verifyPassword } from "../utils/password.js";
@@ -33,7 +34,20 @@ authRouter.post("/register", (req, res) => {
     .prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)")
     .run(email, passwordHash);
 
-  createSession(Number(result.lastInsertRowid), res);
+  const userId = Number(result.lastInsertRowid);
+
+  // Startkategorien anlegen (siehe N1, NFR-14c-01 "Erweiterbarkeit der
+  // Kategorien"): jede Person bekommt eine eigene, veränderliche Liste statt
+  // einer fest im Code hinterlegten — kann danach über POST /api/categories
+  // beliebig eigene Kategorien ergänzen.
+  const insertCategory = db.prepare(
+    "INSERT INTO categories (user_id, label, color) VALUES (?, ?, ?)"
+  );
+  for (const category of DEFAULT_CATEGORIES) {
+    insertCategory.run(userId, category.label, category.color);
+  }
+
+  createSession(userId, res);
   res.status(201).json({ id: result.lastInsertRowid, email });
 });
 

@@ -1,13 +1,14 @@
 import { useMemo, useRef, useState } from 'react'
-import type { LifeEvent } from '../types'
+import type { Category, LifeEvent } from '../types'
 import { getCategory } from '../types'
 
 interface Props {
+  categories: Category[]
   events: LifeEvent[]
   onSelect: (event: LifeEvent) => void
 }
 
-export default function Timeline({ events, onSelect }: Props) {
+export default function Timeline({ categories, events, onSelect }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [zoom, setZoom] = useState(1)
@@ -106,7 +107,7 @@ export default function Timeline({ events, onSelect }: Props) {
 
           {/* Ereignisse */}
           {sorted.map((event, index) => {
-            const category = getCategory(event.category)
+            const category = getCategory(categories, event.category)
             const pointsUp = index % 2 === 0
             const left = `${posFor(event.date)}%`
 
