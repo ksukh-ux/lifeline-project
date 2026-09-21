@@ -86,7 +86,7 @@ Die Spezifikation richtet sich insbesondere an:
 | Baustein | Bezeichnung                       | Status | Datei                                          |
 | -------- | ----------------------------------- | -----: | ------------------------------------------------- |
 | S1       | Schnittstellen zu Nachbarsystemen |     🛠 | [`S1-nachbarsysteme.md`](S1-nachbarsysteme.md) |
-| S3       | Inbetriebnahme und Bereitstellung |     🛠 | [`S3-inbetriebnahme.md`](S3-inbetriebnahme.md) |
+| S3       | Inbetriebnahme und Bereitstellung |     🛠 | [`S3-inbetriebnahme.md`](../betrieb/S3-inbetriebnahme.md) |
 
 ### 6. Übergreifende Aspekte
 
