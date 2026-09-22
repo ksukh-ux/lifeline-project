@@ -20,16 +20,20 @@ import {
 } from './api/client'
 import type { Category, Holiday, LifeEvent } from './types'
 
+interface BackupCategory {
+  id: number
+  label: string
+  color: string
+}
+
 interface LifelineBackup {
-  version: 1
+  version: 2
   exportedAt: string
+  categories: BackupCategory[]
   events: LifeEvent[]
 }
 
-const isLifeEvent = (
-  value: unknown,
-  validCategoryIds: number[],
-): value is LifeEvent => {
+const isLifeEvent = (value: unknown): value is LifeEvent => {
   if (!value || typeof value !== 'object') {
     return false
   }
@@ -42,10 +46,26 @@ const isLifeEvent = (
     typeof event.description === 'string' &&
     typeof event.date === 'string' &&
     typeof event.significance === 'number' &&
-    typeof event.category === 'number' &&
-    validCategoryIds.includes(event.category)
+    typeof event.category === 'number'
   )
 }
+
+const isBackupCategory = (value: unknown): value is BackupCategory => {
+  if (!value || typeof value !== 'object') {
+    return false
+  }
+
+  const category = value as Partial<BackupCategory>
+
+  return (
+    typeof category.id === 'number' &&
+    typeof category.label === 'string' &&
+    typeof category.color === 'string'
+  )
+}
+
+const normalizeCategoryLabel = (label: string) =>
+  label.trim().toLocaleLowerCase('de-DE')
 
 export default function App() {
   const [user, setUser] = useState<AuthUser | null | undefined>(undefined)
@@ -55,6 +75,9 @@ export default function App() {
   const [categories, setCategories] = useState<Category[]>([])
   const [holidays, setHolidays] = useState<Holiday[]>([])
   const [filter, setFilter] = useState<number | 'alle'>('alle')
+  const [selectedYear, setSelectedYear] = useState(
+    new Date().getFullYear(),
+  )
 
   const [modalEvent, setModalEvent] = useState<
     LifeEvent | null | undefined
@@ -65,31 +88,20 @@ export default function App() {
   useEffect(() => {
     let cancelled = false
 
-    const currentYear = new Date().getFullYear()
-
-    // Das aktuelle Jahr wird immer geladen. Ereignisse können weitere
-    // benötigte Feiertagsjahre ergänzen.
-    const years = [
-      ...new Set([
-        currentYear,
-        ...events.map((event) => new Date(event.date).getFullYear()),
-      ]),
-    ]
-
-    Promise.all(years.map((year) => fetchHolidays(year))).then(
-      (results) => {
+    fetchHolidays(selectedYear).then(
+      (result) => {
         if (cancelled) {
           return
         }
 
-        setHolidays(results.flat())
+        setHolidays(result)
       },
     )
 
     return () => {
       cancelled = true
     }
-  }, [events])
+  }, [selectedYear])
 
   const loadEvents = async () => {
     setIsLoading(true)
@@ -251,8 +263,13 @@ export default function App() {
 
   const handleDataExport = () => {
     const backup: LifelineBackup = {
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
+      categories: categories.map(({ id, label, color }) => ({
+        id,
+        label,
+        color,
+      })),
       events,
     }
 
@@ -277,19 +294,22 @@ export default function App() {
     try {
       const parsed: unknown = JSON.parse(await file.text())
 
+      const parsedBackup =
+        !Array.isArray(parsed) && parsed && typeof parsed === 'object'
+          ? (parsed as Partial<LifelineBackup>)
+          : null
+
       const importedEvents = Array.isArray(parsed)
         ? parsed
-        : (parsed as Partial<LifelineBackup>)?.events
-
-      const validCategoryIds = categories.map((category) => category.id)
+        : parsedBackup?.events
 
       if (
         !Array.isArray(importedEvents) ||
-        !importedEvents.every((event) =>
-          isLifeEvent(event, validCategoryIds),
-        )
+        !importedEvents.every(isLifeEvent)
       ) {
-        throw new Error('Ungültiges Sicherungsformat')
+        throw new Error(
+          'Die Datei enthält keine gültigen Lifeline-Ereignisse.',
+        )
       }
 
       if (importedEvents.length === 0) {
@@ -307,15 +327,88 @@ export default function App() {
         return
       }
 
+      let eventsForImport: LifeEvent[] = importedEvents
+
+      // Version 2 enthält Kategorien mit Namen und Farbe. Die alten IDs
+      // werden auf die Kategorien des aktuell angemeldeten Benutzers abgebildet.
+      if (parsedBackup?.version === 2) {
+        const importedCategories = parsedBackup.categories
+
+        if (
+          !Array.isArray(importedCategories) ||
+          !importedCategories.every(isBackupCategory)
+        ) {
+          throw new Error(
+            'Die Sicherung enthält keine gültigen Kategorien.',
+          )
+        }
+
+        const localCategories = [...categories]
+        const categoryIdMap = new Map<number, number>()
+
+        for (const importedCategory of importedCategories) {
+          const normalizedLabel = normalizeCategoryLabel(
+            importedCategory.label,
+          )
+
+          let localCategory = localCategories.find(
+            (category) =>
+              normalizeCategoryLabel(category.label) === normalizedLabel,
+          )
+
+          if (!localCategory) {
+            localCategory = await createCategory(
+              importedCategory.label,
+              importedCategory.color,
+            )
+            localCategories.push(localCategory)
+          }
+
+          categoryIdMap.set(importedCategory.id, localCategory.id)
+        }
+
+        eventsForImport = importedEvents.map((event) => {
+          const localCategoryId = categoryIdMap.get(event.category)
+
+          if (localCategoryId === undefined) {
+            throw new Error(
+              `Für das Ereignis „${event.title}“ fehlt die Kategorie in der Sicherung.`,
+            )
+          }
+
+          return {
+            ...event,
+            category: localCategoryId,
+          }
+        })
+
+        setCategories(localCategories)
+      } else {
+        // Alte Version-1-Dateien enthalten nur Datenbank-IDs. Sie können
+        // weiterhin importiert werden, wenn diese IDs beim Benutzer existieren.
+        const validCategoryIds = new Set(
+          categories.map((category) => category.id),
+        )
+        const hasUnknownCategory = importedEvents.some(
+          (event) => !validCategoryIds.has(event.category),
+        )
+
+        if (hasUnknownCategory) {
+          throw new Error(
+            'Diese ältere Sicherung enthält Kategorie-IDs eines anderen Benutzerkontos. Bitte verwende eine Sicherung im neuen Format.',
+          )
+        }
+      }
+
       const results = await Promise.allSettled(
-        importedEvents.map((event) => createEvent(event)),
+        eventsForImport.map((event) => createEvent(event)),
       )
 
       const failedImports = results.filter(
         (result) => result.status === 'rejected',
       ).length
 
-      const successfulImports = importedEvents.length - failedImports
+      const successfulImports = eventsForImport.length - failedImports
 
       // Den tatsächlichen Datenbankstand neu laden.
       const updatedEvents = await fetchEvents()
@@ -338,9 +431,11 @@ export default function App() {
           } nicht importiert werden.`,
         )
       }
-    } catch {
+    } catch (error) {
       alert(
-        'Die Datei konnte nicht importiert werden. Bitte wähle eine gültige Lifeline-Sicherung aus.',
+        error instanceof Error
+          ? error.message
+          : 'Die Datei konnte nicht importiert werden. Bitte wähle eine gültige Lifeline-Sicherung aus.',
       )
     }
   }
@@ -376,6 +471,8 @@ export default function App() {
             categories={categories}
             events={filtered}
             holidays={holidays}
+            selectedYear={selectedYear}
+            onSelectedYearChange={setSelectedYear}
             onSelect={setModalEvent}
           />
         </div>
