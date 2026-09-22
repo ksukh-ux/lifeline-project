@@ -68,7 +68,7 @@ Die Entität `CATEGORIES` löst die frühere feste, im Code hinterlegte Kategori
 | `color` | string | Hex-Farbcode für die Darstellung in Timeline und Filterleiste, z. B. `#38BDF8` |
 | `created_at` | datetime | Zeitpunkt der Erstellung |
 
-Jede neu registrierte Person erhält bei der Registrierung automatisch sieben vorbelegte Startkategorien (Meilenstein, Karriere, Bildung, Beziehung, Reise, Gesundheit, Sonstiges) — das ist nur eine bequeme Vorbelegung, keine feste Liste: Sie lässt sich über `POST /api/categories` beliebig um eigene Kategorien erweitern.
+Jede neu registrierte Person erhält bei der Registrierung automatisch sechs vorbelegte Startkategorien (Meilenstein, Karriere, Bildung, Beziehung, Reise, Gesundheit) — das ist nur eine bequeme Vorbelegung, keine feste Liste: Sie lässt sich über `POST /api/categories` (siehe [UC-08](F2-anwendungsfaelle.md#uc-08--kategorie-anlegen)) beliebig um eigene Kategorien erweitern.
 
 ## D1.4 EVENTS
 

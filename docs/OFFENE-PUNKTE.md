@@ -67,6 +67,21 @@ Laufzeit anlegen können — das ist die Bedingung dafür, dass `NFR-14c-01`
 bereits spezifiziert, ein passender Anwendungsfall in [F2](spec/F2-anwendungsfaelle.md)
 fehlt aber noch.
 
-**Status:** Fachlich und technisch bereits umgesetzt (`POST /api/categories`,
-DLG-06-Oberfläche); die formale Ergänzung eines Anwendungsfalls in F2 zur lückenlosen
-Nachvollziehbarkeit steht noch aus.
+**Status:** Gelöst. [UC-08](spec/F2-anwendungsfaelle.md#uc-08--kategorie-anlegen)
+deckt `POST /api/categories` und die DLG-06-Oberfläche jetzt formal ab (siehe auch OP-06
+zur Abgrenzung des Funktionsumfangs von DLG-06).
+
+## OP-06 – DLG-06 spezifizierte mehr, als das Backend an Kategorien-Endpunkten anbot
+
+**Bezug:** [B1](spec/B1-dialogspezifikation.md), DLG-06; [D1.3](spec/D1-datenmodell.md#d13-categories).
+
+DLG-06 beschrieb neben dem Anlegen auch das Umbenennen, Umfärben und Löschen eigener
+Kategorien sowie einen Schutz der Standardkategorien vor Bearbeitung
+(`INV-C1`–`INV-C3`), obwohl im Backend bisher ausschließlich `GET` und `POST
+/api/categories` ([UC-08](spec/F2-anwendungsfaelle.md#uc-08--kategorie-anlegen))
+umgesetzt sind — es gibt weder `PUT`/`DELETE`-Endpunkte noch eine Spalte, die eine
+Standard- von einer eigenen Kategorie unterscheidet.
+
+**Status:** Gelöst. DLG-06 wurde auf den tatsächlichen Funktionsumfang gekürzt
+(nur noch Anlegen); Umbenennen, Umfärben und Löschen sind bewusst nicht spezifiziert,
+solange es dafür keine Backend-Endpunkte gibt.

@@ -164,7 +164,7 @@ statt einen anzulegen.
 | Datum | ● | gültiges Datum; bestimmt die Position in der Timeline |
 | Uhrzeit | | gültige Uhrzeit; nur relevant zur Feinsortierung innerhalb eines Tages |
 | Beschreibung | | Freitext |
-| Kategorie | ● | Auswahl aus den für diese Nutzer:in sichtbaren Kategorien: die vorbelegten Standardkategorien und ihre eigenen (`INV-C4`). Vorbelegt mit `sonstiges`. |
+| Kategorie | ● | Auswahl aus den für diese Nutzer:in sichtbaren Kategorien: die vorbelegten Standardkategorien und ihre eigenen (`INV-C4`). Vorbelegt mit der ersten Kategorie der Person (nach Anlagereihenfolge). |
 | Bedeutung | ● | Regler 0–100 ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)), vorbelegt mit einem mittleren Wert |
 | Ort | | Freitext |
 | Schlagwörter | | mehrere Werte |
@@ -312,20 +312,19 @@ Registrierung fordert zusätzlich eine Bestätigung des Passworts.
 | Merkmal | Inhalt |
 |---|---|
 | **Kennung** | DLG-06 |
-| **Zweck** | Eigene Kategorien anlegen, umbenennen, einfärben und löschen. |
-| **Realisiert** | noch kein Anwendungsfall in F2 — siehe `docs/OFFENE-PUNKTE.md`, OP-05 |
+| **Zweck** | Eigene Kategorien anlegen. |
+| **Realisiert** | [UC-08](F2-anwendungsfaelle.md#uc-08--kategorie-anlegen) |
 | **Erreichbarkeit** | Aus DLG-01 sowie aus DLG-02 heraus, wenn beim Erfassen eine passende Kategorie fehlt |
 | **Vorbedingung** | Bestehende Session |
 
-Dieser Dialog ist die Oberfläche zu [NFR-14c-01](N1-nichtfunktional.md): ohne ihn bleibt
+Dieser Dialog ist die Oberfläche zu [NFR-14c-01](N1-nichtfunktional.md): ohne ihn bliebe
 die Erweiterbarkeit der Kategorien eine Behauptung, weil eine neue Kategorie weiterhin
 eine Code-Änderung erforderte.
 
 **Statik**
 
 Liste der für die Nutzer:in sichtbaren Kategorien, jeweils mit Anzeigename, Farbe und
-Anzahl zugeordneter Events. Standardkategorien sind als solche erkennbar und nicht
-bearbeitbar (`INV-C2`); eigene Kategorien sind es.
+Anzahl zugeordneter Events.
 
 **Eingaben je Kategorie**
 
@@ -339,17 +338,15 @@ bearbeitbar (`INV-C2`); eigene Kategorien sind es.
 | Aktion | Wirkung |
 |---|---|
 | Kategorie anlegen | Neue eigene Kategorie; sofort in DLG-02 und DLG-03 verfügbar. |
-| Kategorie umbenennen oder umfärben | Wirkt sofort auf alle zugeordneten Events; die Zuordnung selbst bleibt unberührt. |
-| Kategorie löschen | Nur möglich, wenn ihr kein Event zugeordnet ist (`INV-C3`). Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen). |
 | Zurück | Rückkehr zum aufrufenden Dialog. Wurde DLG-06 aus DLG-02 geöffnet, bleiben die dortigen Eingaben erhalten. |
 
 **Fehler- und Sonderzustände**
 
-- Löschversuch bei zugeordneten Events: Abweisung mit der Anzahl betroffener Events und
-  dem Hinweis, diese zuerst umzuordnen. Kein stilles Mitlöschen von Events.
 - Name bereits vergeben: Meldung am Feld (`INV-C1`).
-- Versuch, eine Standardkategorie zu ändern: die Aktion wird gar nicht erst angeboten
-  (`INV-C2`).
+
+Umbenennen, Umfärben und Löschen eigener Kategorien sowie ein Schutz der
+Standardkategorien vor Bearbeitung sind bewusst nicht Teil dieses Dialogs — siehe
+`docs/OFFENE-PUNKTE.md`, OP-06.
 
 ---
 

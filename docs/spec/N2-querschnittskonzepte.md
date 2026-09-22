@@ -12,8 +12,7 @@ Für Events gelten insbesondere folgende Validierungsregeln:
 
 - Pflichtfelder müssen vorhanden sein.
 - Datumsangaben müssen gültig sein.
-- `end_date` darf nicht vor `start_date` liegen.
-- Für `category` sind nur die in D2.4 definierten Werte (`meilenstein`, `karriere`, `bildung`, `beziehung`, `reise`, `gesundheit`, `sonstiges`) zulässig.
+- `category_id` muss auf eine existierende Kategorie derselben Person verweisen; eine feste Werteliste gibt es nicht mehr, seit Kategorie eine eigene, von der Person verwaltete Entität ist (siehe D1.3, UC-08).
 
 ## N2.3 Authentifizierung und Session
 

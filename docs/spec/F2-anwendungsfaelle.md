@@ -19,12 +19,13 @@ Jeder Anwendungsfall wird mit derselben tabellarischen Vorlage beschrieben. Die 
 | UC-02 | Event bearbeiten | Nutzer:in | Event-Verwaltung |
 | UC-03 | Event löschen | Nutzer:in | Event-Verwaltung |
 | UC-04 | Timeline ansehen | Nutzer:in | Event-Verwaltung |
+| UC-08 | Kategorie anlegen | Nutzer:in | Event-Verwaltung |
 | UC-05 | Timeline filtern | Nutzer:in | Auswertung |
 | UC-06 | Statistik berechnen | Nutzer:in | Auswertung |
 
 ![F2 Anwendungsfalldiagramm – Lifeline](./diagrams-png/diagrams-png/f2-use-cases.png)
 
-Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne bestehende Session erreichbar), *Event-Verwaltung* (UC-01 bis UC-04, das CRUD auf eigenen Events) und *Auswertung* (UC-05, UC-06, arbeiten auf den bereits geladenen bzw. gespeicherten Events). Die `<<precedes>>`-Beziehungen von UC-01 bis UC-03 zu UC-04 markieren, dass jede Änderung an einem Event zu einer aktualisierten Timeline-Darstellung führt; die `<<extend>>`-Beziehung von UC-04 zu UC-05 zeigt, dass Filterung eine optionale Erweiterung der Timeline-Ansicht ist. Die Randnotiz fasst zusammen, dass alle Anwendungsfälle außer UC-07 eine bestehende Session voraussetzen ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)), statt dies als sechs wiederholte Kanten darzustellen.
+Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne bestehende Session erreichbar), *Event-Verwaltung* (UC-01 bis UC-04 sowie UC-08, das CRUD auf eigenen Events und ihren Kategorien — UC-08 ist im Diagrammbild unten noch nicht nachgezogen) und *Auswertung* (UC-05, UC-06, arbeiten auf den bereits geladenen bzw. gespeicherten Events). Die `<<precedes>>`-Beziehungen von UC-01 bis UC-03 zu UC-04 markieren, dass jede Änderung an einem Event zu einer aktualisierten Timeline-Darstellung führt; die `<<extend>>`-Beziehung von UC-04 zu UC-05 zeigt, dass Filterung eine optionale Erweiterung der Timeline-Ansicht ist. Die Randnotiz fasst zusammen, dass alle Anwendungsfälle außer UC-07 eine bestehende Session voraussetzen ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)), statt dies als sechs wiederholte Kanten darzustellen.
 
 ---
 
@@ -198,6 +199,34 @@ Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne
 
 ---
 
+### UC-08 – Kategorie anlegen
+
+| Merkmal | Beschreibung |
+|---|---|
+| **Identifier** | UC-08 |
+| **Name** | Kategorie anlegen |
+| **Akteur** | Nutzer:in |
+| **Beschreibung** | Die Nutzer:in legt eine neue, eigene Kategorie an, um Events flexibler einordnen zu können. |
+| **Trigger** | Die Nutzer:in möchte eine zusätzliche Kategorie zur Verfügung haben. |
+| **Vorbedingung** | Authentifizierte Session (UC-07). |
+| **Nachbedingung** | Die neue Kategorie ist gespeichert und steht bei UC-01 und UC-02 zur Auswahl. |
+
+#### Hauptablauf
+
+1. Die Nutzer:in öffnet die Kategorienverwaltung ([DLG-06](B1-dialogspezifikation.md#dlg-06--kategorieverwaltung)).
+2. Die Nutzer:in gibt einen Anzeigenamen ein und wählt eine Farbe.
+3. Die Nutzer:in speichert die neue Kategorie.
+4. Das Frontend übermittelt die Daten über den `ApiClient` an das Backend.
+5. Das Backend prüft die Eingaben und legt die Kategorie über `routes/categories` an.
+6. Die neue Kategorie steht ab sofort zur Auswahl (UC-01, UC-02).
+
+#### Ausnahmefälle
+
+- Ist der Anzeigename leer oder länger als 40 Zeichen, oder die Farbe kein gültiger Hex-Code, wird die Kategorie nicht gespeichert; die Nutzer:in erhält eine Fehlermeldung.
+- Existiert bei dieser Person bereits eine Kategorie mit demselben Namen, wird die neue Kategorie nicht angelegt.
+
+---
+
 ## F2.4 Auswertung
 
 ### UC-05 – Timeline filtern
@@ -267,7 +296,7 @@ Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne
 |---|---|
 | [F1](F1-geschaeftsprozesse.md) | F1.1 bis F1.4 werden durch UC-07, UC-01–UC-04 bzw. UC-05, UC-06 realisiert. |
 | [F3](F3-anwendungsfunktionen.md) | AF-01, AF-02 werden von UC-06 genutzt; AF-03 von UC-05. |
-| [D1](D1-datenmodell.md) | `USERS` und `EVENTS` werden von allen UCs gelesen bzw. geschrieben; UC-03 ist der einzige, der löscht. |
+| [D1](D1-datenmodell.md) | `USERS`, `EVENTS` und (seit UC-08) `CATEGORIES` werden von den UCs gelesen bzw. geschrieben; UC-03 ist der einzige, der Events löscht. |
 | [B1](B1-dialogspezifikation.md) | Bildschirmgestaltung und Dialogablauf je UC. |
 | [N1](N1-nichtfunktional.md) | NFA-01 (Benutzbarkeit UC-01), NFA-02 (Validierung UC-01/UC-02), NFA-05 (Performance UC-04). |
 | [N2](N2-querschnittskonzepte.md) | N2.3 *Authentifizierung und Session* setzt jeden UC außer UC-07 voraus. |

@@ -8,14 +8,13 @@ Das Glossar definiert die zentralen fachlichen Begriffe der Lifeline-Anwendung u
 |---|---|
 | Event | Ein persönliches Ereignis oder ein Meilenstein, der von einer Nutzerin bzw. einem Nutzer in Lifeline angelegt und auf der Timeline dargestellt wird. |
 | Timeline | Chronologische Darstellung der Events einer Nutzerin bzw. eines Nutzers. |
-| Kategorie | Fachliche Einordnung eines Events, zugleich Grundlage für die farbliche Darstellung in der Timeline. Vorgesehene Kategorien sind `meilenstein`, `karriere`, `bildung`, `beziehung`, `reise`, `gesundheit` und `sonstiges` (siehe D2.4). |
+| Kategorie | Fachliche Einordnung eines Events, zugleich Grundlage für die farbliche Darstellung in der Timeline. Kategorie ist eine eigene, pro Person verwaltete Entität mit sechs vorbelegten Startkategorien; eigene Kategorien lassen sich jederzeit ergänzen (siehe D1.3, UC-08). |
 | Meilenstein | Kategorie für besonders bedeutsame persönliche Ereignisse. |
 | Karriere | Kategorie für berufliche Events. |
 | Bildung | Kategorie für Events im Zusammenhang mit Ausbildung, Studium oder Weiterbildung. |
 | Beziehung | Kategorie für Events im Zusammenhang mit persönlichen Beziehungen. |
 | Reise | Kategorie für Events, die sich auf Reisen beziehen. |
 | Gesundheit | Kategorie für Events im Zusammenhang mit Gesundheit und Wohlbefinden. |
-| Sonstiges | Kategorie für Events, die keiner anderen Kategorie zugeordnet werden können. |
 | Bedeutung (significance) | Numerischer Wert (0–100), der die Wichtigkeit eines Events für die visuelle Gewichtung in der Timeline angibt. |
 | Nutzer:in | Person, die Lifeline verwendet und eigene Events verwalten kann. |
 | Tag | Schlagwort zur zusätzlichen Beschreibung oder Einordnung eines Events. |
