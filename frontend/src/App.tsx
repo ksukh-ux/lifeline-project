@@ -26,10 +26,10 @@ interface LifelineBackup {
   events: LifeEvent[]
 }
 
-// validCategoryIds kommt aus dem gerade geladenen Kategorien-Stand dieser
-// Person (siehe D1.3) — Kategorien sind jetzt pro Person frei erweiterbar,
-// eine feste Werteliste im Frontend-Code gibt es nicht mehr.
-const isLifeEvent = (value: unknown, validCategoryIds: number[]): value is LifeEvent => {
+const isLifeEvent = (
+  value: unknown,
+  validCategoryIds: number[],
+): value is LifeEvent => {
   if (!value || typeof value !== 'object') {
     return false
   }
@@ -48,29 +48,19 @@ const isLifeEvent = (value: unknown, validCategoryIds: number[]): value is LifeE
 }
 
 export default function App() {
-  // Anmeldezustand (UC-07). `undefined` = wird gerade geprüft (z. B. nach
-  // Seiten-Reload, ob noch eine Session besteht), `null` = nicht angemeldet
-  // (zeigt AuthForms), sonst die angemeldete Person.
   const [user, setUser] = useState<AuthUser | null | undefined>(undefined)
-
-  // Einträge kommen vom Backend (SQLite), nicht mehr aus dem localStorage
-  // des Browsers. Werden erst geladen, sobald eine Session besteht; jede
-  // Änderung (Speichern/Löschen) geht sofort ans Backend, die Anzeige wird
-  // danach mit der Antwort des Servers aktualisiert.
   const [events, setEvents] = useState<LifeEvent[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
-
-  // Kategorien sind eine eigene Entität (D1.3, N1 NFR-14c-01) und werden pro
-  // Person vom Backend geladen — genau wie die Events selbst.
   const [categories, setCategories] = useState<Category[]>([])
-
-  // S1.3 NB-02 — Feiertagsdienst: rein dekorative Anreicherung der Timeline,
-  // siehe S1.3.2 "Bindende Regel". Wird bewusst NICHT über loadEvents()
-  // geladen und beeinflusst weder isLoading noch loadError — die Timeline
-  // erscheint, sobald die eigenen Events da sind; Feiertage erscheinen
-  // nachträglich, sobald die Antwort da ist, oder gar nicht.
   const [holidays, setHolidays] = useState<Holiday[]>([])
+  const [filter, setFilter] = useState<number | 'alle'>('alle')
+
+  const [modalEvent, setModalEvent] = useState<
+    LifeEvent | null | undefined
+  >(undefined)
+
+  const timelineRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (events.length === 0) {
@@ -79,12 +69,22 @@ export default function App() {
     }
 
     let cancelled = false
-    const years = [...new Set(events.map((event) => new Date(event.date).getFullYear()))]
 
-    Promise.all(years.map((year) => fetchHolidays(year))).then((results) => {
-      if (cancelled) return
-      setHolidays(results.flat())
-    })
+    const years = [
+      ...new Set(
+        events.map((event) => new Date(event.date).getFullYear()),
+      ),
+    ]
+
+    Promise.all(years.map((year) => fetchHolidays(year))).then(
+      (results) => {
+        if (cancelled) {
+          return
+        }
+
+        setHolidays(results.flat())
+      },
+    )
 
     return () => {
       cancelled = true
@@ -94,11 +94,13 @@ export default function App() {
   const loadEvents = async () => {
     setIsLoading(true)
     setLoadError(null)
+
     try {
       const [loadedCategories, loadedEvents] = await Promise.all([
         fetchCategories(),
         fetchEvents(),
       ])
+
       setCategories(loadedCategories)
       setEvents(loadedEvents)
     } catch (error) {
@@ -112,15 +114,16 @@ export default function App() {
     }
   }
 
-  // Beim Start einmal prüfen, ob bereits eine gültige Session besteht
-  // (z. B. nach einem Seiten-Reload) — falls ja, direkt die Timeline laden,
-  // sonst die Anmeldeseite (AuthForms) zeigen.
   useEffect(() => {
     let cancelled = false
 
     getCurrentUser().then((currentUser) => {
-      if (cancelled) return
+      if (cancelled) {
+        return
+      }
+
       setUser(currentUser)
+
       if (currentUser) {
         loadEvents()
       } else {
@@ -145,21 +148,17 @@ export default function App() {
     setCategories([])
   }
 
-  // Neue Kategorie anlegen (UC, siehe N1 NFR-14c-01 "Erweiterbarkeit der
-  // Kategorien"): läuft komplett über die Oberfläche, ohne Code-Änderung
-  // oder Neu-Deployment. Wirft bei Fehlern (z. B. Name schon vergeben)
-  // weiter, damit CategoryFilter das dem UI anzeigen kann.
-  const handleCreateCategory = async (label: string, color: string) => {
+  const handleCreateCategory = async (
+    label: string,
+    color: string,
+  ) => {
     const created = await createCategory(label, color)
-    setCategories((previous) => [...previous, created])
+
+    setCategories((previousCategories) => [
+      ...previousCategories,
+      created,
+    ])
   }
-
-  const [filter, setFilter] = useState<number | 'alle'>('alle')
-  const [modalEvent, setModalEvent] = useState<
-    LifeEvent | null | undefined
-  >(undefined)
-
-  const timelineRef = useRef<HTMLDivElement>(null)
 
   const filtered = useMemo(
     () =>
@@ -182,7 +181,9 @@ export default function App() {
       setEvents((previousEvents) =>
         exists
           ? previousEvents.map((existingEvent) =>
-              existingEvent.id === saved.id ? saved : existingEvent,
+              existingEvent.id === saved.id
+                ? saved
+                : existingEvent,
             )
           : [...previousEvents, saved],
       )
@@ -200,6 +201,7 @@ export default function App() {
   const handleDelete = async (id: string) => {
     try {
       await deleteEventOnServer(id)
+
       setEvents((previousEvents) =>
         previousEvents.filter((event) => event.id !== id),
       )
@@ -213,21 +215,26 @@ export default function App() {
   }
 
   const handleClearAll = async () => {
-    if (
-      confirm(
-        'Wirklich alle Ereignisse unwiderruflich löschen?',
+    const shouldDelete = confirm(
+      'Wirklich alle Ereignisse unwiderruflich löschen?',
+    )
+
+    if (!shouldDelete) {
+      return
+    }
+
+    try {
+      await Promise.all(
+        events.map((event) => deleteEventOnServer(event.id)),
       )
-    ) {
-      try {
-        await Promise.all(events.map((event) => deleteEventOnServer(event.id)))
-        setEvents([])
-      } catch (error) {
-        alert(
-          error instanceof Error
-            ? error.message
-            : 'Ereignisse konnten nicht vollständig gelöscht werden.',
-        )
-      }
+
+      setEvents([])
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : 'Ereignisse konnten nicht vollständig gelöscht werden.',
+      )
     }
   }
 
@@ -254,30 +261,23 @@ export default function App() {
       events,
     }
 
-    const blob = new Blob(
-      [JSON.stringify(backup, null, 2)],
-      {
-        type: 'application/json',
-      },
-    )
+    const blob = new Blob([JSON.stringify(backup, null, 2)], {
+      type: 'application/json',
+    })
 
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
 
-    link.download =
-      `lifeline-sicherung-${new Date().toISOString().slice(0, 10)}.json`
+    link.download = `lifeline-sicherung-${new Date()
+      .toISOString()
+      .slice(0, 10)}.json`
+
     link.href = url
     link.click()
 
     URL.revokeObjectURL(url)
   }
 
-  // Hinweis für's Team: Der Import ersetzt aktuell nur die lokale Anzeige,
-  // schreibt die importierten Einträge aber noch NICHT ins Backend — nach
-  // einem Neuladen der Seite sind sie wieder weg, weil dann erneut vom
-  // Server geladen wird. Für einen echten Import müssten die Einträge
-  // hier per createEvent() einzeln ans Backend geschickt werden. Bewusst
-  // nicht mit umgebaut, um den Eingriff klein zu halten.
   const handleDataImport = async (file: File) => {
     try {
       const parsed: unknown = JSON.parse(await file.text())
@@ -286,27 +286,69 @@ export default function App() {
         ? parsed
         : (parsed as Partial<LifelineBackup>)?.events
 
-      const validCategoryIds = categories.map((c) => c.id)
+      const validCategoryIds = categories.map(
+        (category) => category.id,
+      )
+
       if (
         !Array.isArray(importedEvents) ||
-        !importedEvents.every((event) => isLifeEvent(event, validCategoryIds))
+        !importedEvents.every((event) =>
+          isLifeEvent(event, validCategoryIds),
+        )
       ) {
         throw new Error('Ungültiges Sicherungsformat')
       }
 
-      const shouldReplace = confirm(
+      if (importedEvents.length === 0) {
+        alert('Die Sicherung enthält keine Ereignisse.')
+        return
+      }
+
+      const shouldImport = confirm(
         `Die Sicherung enthält ${importedEvents.length} Ereignis${
           importedEvents.length === 1 ? '' : 'se'
-        }. Aktuelle Daten ersetzen?`,
+        }. Zusätzlich zu den vorhandenen Ereignissen importieren?`,
       )
 
-      if (shouldReplace) {
-        setEvents(importedEvents)
-        setFilter('alle')
+      if (!shouldImport) {
+        return
+      }
+
+      const results = await Promise.allSettled(
+        importedEvents.map((event) => createEvent(event)),
+      )
+
+      const failedImports = results.filter(
+        (result) => result.status === 'rejected',
+      ).length
+
+      const successfulImports =
+        importedEvents.length - failedImports
+
+      // Den tatsächlichen Datenbankstand neu laden.
+      const updatedEvents = await fetchEvents()
+
+      setEvents(updatedEvents)
+      setFilter('alle')
+
+      if (failedImports === 0) {
+        alert(
+          `${successfulImports} Ereignis${
+            successfulImports === 1 ? '' : 'se'
+          } erfolgreich importiert.`,
+        )
+      } else {
+        alert(
+          `${successfulImports} Ereignis${
+            successfulImports === 1 ? '' : 'se'
+          } importiert. ${failedImports} Ereignis${
+            failedImports === 1 ? ' konnte' : 'se konnten'
+          } nicht importiert werden.`,
+        )
       }
     } catch {
       alert(
-        'Die Datei konnte nicht importiert werden. Bitte wähle eine Lifeline-Sicherung aus.',
+        'Die Datei konnte nicht importiert werden. Bitte wähle eine gültige Lifeline-Sicherung aus.',
       )
     }
   }
@@ -337,9 +379,14 @@ export default function App() {
       />
 
       <main className="mx-auto max-w-6xl px-6 py-8 sm:px-10">
-      <div ref={timelineRef} className="w-full">
-      <Timeline categories={categories} events={filtered} holidays={holidays} onSelect={setModalEvent} />
-      </div>
+        <div ref={timelineRef} className="w-full">
+          <Timeline
+            categories={categories}
+            events={filtered}
+            holidays={holidays}
+            onSelect={setModalEvent}
+          />
+        </div>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="font-display text-xl font-medium text-slate-100">
@@ -355,9 +402,13 @@ export default function App() {
         </div>
 
         {isLoading ? (
-          <p className="mt-6 text-sm text-slate-500">Lade Ereignisse …</p>
+          <p className="mt-6 text-sm text-slate-500">
+            Lade Ereignisse …
+          </p>
         ) : loadError ? (
-          <p className="mt-6 text-sm text-red-400">{loadError}</p>
+          <p className="mt-6 text-sm text-red-400">
+            {loadError}
+          </p>
         ) : filtered.length > 0 ? (
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[...filtered]
@@ -379,19 +430,19 @@ export default function App() {
         )}
 
         <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
-          Hinweis: Alle Daten werden im Backend gespeichert (SQLite).
+          Hinweis: Alle Daten werden im Backend gespeichert
+          (SQLite).
         </p>
       </main>
 
-    { modalEvent !== undefined && (
-      <EventFormModal
-        categories={categories}
-        initial={modalEvent}
-        onSave={handleSave}
-        onClose={() => setModalEvent(undefined)}
-      />
-    )
-}
-    </div >
+      {modalEvent !== undefined && (
+        <EventFormModal
+          categories={categories}
+          initial={modalEvent}
+          onSave={handleSave}
+          onClose={() => setModalEvent(undefined)}
+        />
+      )}
+    </div>
   )
 }
