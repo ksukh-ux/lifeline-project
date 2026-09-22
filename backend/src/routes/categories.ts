@@ -22,7 +22,7 @@ categoriesRouter.use(requireAuth);
 categoriesRouter.get("/", (req, res) => {
   const rows = db
     .prepare("SELECT * FROM categories WHERE user_id = ? ORDER BY id ASC")
-    .all(req.userId);
+    .all(req.userId!);
   res.json(rows);
 });
 
@@ -45,7 +45,7 @@ categoriesRouter.post("/", (req, res) => {
 
   const existing = db
     .prepare("SELECT id FROM categories WHERE user_id = ? AND label = ?")
-    .get(req.userId, label);
+    .get(req.userId!, label);
   if (existing) {
     res.status(409).json({ error: "Eine Kategorie mit diesem Namen existiert bereits." });
     return;
@@ -53,10 +53,10 @@ categoriesRouter.post("/", (req, res) => {
 
   const result = db
     .prepare("INSERT INTO categories (user_id, label, color) VALUES (?, ?, ?)")
-    .run(req.userId, label, body.color);
+    .run(req.userId!, label, body.color);
 
   const created = db
     .prepare("SELECT * FROM categories WHERE id = ?")
-    .get(result.lastInsertRowid) as CategoryRow;
+    .get(result.lastInsertRowid) as unknown as CategoryRow;
   res.status(201).json(created);
 });

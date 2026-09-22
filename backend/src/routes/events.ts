@@ -42,7 +42,7 @@ eventsRouter.use(requireAuth);
 eventsRouter.get("/", (req, res) => {
   const rows = db
     .prepare("SELECT * FROM events WHERE user_id = ? ORDER BY date DESC, time DESC")
-    .all(req.userId);
+    .all(req.userId!);
   res.json(rows);
 });
 
@@ -50,7 +50,7 @@ eventsRouter.get("/", (req, res) => {
 eventsRouter.get("/:id", (req, res) => {
   const row = db
     .prepare("SELECT * FROM events WHERE id = ? AND user_id = ?")
-    .get(req.params.id, req.userId);
+    .get(req.params.id, req.userId!);
 
   if (!row) {
     res.status(404).json({ error: "Ereignis nicht gefunden." });
@@ -94,7 +94,7 @@ eventsRouter.post("/", (req, res) => {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
-      req.userId,
+      req.userId!,
       body.category_id,
       body.title,
       body.description ?? null,
@@ -115,7 +115,7 @@ eventsRouter.post("/", (req, res) => {
 eventsRouter.put("/:id", (req, res) => {
   const existing = db
     .prepare("SELECT * FROM events WHERE id = ? AND user_id = ?")
-    .get(req.params.id, req.userId) as EventRow | undefined;
+    .get(req.params.id, req.userId!) as unknown as EventRow | undefined;
 
   if (!existing) {
     res.status(404).json({ error: "Ereignis nicht gefunden." });
@@ -164,7 +164,7 @@ eventsRouter.put("/:id", (req, res) => {
     body.significance ?? null,
     imagePath,
     req.params.id,
-    req.userId
+    req.userId!
   );
 
   const updated = db.prepare("SELECT * FROM events WHERE id = ?").get(req.params.id);
@@ -175,14 +175,14 @@ eventsRouter.put("/:id", (req, res) => {
 eventsRouter.delete("/:id", (req, res) => {
   const existing = db
     .prepare("SELECT image_path FROM events WHERE id = ? AND user_id = ?")
-    .get(req.params.id, req.userId) as { image_path: string | null } | undefined;
+    .get(req.params.id, req.userId!) as unknown as { image_path: string | null } | undefined;
 
   if (!existing) {
     res.status(404).json({ error: "Ereignis nicht gefunden." });
     return;
   }
 
-  db.prepare("DELETE FROM events WHERE id = ? AND user_id = ?").run(req.params.id, req.userId);
+  db.prepare("DELETE FROM events WHERE id = ? AND user_id = ?").run(req.params.id, req.userId!);
   deleteImage(existing.image_path);
   res.status(204).send();
 });

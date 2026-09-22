@@ -20,6 +20,6 @@ statsRouter.get("/", (req, res) => {
        WHERE e.user_id = ?
        GROUP BY c.id`
     )
-    .all(req.userId);
+    .all(req.userId!);
   res.json(rows);
 });
