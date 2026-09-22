@@ -153,7 +153,7 @@ export function runDataMigrations(db: DatabaseSync): void {
       );
     `);
 
-    const legacyEvents = db.prepare("SELECT * FROM events").all() as LegacyEventRow[];
+    const legacyEvents = db.prepare("SELECT * FROM events").all() as unknown as LegacyEventRow[];
 
     const insertNew = db.prepare(
       `INSERT INTO events_new

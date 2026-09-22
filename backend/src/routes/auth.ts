@@ -84,6 +84,6 @@ authRouter.post("/logout", (req, res) => {
 authRouter.get("/me", requireAuth, (req, res) => {
   const user = db
     .prepare("SELECT id, email, created_at FROM users WHERE id = ?")
-    .get(req.userId);
+    .get(req.userId!);
   res.json(user);
 });
