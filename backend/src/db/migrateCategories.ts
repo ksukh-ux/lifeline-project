@@ -14,17 +14,65 @@ const LEGACY_KEY_TO_LABEL: Record<string, string> = {
   sonstiges: "Sonstiges",
 };
 
+// Deckt mehrere historische Fassungen der `events`-Tabelle ab, nicht nur die
+// unmittelbar vor der category_id-Umstellung (Commit 64942ef):
+// - vor Commit 7ce58c3 gab es statt `date`/`time` die Felder `start_date`,
+//   `end_date`, `location` und `tags` (Einzeltermin-Umstellung).
+// - vor Commit 69dd067 gab es noch kein `image_path` (Bild-Upload-Feature).
+// `SELECT *` liefert für nicht (mehr) existierende Spalten schlicht keinen
+// Schlüssel im Ergebnis-Objekt, daher sind hier alle Felder, die nicht seit
+// der allerersten Fassung existieren, optional.
 interface LegacyEventRow {
   id: number;
   user_id: number;
   category: string;
   title: string;
   description: string | null;
-  date: string;
-  time: string | null;
+  date?: string;
+  time?: string | null;
+  start_date?: string;
+  end_date?: string;
+  location?: string | null;
+  tags?: string | null;
   significance: number | null;
-  image_path: string | null;
+  image_path?: string | null;
   created_at: string;
+}
+
+// Ermittelt das Datum für ein Alt-Event unabhängig davon, ob die Tabelle
+// schon die heutige Einzeldatum-Spalte `date` hat oder noch die ältere
+// Start-/End-Datum-Fassung (vor Commit 7ce58c3) — dort dient `start_date`
+// als das neue `date`, da das neue Schema keinen Zeitraum mehr kennt.
+function resolveLegacyDate(ev: LegacyEventRow): string {
+  const date = ev.date ?? ev.start_date;
+  if (!date) {
+    throw new Error(
+      `Migration: Event ${ev.id} hat weder eine "date"- noch eine "start_date"-Spalte — unbekanntes Alt-Schema, Migration abgebrochen, um keine Daten zu verlieren.`,
+    );
+  }
+  return date;
+}
+
+// Felder aus noch älteren Schema-Fassungen (`location`, `tags`, ein vom
+// Einzeldatum abweichendes `end_date`), für die es im heutigen Schema keine
+// eigene Spalte mehr gibt, gehen NICHT verloren, sondern werden — damit
+// bestehende Daten erhalten bleiben — lesbar an die Beschreibung angehängt.
+function resolveLegacyDescription(ev: LegacyEventRow): string | null {
+  const parts: string[] = [];
+  if (ev.description) {
+    parts.push(ev.description);
+  }
+  const date = resolveLegacyDate(ev);
+  if (ev.end_date && ev.end_date !== date) {
+    parts.push(`Ursprünglicher Zeitraum: ${date} bis ${ev.end_date}`);
+  }
+  if (ev.location) {
+    parts.push(`Ort: ${ev.location}`);
+  }
+  if (ev.tags) {
+    parts.push(`Tags: ${ev.tags}`);
+  }
+  return parts.length > 0 ? parts.join("\n\n") : null;
 }
 
 function seedDefaultCategoriesForUser(db: DatabaseSync, userId: number): Map<string, number> {
@@ -167,11 +215,11 @@ export function runDataMigrations(db: DatabaseSync): void {
         ev.user_id,
         getCategoryIdFor(ev.user_id, ev.category),
         ev.title,
-        ev.description,
-        ev.date,
-        ev.time,
+        resolveLegacyDescription(ev),
+        resolveLegacyDate(ev),
+        ev.time ?? null,
         ev.significance,
-        ev.image_path,
+        ev.image_path ?? null,
         ev.created_at,
       );
     }
