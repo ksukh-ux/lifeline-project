@@ -167,7 +167,7 @@ Browser-Speicherung, und SC-04 ist zugleich der einzige Nachweis für
 | Baustein | Bezug zu P1 |
 |---|---|
 | [P1-constraints](P1-constraints.md) | Anhang mit den ausführlichen Rahmenbedingungen. |
-| [P2](P2-architekturueberblick.md) | `NG-05` begründet, warum das Nachbarsysteminventar nur einen Eintrag hat. |
+| [P2](P2-architekturüberblick.md) | `NG-05` begründet, warum das Nachbarsysteminventar nur einen Eintrag hat. |
 | [F2](F2-anwendungsfaelle.md) | Definiert den Funktionsumfang; P1.4.1 stuft ihn nur ein. |
 | [N1](N1-nichtfunktional.md) | `CON-3e-01` und `CON-3j-01` sind die Ursprünge der Anforderungen in §10 bzw. §15. |
 | [`docs/betrieb/`](../betrieb/) | `AS-04` und `CON-3b-01` sind der Grund für die persistenten Zustandsflächen. |
