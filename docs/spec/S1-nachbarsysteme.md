@@ -38,14 +38,14 @@ Die folgenden Konventionen gelten für jede unten aufgeführte Operation:
   keinen Hintergrundarbeiter und keine zeitgesteuerte Wiederholung
   ([CON-3b-02](P1-constraints.md#con-3b-02-kein-scheduler-kein-hintergrundprozess)).
 - **Fehlerfortpflanzung.** Fehler gegenüber `NB-01` werden in die Klassen aus
-  [N2.5](N2-querschnittskonzepte.md#n25-fehlerbehandlung) eingeordnet und in der
+  [N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung) eingeordnet und in der
   Oberfläche nach [B1.4.2](B1-dialogspezifikation.md#b142-fehlermeldungen) dargestellt.
   Fehler gegenüber `NB-02` folgen der Sonderregel in S1.3 und erreichen die Oberfläche
   überhaupt nicht.
 - **Authentifizierung.** Zugriffe über `NB-01` sind sitzungsgebunden
-  ([N2.4](N2-querschnittskonzepte.md#n24-authentifizierung-und-session)). `NB-02`
+  ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)). `NB-02`
   erfordert keinen Schlüssel; Geheimnisse werden ohnehin nie im Repository oder Protokoll
-  geführt ([N2.8](N2-querschnittskonzepte.md#n28-umgang-mit-geheimnissen)).
+  geführt ([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-logging)).
 - **Details auf Payload-Ebene.** Konkrete Endpunkt-URLs, Feldnamen, Statuscodes und
   Wiederholungsbudgets sind Implementierungssache und leben in
   [`docs/arch/`](../arch/) und im Code, nicht hier. S1 legt fest, **welche** Operationen
@@ -73,7 +73,7 @@ nicht von sich aus zeigen:
 | Fehlende Session | Abweisung; die Oberfläche leitet nach [B1.4.1](B1-dialogspezifikation.md#b141-umleitung-ohne-session) zum Zugangsformular. |
 | Zugriff auf fremde Daten | Abweisung, **ohne** zu unterscheiden, ob das Objekt nicht existiert oder einer anderen Nutzer:in gehört ([NFR-15a-01](N1-nichtfunktional.md)). |
 | Teilzustände | Ausgeschlossen; eine fehlgeschlagene Operation hinterlässt keinen halb gespeicherten Datensatz ([NFR-12d-02](N1-nichtfunktional.md)). |
-| Vertrauensgrenze | Alles, was über `NB-01` hereinkommt, gilt als nicht vertrauenswürdig, auch von einer angemeldeten Nutzer:in ([N2.3](N2-querschnittskonzepte.md#n23-validierung)). |
+| Vertrauensgrenze | Alles, was über `NB-01` hereinkommt, gilt als nicht vertrauenswürdig, auch von einer angemeldeten Nutzer:in ([N2.2](N2-querschnittskonzepte.md#n22-validierung)). |
 
 ---
 
@@ -151,6 +151,6 @@ anderen Bausteinen auf S1**: was dort konkret aus S1 aufgerufen oder vorausgeset
 | **D1** | Kein Attribut wird durch S1 befüllt. Feiertage aus S1.3 werden ausdrücklich **nicht** gespeichert — das ist eine bewusste Festlegung, keine Lücke. |
 | **B1** | DLG-01 zeigt das Ergebnis von S1.3 als Hintergrundmarkierung. Kein Dialog stellt einen Fehler dar, wenn S1.3 ausfällt (B1.4.2 ist hier bewusst nicht angewendet). |
 | **N1** | `NFR-15a-01` und `NFR-15b-01` gelten für S1.2. Für S1.3 gilt sinngemäß, dass ihr Ausfall keine Anforderung an S1.2 verletzen darf. |
-| **N2** | N2.3 Validierung gilt an der Grenze zu S1.2; N2.5 Fehlerbehandlung enthält die für S1.3 geltende Sonderregel; N2.8 Umgang mit Geheimnissen gilt für S1.2 — S1.3 braucht keines. |
+| **N2** | N2.2 Validierung gilt an der Grenze zu S1.2; N2.4 Fehlerbehandlung enthält die für S1.3 geltende Sonderregel; N2.5 Secret-Handling und Logging gilt für S1.2 — S1.3 braucht keines. |
 | **P2** | P2.2 führt S1.2 und S1.3 als vollständiges Nachbarsysteminventar. |
 | **`docs/OFFENE-PUNKTE.md`** | OP-04 wird durch S1.3 gelöst. |
