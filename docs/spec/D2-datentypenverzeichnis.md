@@ -60,6 +60,6 @@ Die folgende Notation wird im ER-Diagramm und in den Attributtabellen von [D1](D
 |---|---|
 | [D1](D1-datenmodell.md) | `EVENTS.significance`, `EVENTS.image_path` referenzieren D2.2–D2.3. Die Event-Kategorien selbst sind als Entität `CATEGORIES` in D1.3 modelliert, nicht hier. D2.4 definiert die in D1 verwendete Notation. |
 | [F3](F3-anwendungsfunktionen.md) | AF-02 mittelt `significance`. |
-| [B1](B1-dialogspezifikation.md) | Der Bedeutung-Slider und der Bildupload in `EventForm` ([DLG-04](B1-dialogspezifikation.md#dlg-04--eventform)) setzen D2.2 bzw. D2.3 um. |
+| [B1](B1-dialogspezifikation.md) | Der Bedeutung-Slider und der Bildupload in `EventForm` ([DLG-02](B1-dialogspezifikation.md#dlg-02--ereignisformular)) setzen D2.2 bzw. D2.3 um. |
 | [N2](N2-querschnittskonzepte.md) | N2.2 *Validierung* prüft Bild-Uploads gegen D2.3 und den Wertebereich von `significance` gegen D2.2. |
 

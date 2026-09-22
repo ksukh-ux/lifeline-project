@@ -104,7 +104,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
   ([D1.3](D1-datenmodell.md#d13-categories)), der Anzeigename aus `label`.
 - Die Bedeutung bestimmt die visuelle Gewichtung des Eintrags. Sie wird als **Rangfolge**
   dargestellt, nicht als Maßzahl
-  ([D2.2](D2-datentypenverzeichnis.md#d22-bedeutung-significance)).
+  ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).
 - Jedes Event ist ein Zeitpunkt, kein Zeitraum. Es gibt keine Balkendarstellung über eine
   Dauer ([D1.4](D1-datenmodell.md#d14-events)).
 - Eingebettet: die Filterleiste [DLG-03](#dlg-03--filterleiste).
@@ -125,7 +125,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 
 Sichtbarer Zeitbereich, Zoomstufe und aktiver Filter sind **flüchtiger Anzeigezustand**:
 sie werden nicht gespeichert und sind deshalb kein Gegenstand von
-[D1](D1-datenmodell.md#d16-nicht-teil-von-d1).
+[D1](D1-datenmodell.md#d11-übersicht).
 
 Nach jedem Anlegen, Bearbeiten oder Löschen wird die Darstellung unmittelbar aktualisiert.
 Ein aktiver Filter bleibt dabei erhalten.
@@ -165,10 +165,10 @@ statt einen anzulegen.
 | Uhrzeit | | gültige Uhrzeit; nur relevant zur Feinsortierung innerhalb eines Tages |
 | Beschreibung | | Freitext |
 | Kategorie | ● | Auswahl aus den für diese Nutzer:in sichtbaren Kategorien: die vorbelegten Standardkategorien und ihre eigenen (`INV-C4`). Vorbelegt mit `sonstiges`. |
-| Bedeutung | ● | Regler 0–100 ([D2.2](D2-datentypenverzeichnis.md#d22-bedeutung-significance)), vorbelegt mit einem mittleren Wert |
+| Bedeutung | ● | Regler 0–100 ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)), vorbelegt mit einem mittleren Wert |
 | Ort | | Freitext |
 | Schlagwörter | | mehrere Werte |
-| Bild | | ein Bild; Formate und Größe nach [D2.3](D2-datentypenverzeichnis.md#d23-bildverweis-image_path) |
+| Bild | | ein Bild; Formate und Größe nach [D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path) |
 
 Die Kategorieauswahl zeigt `label`, arbeitet aber auf der Kennung der Kategorie. Der
 Anzeigename kann sich ändern, ohne dass bestehende Events ihre Zuordnung verlieren.
@@ -242,7 +242,7 @@ Bedeutung je Kategorie.
 Die Mittelwerte sind als **Tendenz** zu beschriften, nicht als „durchschnittliche
 Wichtigkeit": die Bedeutungsskala ist ordinal, eine Mittelwertbildung darauf ist streng
 genommen nicht zulässig und wird nur als grobe Orientierung geführt
-([D2.2](D2-datentypenverzeichnis.md#d22-bedeutung-significance)).
+([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).
 
 **Dynamik**
 

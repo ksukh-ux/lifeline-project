@@ -42,7 +42,7 @@ Umsetzung an die Architektur.
 | HOST-01 | Erreichbarkeit über HTTPS an der öffentlichen Kante. | Zugangsdaten und persönliche Ereignisse werden übertragen ([NFR-15b-01](../spec/N1-nichtfunktional.md)). |
 | HOST-02 | Laufzeitumgebung, die die Anwendung als langlaufenden Serverprozess ausführt. | Die Anwendung bedient Anfragen und hält die Datenhaltung. |
 | HOST-03 | **Ein über Neustart und Neu-Deployment hinweg persistenter Speicherbereich**, beschreibbar durch den Anwendungsprozess. | Siehe S3.3. Ohne ihn ist [SC-04](../spec/P1-ziele-rahmenbedingungen.md#p16-erfolgskriterien) nicht erfüllbar. |
-| HOST-04 | Konfiguration über Umgebungsvariablen außerhalb des Quellcodes. | Geheimnisse dürfen nicht im Repository liegen ([N2.8](../spec/N2-querschnittskonzepte.md), CONV-05 in A02). |
+| HOST-04 | Konfiguration über Umgebungsvariablen außerhalb des Quellcodes. | Geheimnisse dürfen nicht im Repository liegen ([N2.5](../spec/N2-querschnittskonzepte.md), CONV-05 in A02). |
 | HOST-05 | Möglichkeit, den Inhalt des persistenten Bereichs zu sichern und zurückzuspielen. | Voraussetzung für S3.6. |
 | HOST-06 | Kein zeitgesteuerter Dienst und kein Hintergrundarbeiter erforderlich. | Negativvoraussetzung: einfache Umgebungen ohne diese Möglichkeiten sind ausdrücklich geeignet ([CON-3g-01](../spec/P1-constraints.md#con-3g-01-kein-budget-für-infrastruktur)). |
 
@@ -138,7 +138,7 @@ Repository.
 | Pfad des Chronikbestands | Ablageort der Datenbank | Muss auf die persistente Fläche zeigen, sonst Datenverlust bei jedem Deployment. |
 | Pfad der Bildablage | Ablageort der Bilddateien | Muss auf die persistente Fläche zeigen, sonst fehlende Bilder. |
 | Session-Geheimnis | Signatur der Session-Nachweise | Änderung meldet alle Nutzer:innen ab (S3.3). |
-| Betriebsmodus | Unterscheidung Entwicklung/Produktion | Im Produktionsmodus dürfen keine internen Fehlerdetails ausgeliefert werden ([N2.5](../spec/N2-querschnittskonzepte.md)). |
+| Betriebsmodus | Unterscheidung Entwicklung/Produktion | Im Produktionsmodus dürfen keine internen Fehlerdetails ausgeliefert werden ([N2.4](../spec/N2-querschnittskonzepte.md)). |
 
 Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansicht.md).
 
@@ -153,7 +153,7 @@ Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansich
 - **Datenübernahme aus einem Altsystem.** Baustein S2, nicht anwendbar.
 - **Parallelbetrieb und Umstellungsplanung.** Es gibt kein abzulösendes System.
 - **Überwachung im laufenden Betrieb.** Im aktuellen Umfang nicht spezifiziert; das
-  Protokollierungskonzept steht in [N2.6](../spec/N2-querschnittskonzepte.md).
+  Protokollierungskonzept steht in [N2.5](../spec/N2-querschnittskonzepte.md).
 
 ---
 
@@ -165,6 +165,6 @@ Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansich
 | [P1-constraints](../spec/P1-constraints.md) | `CON-3a-02`, `CON-3a-03`, `CON-3b-01`, `CON-3b-02`, `CON-3g-01` prägen diesen Baustein. |
 | [D1](../spec/D1-datenmodell.md) | Die beiden Datenspeicher aus D1.1 sind die Flächen aus S3.3. |
 | [N1](../spec/N1-nichtfunktional.md) | `NFR-12d-01` Dauerhaftigkeit, `NFR-13b-01` Betrieb ohne Zusatzdienste, `NFR-15b-01` Verschlüsselung. |
-| [N2](../spec/N2-querschnittskonzepte.md) | N2.8 bestimmt, was über die Laufzeitkonfiguration bereitzustellen ist. |
+| [N2](../spec/N2-querschnittskonzepte.md) | N2.5 bestimmt, was über die Laufzeitkonfiguration bereitzustellen ist. |
 | [A07](../arch/A07-Bereitstellungsansicht.md) | Die konkrete Umsetzung dessen, was hier gefordert wird. |
 | ADR-003 (A09) | Die Konsequenz „Hosting muss persistenten Speicher bieten" ist der Ursprung von `HOST-03`. |

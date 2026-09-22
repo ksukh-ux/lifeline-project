@@ -234,7 +234,7 @@ als Text dargestellt und nicht ausgeführt.
 **NFR-15b-04: Prüfung hochgeladener Dateien**
 
 Bilduploads werden in der Anwendungslogik gegen Format und Größe geprüft; die Angabe des
-Browsers ist nicht maßgeblich ([D2.3](D2-datentypenverzeichnis.md#d23-bildverweis-image_path)).
+Browsers ist nicht maßgeblich ([D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path)).
 
 **Prüfkriterium:** Eine Datei mit unzulässigem Inhalt wird auch dann abgewiesen, wenn sie
 mit zulässiger Endung und zulässigem gemeldeten Dateityp übermittelt wird.

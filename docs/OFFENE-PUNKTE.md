@@ -53,9 +53,9 @@ wurden mehrere Kandidaten geprüft:
 | **Feiertagsdienst (gewählt)** | Öffentlich, ohne Schlüssel und ohne Registrierung nutzbar; Ausfall gefährdet keine Muss-Funktion (siehe [S1.3.2](spec/S1-nachbarsysteme.md#s132-bindende-regel-fehlerverhalten)); passt zu [CON-3g-01](spec/P1-constraints.md#con-3g-01-kein-budget-für-infrastruktur) und [CON-3h-01](spec/P1-constraints.md#con-3h-01-harte-abgabefrist). |
 
 **Status:** Gelöst. Der Feiertagsdienst ist in [S1.3](spec/S1-nachbarsysteme.md#s13-nb-02--feiertagsdienst)
-vollständig spezifiziert. Die technische Anbindung (konkreter Endpunkt, Aufruf aus dem
-Backend, Darstellung in der Timeline) ist zum Zeitpunkt dieses Standes noch nicht
-umgesetzt — siehe Bemerkung zu Punkt 17 im Feedback-Tracker.
+vollständig spezifiziert und mittlerweile auch technisch umgesetzt: Endpunkt
+`GET /api/holidays` in `backend/src/routes/holidays.ts`, nicht-blockierender Aufruf und
+Darstellung als Hintergrundmarkierung in der Timeline im Frontend.
 
 ## OP-05 – Fehlender Anwendungsfall für die Kategorienverwaltung
 
