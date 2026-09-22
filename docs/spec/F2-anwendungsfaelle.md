@@ -181,6 +181,10 @@ Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne
 3. Der `ApiClient` kommuniziert mit dem Backend.
 4. Das Backend stellt die vorhandenen Events bereit.
 5. Das Frontend stellt die Events chronologisch in der Timeline dar.
+6. Parallel bzw. im Anschluss fragt das Frontend beim Feiertagsdienst die Feiertage
+   des angezeigten Jahres an ([S1.3](S1-nachbarsysteme.md#s13-nb-02--feiertagsdienst));
+   dieser Schritt blockiert die Darstellung der Timeline nicht und sein Ausfall wird der
+   Nutzer:in nicht gemeldet ([S1.3.2](S1-nachbarsysteme.md#s132-bindende-regel-fehlerverhalten)).
 
 #### Alternativabläufe
 
@@ -267,3 +271,4 @@ Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne
 | [B1](B1-dialogspezifikation.md) | Bildschirmgestaltung und Dialogablauf je UC. |
 | [N1](N1-nichtfunktional.md) | NFA-01 (Benutzbarkeit UC-01), NFA-02 (Validierung UC-01/UC-02), NFA-05 (Performance UC-04). |
 | [N2](N2-querschnittskonzepte.md) | N2.3 *Authentifizierung und Session* setzt jeden UC außer UC-07 voraus. |
+| [S1](S1-nachbarsysteme.md) | UC-04 Schritt 6 ruft S1.3 (Feiertagsdienst) auf — nicht-blockierend, siehe S1.3.2. |

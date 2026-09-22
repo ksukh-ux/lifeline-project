@@ -100,7 +100,7 @@ keine Muss-Funktion; sie ändert nichts an
 | **Richtung** | Ausgehend (Anfrage: Ländercode + Jahr; Antwort: Liste von Feiertagen). |
 | **Eingaben** | Fester Ländercode aus der Hostkonfiguration, Standard: Deutschland (`DE`); das in der Timeline sichtbare Kalenderjahr. Kein Schlüssel erforderlich (siehe S1.1). |
 | **Ausgaben** | Liste aus Datum und Bezeichnung, eingeblendet als Hintergrundmarkierung in [DLG-01](B1-dialogspezifikation.md#dlg-01--timeline). Wird **nicht** persistiert — kein Attribut in [D1](D1-datenmodell.md) wird davon befüllt. |
-| **Ausgelöst durch** | [UC-04](F2-anwendungsfaelle.md#uc-04--timeline-ansehen), Schritt 4. |
+| **Ausgelöst durch** | [UC-04](F2-anwendungsfaelle.md#uc-04--timeline-ansehen), Schritt 6. |
 | **Semantik** | Rein informativ; keine Rückwirkung auf `EVENTS` oder `CATEGORIES`. Das Ergebnis wird für die Dauer der Session je Land und Jahr zwischengespeichert, um wiederholte Aufrufe zu vermeiden. |
 | **Fehlerbehandlung** | Nicht erreichbar, langsame Antwort, ungültige Daten und unbekanntes Jahr/Land werden **alle** wie „keine Feiertage für diesen Zeitraum" behandelt. Es entsteht keine Fehlermeldung an die Nutzer:in. |
 | **Verantwortung** | Der externe Dienst wird vom jeweiligen externen Anbieter betrieben; Lifeline übernimmt keine administrative Verantwortung. |
@@ -146,7 +146,7 @@ anderen Bausteinen auf S1**: was dort konkret aus S1 aufgerufen oder vorausgeset
 
 | Baustein | Bezug zu S1 |
 |---|---|
-| **F2** | UC-04 Schritt 4 ruft S1.3 auf. Alle übrigen Anwendungsfälle rufen ausschließlich S1.2 auf. |
+| **F2** | UC-04 Schritt 6 ruft S1.3 auf. Alle übrigen Anwendungsfälle rufen ausschließlich S1.2 auf. |
 | **F3** | Kein Bezug. AF-01 bis AF-04 verarbeiten nur bereits geladene, eigene Daten; das Ergebnis von S1.3 fließt in keine Anwendungsfunktion ein. |
 | **D1** | Kein Attribut wird durch S1 befüllt. Feiertage aus S1.3 werden ausdrücklich **nicht** gespeichert — das ist eine bewusste Festlegung, keine Lücke. |
 | **B1** | DLG-01 zeigt das Ergebnis von S1.3 als Hintergrundmarkierung. Kein Dialog stellt einen Fehler dar, wenn S1.3 ausfällt (B1.4.2 ist hier bewusst nicht angewendet). |
