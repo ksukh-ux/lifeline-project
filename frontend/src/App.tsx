@@ -63,17 +63,17 @@ export default function App() {
   const timelineRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (events.length === 0) {
-      setHolidays([])
-      return
-    }
-
     let cancelled = false
 
+    const currentYear = new Date().getFullYear()
+
+    // Das aktuelle Jahr wird immer geladen. Ereignisse können weitere
+    // benötigte Feiertagsjahre ergänzen.
     const years = [
-      ...new Set(
-        events.map((event) => new Date(event.date).getFullYear()),
-      ),
+      ...new Set([
+        currentYear,
+        ...events.map((event) => new Date(event.date).getFullYear()),
+      ]),
     ]
 
     Promise.all(years.map((year) => fetchHolidays(year))).then(
@@ -148,10 +148,7 @@ export default function App() {
     setCategories([])
   }
 
-  const handleCreateCategory = async (
-    label: string,
-    color: string,
-  ) => {
+  const handleCreateCategory = async (label: string, color: string) => {
     const created = await createCategory(label, color)
 
     setCategories((previousCategories) => [
@@ -181,9 +178,7 @@ export default function App() {
       setEvents((previousEvents) =>
         exists
           ? previousEvents.map((existingEvent) =>
-              existingEvent.id === saved.id
-                ? saved
-                : existingEvent,
+              existingEvent.id === saved.id ? saved : existingEvent,
             )
           : [...previousEvents, saved],
       )
@@ -286,9 +281,7 @@ export default function App() {
         ? parsed
         : (parsed as Partial<LifelineBackup>)?.events
 
-      const validCategoryIds = categories.map(
-        (category) => category.id,
-      )
+      const validCategoryIds = categories.map((category) => category.id)
 
       if (
         !Array.isArray(importedEvents) ||
@@ -322,8 +315,7 @@ export default function App() {
         (result) => result.status === 'rejected',
       ).length
 
-      const successfulImports =
-        importedEvents.length - failedImports
+      const successfulImports = importedEvents.length - failedImports
 
       // Den tatsächlichen Datenbankstand neu laden.
       const updatedEvents = await fetchEvents()
@@ -406,9 +398,7 @@ export default function App() {
             Lade Ereignisse …
           </p>
         ) : loadError ? (
-          <p className="mt-6 text-sm text-red-400">
-            {loadError}
-          </p>
+          <p className="mt-6 text-sm text-red-400">{loadError}</p>
         ) : filtered.length > 0 ? (
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[...filtered]
@@ -430,8 +420,7 @@ export default function App() {
         )}
 
         <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
-          Hinweis: Alle Daten werden im Backend gespeichert
-          (SQLite).
+          Hinweis: Alle Daten werden im Backend gespeichert (SQLite).
         </p>
       </main>
 

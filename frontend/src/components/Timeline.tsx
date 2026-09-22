@@ -9,7 +9,12 @@ interface Props {
   onSelect: (event: LifeEvent) => void
 }
 
-export default function Timeline({ categories, events, holidays = [], onSelect }: Props) {
+export default function Timeline({
+  categories,
+  events,
+  holidays = [],
+  onSelect,
+}: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [zoom, setZoom] = useState(1)
@@ -39,21 +44,35 @@ export default function Timeline({ categories, events, holidays = [], onSelect }
     setScrollProgress(value)
   }
 
-  if (sorted.length === 0) {
-    return (
-      <div className="rounded-lg border border-dashed border-white/10 py-16 text-center">
-        <p className="font-display text-lg text-slate-400">
-          Noch keine Ereignisse
-        </p>
-        <p className="mt-1 text-sm text-slate-500">
-          Füge dein erstes Lifeline-Ereignis hinzu, um die Timeline zu füllen.
-        </p>
-      </div>
-    )
-  }
+  const currentYear = new Date().getFullYear()
 
-  const minTime = new Date(sorted[0].date).getTime()
-  const maxTime = new Date(sorted[sorted.length - 1].date).getTime()
+  // Die Timeline zeigt mindestens das aktuelle Kalenderjahr.
+  // Vorhandene Ereignisse können den Zeitraum erweitern.
+  const eventTimes = sorted.map((event) =>
+    new Date(event.date).getTime(),
+  )
+
+  const defaultMinTime = new Date(currentYear, 0, 1).getTime()
+  const defaultMaxTime = new Date(
+    currentYear,
+    11,
+    31,
+    23,
+    59,
+    59,
+    999,
+  ).getTime()
+
+  const minTime =
+    eventTimes.length > 0
+      ? Math.min(defaultMinTime, ...eventTimes)
+      : defaultMinTime
+
+  const maxTime =
+    eventTimes.length > 0
+      ? Math.max(defaultMaxTime, ...eventTimes)
+      : defaultMaxTime
+
   const span = Math.max(maxTime - minTime, 1)
 
   const posFor = (date: string) => {
@@ -63,19 +82,22 @@ export default function Timeline({ categories, events, holidays = [], onSelect }
     return 7 + percentage * 0.86
   }
 
-  const timelineWidth = Math.max(720, sorted.length * 220 * zoom)
+  const startYear = new Date(minTime).getFullYear()
+  const endYear = new Date(maxTime).getFullYear()
 
-  const startYear = new Date(sorted[0].date).getFullYear()
-  const endYear = new Date(sorted[sorted.length - 1].date).getFullYear()
+  const timelineWidth = Math.max(
+    720,
+    (endYear - startYear + 1) * 240 * zoom,
+    sorted.length * 220 * zoom,
+  )
 
   const years = Array.from(
     { length: endYear - startYear + 1 },
     (_, index) => startYear + index,
   )
 
-  // S1.3 NB-02 — Feiertagsdienst: rein dekorative Hintergrundmarkierung,
-  // siehe S1.3.1. Nur Feiertage innerhalb des aktuell sichtbaren Zeitraums
-  // werden positioniert; außerhalb liegende werden hier bewusst ignoriert.
+  // S1.3 NB-02 — Feiertagsdienst: rein dekorative Hintergrundmarkierung.
+  // Nur Feiertage innerhalb des dargestellten Zeitraums werden positioniert.
   const visibleHolidays = holidays.filter((holiday) => {
     const time = new Date(holiday.date).getTime()
     return time >= minTime && time <= maxTime
@@ -114,8 +136,7 @@ export default function Timeline({ categories, events, holidays = [], onSelect }
             )
           })}
 
-          {/* Feiertage (S1.3, NB-02) — dezente Hintergrundmarkierung, nicht
-              interaktiv und ohne Einfluss auf die Anordnung der Events. */}
+          {/* Feiertage (S1.3, NB-02) */}
           {visibleHolidays.map((holiday) => {
             const left = `${posFor(holiday.date)}%`
 
@@ -182,7 +203,13 @@ export default function Timeline({ categories, events, holidays = [], onSelect }
         </div>
       </div>
 
-          {/* Timeline-Steuerung */}
+      {sorted.length === 0 && (
+        <p className="mt-3 text-center text-sm text-slate-500">
+          Noch keine Ereignisse – füge dein erstes Lifeline-Ereignis hinzu.
+        </p>
+      )}
+
+      {/* Timeline-Steuerung */}
       <div className="mt-3 flex items-center gap-4">
         {/* Position auf der Timeline */}
         <input
@@ -211,9 +238,7 @@ export default function Timeline({ categories, events, holidays = [], onSelect }
             max="2"
             step="0.1"
             value={zoom}
-            onChange={(event) =>
-              setZoom(Number(event.target.value))
-            }
+            onChange={(event) => setZoom(Number(event.target.value))}
             className="timeline-slider w-20"
             aria-label="Timeline-Zoom"
           />
