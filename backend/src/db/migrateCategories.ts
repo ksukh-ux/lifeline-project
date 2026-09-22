@@ -4,6 +4,12 @@ import { DEFAULT_CATEGORIES } from "../constants/categories.js";
 // Bildet die alten, fest codierten Kategorie-Schlüssel (vor dieser Änderung)
 // auf die neuen Anzeigenamen ab, damit bestehende Events beim Umstellen der
 // richtigen neuen Kategorie-Zeile zugeordnet werden können.
+//
+// "sonstiges" ist hier absichtlich nicht mehr enthalten: "Sonstiges" ist
+// keine vorbelegte Standardkategorie mehr, seit Nutzer:innen eigene
+// Kategorien anlegen können (siehe DEFAULT_CATEGORIES). Alt-Events mit
+// diesem oder einem anderen unbekannten Schlüssel fängt getCategoryIdFor()
+// unten über den generischen Fallback ab.
 const LEGACY_KEY_TO_LABEL: Record<string, string> = {
   meilenstein: "Meilenstein",
   karriere: "Karriere",
@@ -11,7 +17,6 @@ const LEGACY_KEY_TO_LABEL: Record<string, string> = {
   beziehung: "Beziehung",
   reise: "Reise",
   gesundheit: "Gesundheit",
-  sonstiges: "Sonstiges",
 };
 
 // Deckt mehrere historische Fassungen der `events`-Tabelle ab, nicht nur die
@@ -141,7 +146,7 @@ function repairEventsCreatedAtDefault(db: DatabaseSync): void {
 // db/migrate.ts). Drei voneinander unabhängige, jeweils für sich
 // wiederholbare Schritte:
 //
-// 1. Jede Person ohne eigene Kategorien bekommt die sieben Standardkategorien
+// 1. Jede Person ohne eigene Kategorien bekommt die sechs Standardkategorien
 //    angelegt (deckt sowohl gerade migrierte als auch — zur Sicherheit —
 //    versehentlich leere Konten ab).
 // 2. Falls die `events`-Tabelle noch die alte Spalte `category` (Text,
@@ -180,8 +185,13 @@ export function runDataMigrations(db: DatabaseSync): void {
       map = new Map(rows.map((row) => [row.label, row.id]));
       categoryMapsByUser.set(userId, map);
     }
-    const label = LEGACY_KEY_TO_LABEL[legacyKey] ?? "Sonstiges";
-    return map.get(label) ?? map.get("Sonstiges") ?? [...map.values()][0];
+    const label = LEGACY_KEY_TO_LABEL[legacyKey];
+    const matchedId = label ? map.get(label) : undefined;
+    // Unbekannter Alt-Schlüssel (z. B. das ehemalige "sonstiges") oder ein
+    // Schlüssel, dessen Zielkategorie bei dieser Person nicht existiert:
+    // einer ihrer vorhandenen Kategorien zuordnen, damit die Migration nicht
+    // an einem fehlenden Ziel scheitert.
+    return matchedId ?? [...map.values()][0];
   };
 
   db.exec("BEGIN");

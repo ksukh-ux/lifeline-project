@@ -14,7 +14,6 @@ export const DEFAULT_CATEGORIES: { label: string; color: string }[] = [
   { label: "Beziehung", color: "#EC4899" },
   { label: "Reise", color: "#14B8A6" },
   { label: "Gesundheit", color: "#F43F5E" },
-  { label: "Sonstiges", color: "#94A3B8" },
 ];
 
 const COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/;
