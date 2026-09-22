@@ -15,7 +15,7 @@ Absichtserklärung.
 **Abgrenzung gegen funktionale Anforderungen.** Regeln, die bestimmen, *ob eine Eingabe
 gültig ist* — Pflichtfelder, Datumsformat, zulässige Kategorie —, sind funktionale
 Anforderungen und stehen in [D1](D1-datenmodell.md), [D2](D2-datentypenverzeichnis.md)
-und [N2.3](N2-querschnittskonzepte.md), nicht hier. In N1 gehört nur, *wie gut* das
+und [N2.2](N2-querschnittskonzepte.md#n22-validierung), nicht hier. In N1 gehört nur, *wie gut* das
 System etwas tut, nicht *was* es tut.
 
 ---
@@ -250,7 +250,7 @@ zuzuordnen. Es werden keine Nutzungsdaten zu anderen Zwecken erhoben.
 **NFR-15c-02: Keine personenbezogenen Daten in Protokollen**
 
 Protokolle enthalten weder Zugangsdaten noch Event-Inhalte
-([N2.6](N2-querschnittskonzepte.md), DS-02 in A02).
+([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-logging), DS-02 in A02).
 
 **Prüfkriterium:** In einem Protokollauszug eines vollständigen Durchlaufs ist kein
 Event-Titel und kein Passwort enthalten.
@@ -274,7 +274,7 @@ und gelöscht werden können.
 
 - **Rahmenbedingungen** — [`P1-constraints.md`](P1-constraints.md).
 - **Gültigkeitsregeln für Eingaben** — [D1](D1-datenmodell.md),
-  [D2](D2-datentypenverzeichnis.md), [N2.3](N2-querschnittskonzepte.md). Diese sind
+  [D2](D2-datentypenverzeichnis.md), [N2.2](N2-querschnittskonzepte.md#n22-validierung). Diese sind
   funktional, nicht nichtfunktional.
 - **Strategien, wie eine Qualität erreicht wird** — [N2](N2-querschnittskonzepte.md); die
   technische Umsetzung in A08.
@@ -288,7 +288,7 @@ und gelöscht werden können.
 | Alt | Neu | Anmerkung |
 |---|---|---|
 | NFA-01 Benutzbarkeit | `NFR-11a-01` | unverändert |
-| NFA-02 Korrektheit | — | **entfällt.** Eingabevalidierung ist eine funktionale Anforderung; sie steht in N2.3 und D1/D2. |
+| NFA-02 Korrektheit | — | **entfällt.** Eingabevalidierung ist eine funktionale Anforderung; sie steht in N2.2 und D1/D2. |
 | NFA-03 Erweiterbarkeit | `NFR-14c-01` | verschärft: Erweiterbarkeit zur Laufzeit statt geringer Code-Änderung |
 | NFA-04 Sicherheit | `NFR-15a-01` | Prüfkriterium um die Ununterscheidbarkeit ergänzt |
 | NFA-05 Performance | `NFR-12a-01` | unverändert, Herkunft der Zahl 200 belegt |

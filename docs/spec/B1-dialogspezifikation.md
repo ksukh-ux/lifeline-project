@@ -92,7 +92,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 | **Zweck** | Chronologische Darstellung aller eigenen Events und Einstiegspunkt für alle weiteren Aktionen. |
 | **Realisiert** | [UC-04](F2-anwendungsfaelle.md); Einstieg für UC-01, UC-02, UC-03, UC-05, UC-06 |
 | **Erreichbarkeit** | Einstiegsdialog nach der Anmeldung; Rückkehrziel aus allen anderen Dialogen |
-| **Vorbedingung** | Bestehende Session ([N2.4](N2-querschnittskonzepte.md)) |
+| **Vorbedingung** | Bestehende Session ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)) |
 
 **Statik**
 
@@ -177,7 +177,7 @@ Anzeigename kann sich ändern, ohne dass bestehende Events ihre Zuordnung verlie
 
 | Aktion | Wirkung |
 |---|---|
-| Speichern | Prüfung nach [N2.3](N2-querschnittskonzepte.md); bei Erfolg Rückkehr zu DLG-01 mit aktualisierter Darstellung. |
+| Speichern | Prüfung nach [N2.2](N2-querschnittskonzepte.md#n22-validierung); bei Erfolg Rückkehr zu DLG-01 mit aktualisierter Darstellung. |
 | Abbrechen | Rückkehr zu DLG-01 ohne Änderung. Bei bereits eingegebenen Werten Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen). |
 | Neue Kategorie anlegen | Öffnet [DLG-06](#dlg-06--kategorieverwaltung); nach Rückkehr ist die neue Kategorie auswählbar und die bisherigen Eingaben sind erhalten. |
 | Bild entfernen | Setzt den Bildverweis zurück; wirksam erst mit dem Speichern. |
@@ -190,7 +190,7 @@ Anzeigename kann sich ändern, ohne dass bestehende Events ihre Zuordnung verlie
   Bild.
 - Fehlgeschlagene Speicherung: Meldung nach [B1.4.2](#b142-fehlermeldungen); Eingaben
   bleiben erhalten, damit sie nicht erneut erfasst werden müssen
-  ([N2.5](N2-querschnittskonzepte.md)).
+  ([N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung)).
 
 ---
 
@@ -368,7 +368,7 @@ erfolgreicher Anmeldung wird der ursprünglich angeforderte Dialog angezeigt.
 Fehler werden dort gemeldet, wo sie entstehen: Feldfehler am Feld, Vorgangsfehler am
 Vorgang. Jede Meldung sagt, was nicht möglich war und was die Nutzer:in tun kann. Interne
 Einzelheiten — Statuscodes, technische Meldungen, Stapelspuren — erscheinen nie in der
-Oberfläche ([NFR-11c-01](N1-nichtfunktional.md), [N2.5](N2-querschnittskonzepte.md)).
+Oberfläche ([NFR-11c-01](N1-nichtfunktional.md), [N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung)).
 
 ### B1.4.3 Bestätigung zerstörerischer Aktionen
 
@@ -425,5 +425,5 @@ DLG-06 gleichermaßen — und es ist der Grund, warum eine Kategorie nicht allei
 | [D1](D1-datenmodell.md) | DLG-02 bildet `EVENTS` ab, DLG-06 bildet `CATEGORIES` ab; beide setzen deren Invarianten um. |
 | [D2](D2-datentypenverzeichnis.md) | Bedeutungsregler und Bildupload in DLG-02 setzen D2.2 und D2.3 um. |
 | [N1](N1-nichtfunktional.md) | `NFR-10a-01`, `NFR-11a-01`, `NFR-11c-01`, `NFR-11d-01` binden die Dialoge; `NFR-14c-01` ist der Grund für DLG-06. |
-| [N2](N2-querschnittskonzepte.md) | B1.4.1 bis B1.4.3 sind die Oberflächenseite von N2.4 und N2.5. |
+| [N2](N2-querschnittskonzepte.md) | B1.4.1 bis B1.4.3 sind die Oberflächenseite von N2.3 und N2.4. |
 | [A05](../arch/A05-Bausteinansicht.md) | Ordnet den Dialogen die umsetzenden Frontend-Bausteine zu. |
