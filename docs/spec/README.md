@@ -25,7 +25,7 @@ Die Spezifikation richtet sich insbesondere an:
 
 1. Mit **P1** beginnen: Ziele, Projektumfang, Rahmenbedingungen und Erfolgskriterien.
 2. Anschließend **P2** lesen: fachlicher Überblick über das System und seine Bestandteile.
-3. Die Bausteine **F1 bis F3** beschreiben die Geschäftsprozesse, Anwendungsfälle und Anwendungsfunktionen.
+3. Die Bausteine **F2 und F3** beschreiben die Anwendungsfälle und Anwendungsfunktionen (F1 entfällt, siehe Übersicht).
 4. Die Bausteine **D1 und D2** dienen als Referenz für das Datenmodell und die verwendeten Datentypen.
 5. **B1** beschreibt die Benutzeroberfläche und die Interaktion mit dem System.
 6. **S1 und S3** behandeln Schnittstellen zu anderen Systemen sowie die Inbetriebnahme der Anwendung.
@@ -48,6 +48,7 @@ Die Spezifikation richtet sich insbesondere an:
 | ------ | ----------------------------------------------------------------------------------------------------- |
 | ✅      | Der Baustein wurde erstellt und inhaltlich ausgearbeitet.                                             |
 | 🛠     | Der Baustein ist vorgesehen, wurde aber noch nicht vollständig ausgearbeitet.                         |
+| —      | Der Baustein ist für Lifeline nicht anwendbar; die Begründung steht in der Tabelle.                   |
 
 ---
 
@@ -57,47 +58,65 @@ Die Spezifikation richtet sich insbesondere an:
 
 | Baustein | Bezeichnung                 | Status | Datei                                                            |
 | -------- | ---------------------------- | -----: | ----------------------------------------------------------------- |
-| P1       | Ziele und Rahmenbedingungen |     🛠 | [`P1-ziele-rahmenbedingungen.md`](P1-ziele-rahmenbedingungen.md) |
-| P2       | Architekturüberblick        |     🛠 | [`P2-architekturüberblick.md`](P2-architekturüberblick.md)     |
+| P1       | Ziele und Rahmenbedingungen |      ✅ | [`P1-ziele-rahmenbedingungen.md`](P1-ziele-rahmenbedingungen.md) |
+| P2       | Architekturüberblick        |      ✅ | [`P2-architekturüberblick.md`](P2-architekturüberblick.md)     |
+| P1 (Anhang) | Rahmenbedingungen im Detail |      ✅ | [`P1-constraints.md`](P1-constraints.md) |
 
 ### 2. Prozesse und Funktionen
 
 | Baustein | Bezeichnung          | Status | Datei                                                      |
 | -------- | --------------------- | -----: | ------------------------------------------------------------ |
 | F1       | Geschäftsprozesse    |      — | Entfällt nach Abstimmung mit dem Betreuer; die fachlichen Abläufe sind in F2 beschrieben. |
-| F2       | Anwendungsfälle      |     🛠 | [`F2-anwendungsfaelle.md`](F2-anwendungsfaelle.md)         |
-| F3       | Anwendungsfunktionen |     🛠 | [`F3-anwendungsfunktionen.md`](F3-anwendungsfunktionen.md) |
+| F2       | Anwendungsfälle      |      ✅ | [`F2-anwendungsfaelle.md`](F2-anwendungsfaelle.md)         |
+| F3       | Anwendungsfunktionen |      ✅ | [`F3-anwendungsfunktionen.md`](F3-anwendungsfunktionen.md) |
 
 ### 3. Daten
 
 | Baustein | Bezeichnung     | Status | Datei                                    |
 | -------- | ---------------- | -----: | ------------------------------------------ |
-| D1       | Datenmodell     |     🛠 | [`D1-datenmodell.md`](D1-datenmodell.md) |
-| D2       | Datentypenverzeichnis |     🛠 | [`D2-datentypenverzeichnis.md`](D2-datentypenverzeichnis.md)   |
+| D1       | Datenmodell     |      ✅ | [`D1-datenmodell.md`](D1-datenmodell.md) |
+| D2       | Datentypenverzeichnis |      ✅ | [`D2-datentypenverzeichnis.md`](D2-datentypenverzeichnis.md)   |
 
 ### 4. Benutzeroberfläche
 
 | Baustein | Bezeichnung         | Status | Datei                                                    |
 | -------- | -------------------- | -----: | ----------------------------------------------------------- |
-| B1       | Dialogspezifikation |     🛠 | [`B1-dialogspezifikation.md`](B1-dialogspezifikation.md) |
+| B1       | Dialogspezifikation |      ✅ | [`B1-dialogspezifikation.md`](B1-dialogspezifikation.md) |
+| B2       | Batch               |      — | Nicht anwendbar: Lifeline hat keine zeitgesteuerte oder Stapelverarbeitung; jede Verarbeitung läuft synchron innerhalb einer Anfrage (`CON-3b-02`, `NG-04`). |
+| B3       | Druckausgaben       |      — | Nicht anwendbar: Es gibt keine Berichte oder Druckausgaben (`NG-07`). Der PNG-Export der Timeline ist eine Dialogaktion in B1 (DLG-01) und keine Druckausgabe. |
 
 ### 5. Schnittstellen zu Nachbar- und Altsystemen
 
 | Baustein | Bezeichnung                       | Status | Datei                                          |
 | -------- | ----------------------------------- | -----: | ------------------------------------------------- |
-| S1       | Schnittstellen zu Nachbarsystemen |     🛠 | [`S1-nachbarsysteme.md`](S1-nachbarsysteme.md) |
-| S3       | Inbetriebnahme und Bereitstellung |     🛠 | [`S3-inbetriebnahme.md`](../betrieb/S3-inbetriebnahme.md) |
+| S1       | Schnittstellen zu Nachbarsystemen |      ✅ | [`S1-nachbarsysteme.md`](S1-nachbarsysteme.md) |
+| S2       | Datenmigration                    |      — | Nicht anwendbar: Lifeline ist eine Neuentwicklung ohne Vorgängersystem; es werden keine Altdaten übernommen (`NG-06`). |
+| S3       | Inbetriebnahme und Bereitstellung |      ✅ | [`S3-inbetriebnahme.md`](../betrieb/S3-inbetriebnahme.md) |
 
 ### 6. Übergreifende Aspekte
 
 | Baustein | Bezeichnung                    | Status | Datei                                                      |
 | -------- | -------------------------------- | -----: | ------------------------------------------------------------ |
-| N1       | Nichtfunktionale Anforderungen |     🛠 | [`N1-nichtfunktional.md`](N1-nichtfunktional.md)           |
-| N2       | Querschnittskonzepte           |     🛠 | [`N2-querschnittskonzepte.md`](N2-querschnittskonzepte.md) |
+| N1       | Nichtfunktionale Anforderungen |      ✅ | [`N1-nichtfunktional.md`](N1-nichtfunktional.md)           |
+| N2       | Querschnittskonzepte           |      ✅ | [`N2-querschnittskonzepte.md`](N2-querschnittskonzepte.md) |
 
 ### 7. Ergänzende Bausteine
 
 | Baustein | Bezeichnung   | Status | Datei                            |
 | -------- | -------------- | -----: | ----------------------------------- |
 | E1       | Leseleitfaden |      ✅ | Dieses Dokument                  |
-| E2       | Glossar       |     🛠 | [`E2-glossar.md`](E2-glossar.md) |
+| E2       | Glossar       |      ✅ | [`E2-glossar.md`](E2-glossar.md) |
+
+---
+
+## Eingesetzte KI-Werkzeuge
+
+Offenlegung gemäß Abschnitt 9.1 der Modulvorgaben (WK_1106). Alle Inhalte wurden
+vom Team gelesen, fachlich geprüft und bei Bedarf überarbeitet; jedes Teammitglied
+kann die Spezifikation erläutern.
+
+| Werkzeug | Wofür | Wie wurde geprüft |
+|---|---|---|
+| ChatGPT | *vom Team zu ergänzen* | *vom Team zu ergänzen* |
+| Google Gemini | *vom Team zu ergänzen* | *vom Team zu ergänzen* |
+| Claude Code | Abschluss-Review der Spezifikation gegen Code, Architektur und Modulvorgaben (Unstimmigkeiten zwischen Bausteinen, veraltete Verweise, fehlende Anwendungsfälle und Invarianten); Vorschläge für die Angleichung einzelner Bausteine an den umgesetzten Stand. | Jeder Befund wurde vom Team am Code bzw. am jeweiligen Baustein nachvollzogen; übernommene Textänderungen wurden gelesen und per Pull Request auf `main` gebracht. |
