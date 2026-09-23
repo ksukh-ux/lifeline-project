@@ -73,10 +73,8 @@ sequenceDiagram
 **Auth-Mechanismus:** Session-basierte Authentifizierung – Kontext,
 Alternativen und Begründung siehe ADR-004 (Kapitel 9). Konkrete
 Realisierung (Passwort-Hashing, Cookie-Flags, Session-Store) siehe
-Kapitel 8.2. **Hinweis:** Ein eigenständiger `AuthForms`-Baustein ist
-im Frontend noch nicht umgesetzt (siehe 5.2.1); aktuell übernimmt eine
-automatische Demo-Anmeldung (`ensureSession()` in `api/client.ts`)
-diese Rolle testweise, bis eine echte Login-Seite existiert.
+Kapitel 8.2. `AuthForms` ist als eigener Frontend-Baustein umgesetzt und
+ruft die Registrierungs- und Login-Endpunkte über `ApiClient` auf.
 
 ### 6.3 Statistik berechnen
 

@@ -13,6 +13,9 @@ interface Props {
 
 type ViewMode = 'overview' | 'year'
 
+const eventSortKey = (event: LifeEvent): string =>
+  `${event.date}T${event.time ?? '23:59'}`
+
 const MONTHS = [
   'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
   'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez',
@@ -39,7 +42,7 @@ export default function Timeline({
   const [viewMode, setViewMode] = useState<ViewMode>('overview')
 
   const sorted = useMemo(
-    () => [...events].sort((a, b) => a.date.localeCompare(b.date)),
+    () => [...events].sort((a, b) => eventSortKey(a).localeCompare(eventSortKey(b))),
     [events],
   )
 

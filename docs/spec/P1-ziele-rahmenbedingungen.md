@@ -84,7 +84,7 @@ Speicherung, Validierung, Zugriffstrennung — sind als messbare Anforderungen i
 | NG-02 | Rollen, Rechte, Administration, Mehrbenutzerzugriff auf dieselbe Timeline | Persönliche Anwendung; jede Nutzer:in sieht ausschließlich eigene Events. |
 | NG-03 | Synchronisation zwischen Geräten über den Serverstand hinaus | Der Server ist die einzige Wahrheit. |
 | NG-04 | Erinnerungen und Benachrichtigungen | Würde eine Zeitsteuerung und damit einen Batch-Anteil einführen. |
-| NG-05 | Import und Export einer Datensicherung, externe Authentifizierungsdienste | Nicht im Zeitrahmen (`CON-3h-01`). |
+| NG-05 | Externe Authentifizierungsdienste | Nicht im Zeitrahmen (`CON-3h-01`). Der lokale JSON-Import und -Export einer Datensicherung ist umgesetzt. |
 | NG-06 | Übernahme von Daten aus einem Vorgängersystem | Greenfield; Baustein S2 entfällt. |
 | NG-07 | Berichte, PDF- oder Druckausgaben | Kein Berichtsanwendungsfall. |
 

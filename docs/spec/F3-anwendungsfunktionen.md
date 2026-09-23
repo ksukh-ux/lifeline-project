@@ -29,8 +29,8 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 
 | Abschnitt | Inhalt |
 |---|---|
-| **Zweck** | Berechnet aus zwei Datumswerten die Anzahl der dazwischenliegenden Tage — z. B. die Dauer eines Events (`start_date` bis `end_date`) oder den zeitlichen Abstand zwischen zwei Events. |
-| **Eingaben** | Zwei Datumswerte (`Date`), z. B. `EVENTS.start_date` und `EVENTS.end_date`, oder die `start_date`-Werte zweier verschiedener Events. |
+| **Zweck** | Berechnet aus zwei Datumswerten die Anzahl der dazwischenliegenden Tage — z. B. den zeitlichen Abstand zwischen zwei Events. |
+| **Eingaben** | Zwei Datumswerte (`Date`) aus den Event-Daten. |
 | **Ausgaben** | Ganzzahlige Anzahl Tage zwischen den beiden Datumswerten. |
 | **Regeln** | - Liegt das zweite Datum vor dem ersten, wird der Betrag der Differenz zurückgegeben (keine negative Tagesanzahl).<br>- Ergebnis ist deterministisch und hängt ausschließlich von den beiden Eingabewerten ab. |
 | **Verwendet von** | [B1.1 Timeline](B1-dialogspezifikation.md) (Anzeige der Event-Dauer bzw. des Abstands zum vorherigen Event); [AF-02](#af-02--statistik-aggregation) (Zeitspannen-Kennzahlen). |
@@ -41,8 +41,8 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 |---|---|
 | **Zweck** | Verdichtet die Events einer Nutzerin bzw. eines Nutzers zu aggregierten Kennzahlen für die Statistikansicht. |
 | **Eingaben** | Menge der `EVENTS`-Datensätze einer Nutzer:in. |
-| **Ausgaben** | Aggregierte Kennzahlen: Anzahl Events je `category` (D2.4), Anzahl Events insgesamt, Zeitspanne vom ältesten bis zum jüngsten Event (unter Nutzung von [AF-01](#af-01--ereignisdauer-berechnen)), durchschnittliche `significance` je Kategorie. |
-| **Regeln** | - Sind keine Events vorhanden, liefert die Funktion leere bzw. neutrale Kennzahlen (0), statt einen Fehler auszulösen.<br>- Die Berechnung erfolgt serverseitig im `statsService` auf Basis der aus der Datenbank geladenen Events. |
+| **Ausgaben** | Aggregierte Kennzahlen: Anzahl Events je Kategorie, Anzahl Events insgesamt, Zeitspanne vom ältesten bis zum jüngsten Event (unter Nutzung von [AF-01](#af-01--ereignisdauer-berechnen)), durchschnittliche `significance` je Kategorie. |
+| **Regeln** | - Sind keine Events vorhanden, liefert die Funktion leere bzw. neutrale Kennzahlen (0), statt einen Fehler auszulösen.<br>- Die Berechnung erfolgt serverseitig auf Basis der Events der angemeldeten Person. |
 | **Verwendet von** | [UC-06](F2-anwendungsfaelle.md#uc-06--statistik-berechnen) *Statistik berechnen* (liefert die im `StatsDashboard` dargestellten Werte). |
 
 ### AF-03 — Timeline-Filterung
@@ -50,7 +50,7 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 | Abschnitt | Inhalt |
 |---|---|
 | **Zweck** | Reduziert die bereits vom Backend geladenen Events auf die Teilmenge, die zu einer ausgewählten Kategorie passt, ohne eine erneute Anfrage an das Backend zu stellen. |
-| **Eingaben** | Bereits geladene Events (Menge); ausgewählte `category` (D2.4) oder „kein Filter“. |
+| **Eingaben** | Bereits geladene Events (Menge); ausgewählte Kategorie oder „kein Filter“. |
 | **Ausgaben** | Gefilterte Teilmenge der Events. |
 | **Regeln** | - Läuft vollständig clientseitig im Frontend.<br>- Bei „kein Filter“ wird die vollständige, bereits geladene Menge zurückgegeben.<br>- Ist die Ergebnismenge leer, wird dies als leerer Zustand an die Timeline zurückgegeben (siehe [B1.1](B1-dialogspezifikation.md)), nicht als Fehler. |
 | **Verwendet von** | [UC-05](F2-anwendungsfaelle.md#uc-05--timeline-filtern) *Timeline filtern*, ausgelöst über die `FilterBar` ([B1.3](B1-dialogspezifikation.md)). |

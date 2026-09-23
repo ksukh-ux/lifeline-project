@@ -16,11 +16,12 @@ Für Events gelten insbesondere folgende Validierungsregeln:
 
 ## N2.3 Authentifizierung und Session
 
-Die Authentifizierung erfolgt über das Backend. Passwörter werden mit `bcrypt` gehasht und nicht im Klartext gespeichert.
+Die Authentifizierung erfolgt über das Backend. Passwörter werden mit Node.js
+`scrypt` gehasht und nicht im Klartext gespeichert.
 
 Nach erfolgreicher Anmeldung wird eine Session erzeugt. Geschützte Funktionen können nur mit einer gültigen Session verwendet werden.
 
-Nutzer:innen dürfen ausschließlich auf die Events zugreifen, die ihrem eigenen Benutzerkonto zugeordnet sind.
+Nutzer:innen dürfen ausschließlich auf die Events und Kategorien zugreifen, die ihrem eigenen Benutzerkonto zugeordnet sind.
 
 ## N2.4 Fehlerbehandlung
 

@@ -206,6 +206,9 @@ export default function App() {
   }
 
   const handleDelete = async (id: string) => {
+    const shouldDelete = confirm('Dieses Ereignis wirklich löschen?')
+    if (!shouldDelete) return
+
     try {
       await deleteEventOnServer(id)
 

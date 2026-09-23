@@ -25,7 +25,7 @@ aus F2 von genau einem Dialog dargestellt. Die Dialogkennungen (`DLG-xx`) sind s
 | [DLG-03](#dlg-03--filterleiste) | Filterleiste | Chronik | UC-05 | ja |
 | [DLG-04](#dlg-04--auswertungsansicht) | Auswertungsansicht | Auswertung | UC-06 | ja |
 | [DLG-05](#dlg-05--zugangsformular) | Zugangsformular | Zugang | UC-07 | nein |
-| [DLG-06](#dlg-06--kategorieverwaltung) | Kategorieverwaltung | Stammdaten | — (siehe unten) | ja |
+| [DLG-06](#dlg-06--kategorieverwaltung) | Kategorieverwaltung | Stammdaten | UC-08 | ja |
 
 ### Navigationskarte
 
@@ -53,12 +53,6 @@ DLG-01 ist Einstiegs- und Rückkehrpunkt: jede Aktion in DLG-02, DLG-04 und DLG-
 wieder dort. DLG-03 ist kein eigener Bildschirm, sondern ein fest in DLG-01 eingebetteter
 Dialogteil; er erhält eine eigene Kennung, weil er einen eigenen Anwendungsfall
 realisiert.
-
-**DLG-06 hat noch keinen Anwendungsfall.** Er ergibt sich aus der Modelländerung: seit die
-Kategorie eine eigene Entität ist ([D1.3](D1-datenmodell.md#d13-categories)), müssen
-Nutzer:innen eigene Kategorien zur Laufzeit anlegen können — das ist die Bedingung dafür,
-dass [NFR-14c-01](N1-nichtfunktional.md) überhaupt erfüllbar ist. Ein passender
-Anwendungsfall in F2 fehlt noch; siehe `docs/OFFENE-PUNKTE.md`, OP-05.
 
 **Ebenfalls offen:** für „Alle Events löschen" existiert kein Dialog. Zu ergänzen ist
 voraussichtlich eine Aktion in DLG-01 mit einer Rückfrage nach
@@ -113,7 +107,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 
 | Aktion | Wirkung |
 |---|---|
-| Event auswählen | Zusätzliche Angaben werden eingeblendet: Beschreibung, Uhrzeit, Ort, Schlagwörter, Bild. |
+| Event auswählen | Zusätzliche Angaben werden eingeblendet: Beschreibung, Uhrzeit und Bild. |
 | Neues Event anlegen | Öffnet [DLG-02](#dlg-02--ereignisformular) im Anlegemodus. |
 | Event bearbeiten | Öffnet DLG-02 im Bearbeitungsmodus mit den vorhandenen Werten. |
 | Event löschen | Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen), danach Entfernen aus der Darstellung. |
@@ -166,8 +160,6 @@ statt einen anzulegen.
 | Beschreibung | | Freitext |
 | Kategorie | ● | Auswahl aus den für diese Nutzer:in sichtbaren Kategorien: die vorbelegten Standardkategorien und ihre eigenen (`INV-C4`). Vorbelegt mit der ersten Kategorie der Person (nach Anlagereihenfolge). |
 | Bedeutung | ● | Regler 0–100 ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)), vorbelegt mit einem mittleren Wert |
-| Ort | | Freitext |
-| Schlagwörter | | mehrere Werte |
 | Bild | | ein Bild; Formate und Größe nach [D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path) |
 
 Die Kategorieauswahl zeigt `label`, arbeitet aber auf der Kennung der Kategorie. Der
@@ -186,8 +178,8 @@ Anzeigename kann sich ändern, ohne dass bestehende Events ihre Zuordnung verlie
 
 - Verletzte Prüfregel: Rückmeldung **am betroffenen Feld**, nicht als globale Meldung. Das
   Formular behält alle Eingaben.
-- Abgewiesener Bildupload: Meldung am Bildfeld; das Event bleibt speicherbar, nur ohne
-  Bild.
+- Abgewiesener Bildupload: Meldung am Bildfeld; das Event wird nicht gespeichert,
+  bis der ungültige Upload entfernt oder ersetzt wurde.
 - Fehlgeschlagene Speicherung: Meldung nach [B1.4.2](#b142-fehlermeldungen); Eingaben
   bleiben erhalten, damit sie nicht erneut erfasst werden müssen
   ([N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung)).
@@ -300,10 +292,9 @@ Registrierung fordert zusätzlich eine Bestätigung des Passworts.
 - Es gibt **keinen** Weg, ein vergessenes Passwort zurückzusetzen. Bewusste Lücke, siehe
   `docs/OFFENE-PUNKTE.md`, OP-03.
 
-> **Umsetzungsstand.** Laut [A05.2.1](../arch/A05-Bausteinansicht.md) und
-> [A08.2](../arch/A08-Querschnittskonzepte.md) existiert dieser Dialog im Frontend noch
-> nicht; die Anwendung meldet sich derzeit automatisch mit einem festen Konto an. Solange
-> das so ist, sind `SC-01` und `SC-05` nicht nachweisbar.
+> **Umsetzungsstand.** Der Dialog ist in `frontend/src/components/AuthForms.tsx`
+> umgesetzt. Die Session bleibt bei einem Serverneustart nicht erhalten, die
+> persistenten Events bleiben jedoch in SQLite gespeichert.
 
 ---
 
