@@ -69,7 +69,7 @@ export default function EventCard({
             </div>
 
             <span className="font-mono text-[10px] text-slate-500">
-              Bedeutung {event.significance}%
+              Bedeutung {event.significance} / 100
             </span>
           </div>
         </div>

@@ -209,7 +209,7 @@ export default function Timeline({
         className="scrollbar-hidden scroll-smooth overflow-x-auto pb-2"
       >
         <div
-          className="relative h-72 px-4"
+          className="relative h-80 px-4"
           style={{ minWidth: `${timelineWidth}px` }}
         >
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
@@ -300,7 +300,10 @@ export default function Timeline({
                   </p>
                   {/* Kategorie auch als Text, nicht nur als Farbe (B1.4.7, NFR-11d-01) */}
                   <p className="mt-0.5 truncate font-mono text-[9px] uppercase tracking-wide text-slate-500">
-                    {category.label} · {formatDate(event.date)}
+                    {category.label}
+                  </p>
+                  <p className="font-mono text-[9px] text-slate-500">
+                    {formatDate(event.date)}
                   </p>
                 </div>
               </button>
