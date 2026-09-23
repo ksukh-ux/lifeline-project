@@ -114,7 +114,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 | Event auf der Zeitachse wählen | Öffnet DLG-02 im Bearbeitungsmodus mit den vorhandenen Werten. |
 | Bearbeiten an einer Karte | Öffnet DLG-02 im Bearbeitungsmodus. |
 | Löschen an einer Karte | Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen), danach Entfernen aus der Darstellung. |
-| Übersicht / Jahresansicht | Wechselt die Ansicht der Zeitachse. |
+| Übersicht / Jahresansicht | Wechselt die Ansicht der Zeitachse über einen Umschalter. Der Wechsel ist fließend: Events gleiten an ihre neue Position, Events anderer Jahre blenden aus (bei „Bewegung reduzieren“ ohne Animation). |
 | Jahr wählen (vor, zurück, Eingabe) | Zeigt ein anderes Jahr in der Jahresansicht und lädt dessen Feiertage. |
 | Horizontal navigieren | Verschiebt den sichtbaren Zeitbereich (Wischen, Scrollen oder Positionsregler). |
 | Zoom ändern | Ändert die Breite der Zeitachse. |
