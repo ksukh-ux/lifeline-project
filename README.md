@@ -112,8 +112,9 @@ Schutz vor Skript-Eingaben):
 npm --prefix frontend run test:browser
 ```
 
-Der Test startet Backend und Frontend selbst (Ports 3190 und 5191, temporäre
-Datenbank) und benötigt einen installierten Google Chrome oder Microsoft Edge.
+Der Test baut das Frontend, startet Backend und Produktions-Build selbst (Ports
+3190 und 5191, temporäre Datenbank) und benötigt einen installierten Google Chrome
+oder Microsoft Edge. Ladezeiten werden als Median aus drei Ladevorgängen gemessen.
 
 ## Produktionsbetrieb (ein Prozess)
 
