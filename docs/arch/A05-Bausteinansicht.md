@@ -63,13 +63,12 @@ Der Baustein Frontend zerfällt in folgende Blackboxen:
 | `TimelineView` | Chronologische Darstellung aller Events, Zoom/Scroll | Erhält Events von `ApiClient`, rendert sie | UC-04 | `frontend/src/components/Timeline.tsx` |
 | `EventForm` | Formular zum Anlegen/Bearbeiten eines Events | Ruft `ApiClient` mit Formulardaten auf | UC-01, UC-02 | `frontend/src/components/EventFormModal.tsx` |
 | `FilterBar` | Filterung der Timeline nach Kategorie | Reicht gewählte Kategorie an `TimelineView` weiter | UC-05 | `frontend/src/components/CategoryFilter.tsx` |
-| `StatsDashboard` | Aggregierte Auswertung je Kategorie | Ruft `ApiClient` auf, rendert Ergebnis | UC-06 | *noch nicht umgesetzt* |
+| `StatsDashboard` | Aggregierte Auswertung je Kategorie und Zeitraum | Ruft `ApiClient` auf, rendert Ergebnis | UC-06 | `frontend/src/components/StatsDashboard.tsx` |
 | `AuthForms` | Login- und Registrierungsformulare | Ruft `ApiClient` mit Zugangsdaten auf | UC-07 | `frontend/src/components/AuthForms.tsx` |
 | `ApiClient` | Zentrale Schnittstelle für alle HTTP-Anfragen ans Backend | HTTP/REST zum Backend | — | `frontend/src/api/client.ts` |
 
-**Hinweis:** `AuthForms` ist umgesetzt und verwendet die Registrierungs- und
-Login-Endpunkte. `StatsDashboard` ist weiterhin eine geplante Erweiterung;
-der Statistik-Endpunkt existiert nur im Backend.
+**Hinweis:** `AuthForms` und `StatsDashboard` sind umgesetzt und verwenden die
+Registrierungs-, Login- bzw. Statistik-Endpunkte.
 
 #### 5.2.2 Whitebox Backend/API
 

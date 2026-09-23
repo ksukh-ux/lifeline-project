@@ -33,7 +33,7 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 | **Eingaben** | Zwei Datumswerte (`Date`) aus den Event-Daten. |
 | **Ausgaben** | Ganzzahlige Anzahl Tage zwischen den beiden Datumswerten. |
 | **Regeln** | - Liegt das zweite Datum vor dem ersten, wird der Betrag der Differenz zurückgegeben (keine negative Tagesanzahl).<br>- Ergebnis ist deterministisch und hängt ausschließlich von den beiden Eingabewerten ab. |
-| **Verwendet von** | [B1.1 Timeline](B1-dialogspezifikation.md) (Anzeige der Event-Dauer bzw. des Abstands zum vorherigen Event); [AF-02](#af-02--statistik-aggregation) (Zeitspannen-Kennzahlen). |
+| **Verwendet von** | [AF-02](#af-02--statistik-aggregation) (Zeitspannen-Kennzahlen). |
 
 ### AF-02 — Statistik-Aggregation
 
@@ -83,7 +83,7 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 |---|---|
 | F1 | Entfällt nach Abstimmung mit dem Betreuer; AF-02 und AF-03 werden durch UC-06 bzw. UC-05 in F2 eingeordnet. |
 | [F2](F2-anwendungsfaelle.md) | UC-05 nutzt AF-03; UC-06 nutzt AF-01 und AF-02. |
-| [D1](D1-datenmodell.md) | AF-01 und AF-02 rechnen auf den Attributen von `EVENTS` (`start_date`, `end_date`, `category`, `significance`). |
-| [D2](D2-datentypenverzeichnis.md) | Wertebereich von `category` bestimmt die Gruppierung in AF-02 und AF-03. |
+| [D1](D1-datenmodell.md) | AF-01 und AF-02 rechnen auf den Attributen von `EVENTS` (`date`, `category_id`, `significance`). |
+| [D2](D2-datentypenverzeichnis.md) | Der Wertebereich von `significance` und die Kategorieentität bestimmen die Aggregation in AF-02 und AF-03. |
 | [B1](B1-dialogspezifikation.md) | AF-01 speist die Anzeige in der Timeline; AF-04 realisiert die Export-Aktion dort. |
 

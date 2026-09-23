@@ -6,12 +6,23 @@ export const statsRouter = Router();
 
 statsRouter.use(requireAuth);
 
-// GET /api/stats — aggregierte Auswertung der eigenen Einträge nach
-// Kategorie (Anzahl + durchschnittliche Bedeutung), siehe P1 §6 / F1-F3.
-// Kategorie ist eine eigene Entität (siehe D1.3) — hier per JOIN aufgelöst,
-// damit die Antwort weiterhin Name und Farbe der Kategorie enthält.
+// GET /api/stats — aggregierte Auswertung der eigenen Einträge.
 statsRouter.get("/", (req, res) => {
-  const rows = db
+  const summary = db
+    .prepare(
+      `SELECT COUNT(*) AS total_count,
+              MIN(date) AS oldest_date,
+              MAX(date) AS newest_date
+       FROM events
+       WHERE user_id = ?`
+    )
+    .get(req.userId!) as {
+      total_count: number;
+      oldest_date: string | null;
+      newest_date: string | null;
+    };
+
+  const categories = db
     .prepare(
       `SELECT c.id AS category_id, c.label AS category_label, c.color AS category_color,
               COUNT(*) AS count, AVG(e.significance) AS avg_significance
@@ -21,5 +32,18 @@ statsRouter.get("/", (req, res) => {
        GROUP BY c.id`
     )
     .all(req.userId!);
-  res.json(rows);
+  const spanDays = summary.oldest_date && summary.newest_date
+    ? Math.round(
+        (Date.parse(summary.newest_date) - Date.parse(summary.oldest_date)) /
+          (1000 * 60 * 60 * 24),
+      )
+    : 0;
+
+  res.json({
+    totalCount: summary.total_count,
+    oldestDate: summary.oldest_date,
+    newestDate: summary.newest_date,
+    spanDays,
+    categories,
+  });
 });

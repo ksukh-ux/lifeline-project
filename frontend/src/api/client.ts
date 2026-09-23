@@ -11,6 +11,22 @@ export interface AuthUser {
   created_at: string
 }
 
+export interface EventStatsCategory {
+  category_id: number
+  category_label: string
+  category_color: string
+  count: number
+  avg_significance: number | null
+}
+
+export interface EventStats {
+  totalCount: number
+  oldestDate: string | null
+  newestDate: string | null
+  spanDays: number
+  categories: EventStatsCategory[]
+}
+
 interface ApiEventRow {
   id: number
   user_id: number
@@ -93,6 +109,14 @@ export async function createCategory(label: string, color: string): Promise<Cate
   })
   if (!response.ok) {
     throw new Error(await readErrorMessage(response, 'Konnte Kategorie nicht anlegen.'))
+  }
+  return response.json()
+}
+
+export async function fetchStats(): Promise<EventStats> {
+  const response = await apiFetch('/api/stats')
+  if (!response.ok) {
+    throw new Error(await readErrorMessage(response, 'Konnte Statistik nicht laden.'))
   }
   return response.json()
 }

@@ -5,6 +5,7 @@ import Timeline from './components/Timeline'
 import CategoryFilter from './components/CategoryFilter'
 import EventCard from './components/EventCard'
 import EventFormModal from './components/EventFormModal'
+import StatsDashboard from './components/StatsDashboard'
 import AuthForms from './components/AuthForms'
 import {
   createCategory,
@@ -13,6 +14,7 @@ import {
   fetchCategories,
   fetchEvents,
   fetchHolidays,
+  fetchStats,
   getCurrentUser,
   logout as logoutOnServer,
   updateEvent as updateEventOnServer,
@@ -73,6 +75,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
+  const [stats, setStats] = useState<Awaited<ReturnType<typeof fetchStats>> | null>(null)
   const [holidays, setHolidays] = useState<Holiday[]>([])
   const [filter, setFilter] = useState<number | 'alle'>('alle')
   const [selectedYear, setSelectedYear] = useState(
@@ -115,6 +118,13 @@ export default function App() {
 
       setCategories(loadedCategories)
       setEvents(loadedEvents)
+
+      try {
+        setStats(await fetchStats())
+      } catch {
+        // Statistik ist eine Erweiterung und darf die Timeline nicht blockieren.
+        setStats(null)
+      }
     } catch (error) {
       setLoadError(
         error instanceof Error
@@ -158,6 +168,7 @@ export default function App() {
     setUser(null)
     setEvents([])
     setCategories([])
+    setStats(null)
   }
 
   const handleCreateCategory = async (label: string, color: string) => {
@@ -194,6 +205,7 @@ export default function App() {
             )
           : [...previousEvents, saved],
       )
+      setStats(await fetchStats())
 
       setModalEvent(undefined)
     } catch (error) {
@@ -215,6 +227,7 @@ export default function App() {
       setEvents((previousEvents) =>
         previousEvents.filter((event) => event.id !== id),
       )
+      setStats(await fetchStats())
     } catch (error) {
       alert(
         error instanceof Error
@@ -239,6 +252,7 @@ export default function App() {
       )
 
       setEvents([])
+      setStats(await fetchStats())
     } catch (error) {
       alert(
         error instanceof Error
@@ -518,6 +532,8 @@ export default function App() {
             Keine Ereignisse in dieser Kategorie.
           </p>
         )}
+
+        {stats && <StatsDashboard stats={stats} />}
 
         <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
           Hinweis: Alle Daten werden im Backend gespeichert (SQLite).

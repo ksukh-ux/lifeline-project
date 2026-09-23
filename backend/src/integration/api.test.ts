@@ -114,6 +114,20 @@ test("API schützt Eventdaten und unterstützt den vollständigen Event-CRUD", a
     }, firstUser.cookie);
     assert.equal(created.status, 201);
 
+    const stats = await request<{
+      totalCount: number;
+      oldestDate: string;
+      newestDate: string;
+      spanDays: number;
+      categories: Array<{ count: number }>;
+    }>(baseUrl, "/api/stats", {}, firstUser.cookie);
+    assert.equal(stats.status, 200);
+    assert.equal(stats.body.totalCount, 1);
+    assert.equal(stats.body.oldestDate, "2026-09-23");
+    assert.equal(stats.body.newestDate, "2026-09-23");
+    assert.equal(stats.body.spanDays, 0);
+    assert.equal(stats.body.categories[0]?.count, 1);
+
     const updated = await request<{ title: string }>(
       baseUrl,
       `/api/events/${created.body.id}`,
