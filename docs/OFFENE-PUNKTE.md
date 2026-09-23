@@ -20,8 +20,8 @@ Dialog. Vorgesehen ist eine Aktion in DLG-01 mit einer Rückfrage nach
 [B1.4.3](spec/B1-dialogspezifikation.md#b143-bestätigung-zerstörerischer-aktionen)
 (Bestätigung zerstörerischer Aktionen), analog zum Löschen eines einzelnen Events.
 
-**Status:** Offen. Kein Anwendungsfall in F2 verlangt diese Funktion als Muss; sie ist
-eine denkbare Komfortfunktion, keine Voraussetzung für die Erfolgskriterien in P1.6.
+**Status:** Gelöst. „Alle Ereignisse löschen“ ist als Aktion im Menü des Anwendungsrahmens
+umgesetzt, mit Rückfrage nach B1.4.3, und in F2 als Alternativablauf von UC-03 beschrieben.
 
 ## OP-03 – Kein Zurücksetzen eines vergessenen Passworts
 
