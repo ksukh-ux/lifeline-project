@@ -52,8 +52,9 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
-In `backend/.env` für `SESSION_SECRET` einen eigenen langen,
-zufälligen Schlüssel eintragen. Die `.env`-Dateien nicht committen.
+Die `.env`-Dateien enthalten nur lokale Laufzeitkonfiguration und werden nicht
+committet. Aktive Sessions liegen während der Laufzeit im Backend-Prozess und
+werden bei einem Neustart zurückgesetzt.
 
 Anschließend die lokale Datenbank einrichten:
 
