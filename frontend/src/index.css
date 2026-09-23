@@ -294,3 +294,16 @@ body::after {
   .shooting-star { display: none; }
   body::after { animation: none; }
 }
+
+/* Statistik: Der Ring baut sich beim ersten Anzeigen einmal auf. */
+.donut-segment {
+  animation: donut-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes donut-draw {
+  from { stroke-dasharray: 0 999; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .donut-segment { animation: none; }
+}

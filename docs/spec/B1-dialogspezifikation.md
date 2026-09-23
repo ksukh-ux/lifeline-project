@@ -273,9 +273,18 @@ Umbenennen, Umfärben und Löschen eigener Kategorien sind bewusst nicht Teil di
 
 **Statik**
 
-Die Kennzahlen aus [AF-02](F3-anwendungsfunktionen.md#af-02--statistik-aggregation):
-Anzahl Events, Zeitspanne in Tagen, Zeitraum vom ältesten bis zum jüngsten Event und je
-Kategorie Anzahl und Tendenz der Bedeutung („Ø 95“).
+Die Kennzahlen aus [AF-02](F3-anwendungsfunktionen.md#af-02--statistik-aggregation),
+in drei Teilen nebeneinander (auf dem Smartphone untereinander):
+
+- Kacheln mit Anzahl Events und Zeitspanne in Tagen; darüber der Zeitraum vom ältesten bis
+  zum jüngsten Event.
+- Ein **Ringdiagramm** mit dem Anteil jeder Kategorie an allen Events, in der Farbe der
+  Kategorie; in der Mitte die Gesamtzahl. Größte Kategorie zuerst, bei Gleichstand in der
+  Reihenfolge der Filterleiste. Kleine Lücken trennen die Segmente, weil sich einige
+  Kategoriefarben bei Farbfehlsichtigkeit ähneln.
+- Eine **Tabelle** je Kategorie mit Name, Anzahl, Anteil (eine Nachkommastelle) und Tendenz
+  der Bedeutung („Ø 95“). Sie ist zugleich Legende des Rings und Textfassung der Grafik;
+  keine Information steht nur im Ring (B1.4.7).
 
 Die Mittelwerte sind als **Tendenz** beschriftet, nicht als „durchschnittliche
 Wichtigkeit“: die Bedeutungsskala ist ordinal, eine Mittelwertbildung darauf ist streng
@@ -285,14 +294,20 @@ genommen nicht zulässig und dient nur als grobe Orientierung
 **Dynamik**
 
 Die Ansicht ist lesend. Sie wird nach jedem Anlegen, Bearbeiten, Löschen und Import neu
-ermittelt.
+ermittelt. Beim ersten Anzeigen baut sich der Ring einmal auf (bei „Bewegung reduzieren“
+ohne Animation).
+
+Wird eine Tabellenzeile oder ein Segment mit der Maus überfahren oder per Tastatur
+fokussiert, wird die Kategorie in Tabelle und Ring hervorgehoben, die übrigen Segmente
+treten zurück, und die Mitte des Rings zeigt Name, Anzahl und Anteil.
 
 Ein in DLG-03 gesetzter Filter wirkt **nicht** auf die Auswertung: sie betrachtet stets
 den vollständigen Bestand. Solange ein Filter aktiv ist, weist ein Hinweis darauf hin.
 
 **Fehler- und Sonderzustände**
 
-- Keine Events vorhanden: neutrale Werte (0) und „Noch keine Ereignisse“.
+- Keine Events vorhanden: neutrale Werte (0), ein leerer Ring und „Noch keine
+  Ereignisse“; der Zeitraum entfällt.
 - Kennzahlen nicht ermittelbar: Die Auswertung wird ausgeblendet; die Timeline bleibt
   nutzbar.
 
@@ -437,4 +452,5 @@ allein über `color` identifiziert werden darf.
 | DLG-02 Ereignisformular | ![DLG-02](screenshots/dlg-02-ereignisformular.png) |
 | DLG-03 Filter aktiv, leere Filtermenge | ![DLG-03](screenshots/dlg-03-filter-leer.png) |
 | DLG-06 Kategorie anlegen | ![DLG-06](screenshots/dlg-06-kategorie-anlegen.png) |
+| DLG-04 Auswertung mit Ringdiagramm | ![DLG-04](screenshots/dlg-04-auswertung.png) |
 | DLG-01 auf dem Smartphone (375 px) | ![Smartphone](screenshots/dlg-01-smartphone.png) |
