@@ -57,6 +57,24 @@ vollständig spezifiziert und mittlerweile auch technisch umgesetzt: Endpunkt
 `GET /api/holidays` in `backend/src/routes/holidays.ts`, nicht-blockierender Aufruf und
 Darstellung als Hintergrundmarkierung in der Timeline im Frontend.
 
+## OP-07 – Instagram-Import als spätere Erweiterung
+
+**Bezug:** [S1.4](spec/S1-nachbarsysteme.md#s14-nb-03--instagram-vorgeschlagene-erweiterung),
+[A03](arch/A03-Kontext-und-Umfang.md), [A04](arch/A04-Lösungsstrategie.md).
+
+Als weiteres Nachbarsystem wurde Instagram vorgeschlagen, damit eigene Beiträge als
+Lifeline-Ereignisse übernommen werden können. Für die Abgabe wird keine echte
+Meta-OAuth-/Graph-API-Anbindung vorausgesetzt. Diese würde eine Meta-App,
+Berechtigungen und ein geeignetes Instagram-Konto erfordern.
+
+Als mögliche spätere Ausbaustufe ist ein manueller Import eines festgelegten
+Instagram-Exportformats beschrieben. Das konkrete Format, die Medien-ID zur
+Duplikatprüfung und der dazugehörige Dialog sind noch nicht implementiert.
+
+**Status:** Bewusst zurückgestellt. Die technische Grundlage für Bildpersistenz und
+normale Event-Erstellung ist vorhanden; die Instagram-spezifische Anbindung bleibt
+ein dokumentierter Prototyp bzw. Folgeausbau.
+
 ## OP-05 – Fehlender Anwendungsfall für die Kategorienverwaltung
 
 **Bezug:** [B1](spec/B1-dialogspezifikation.md), DLG-06; [D1.3](spec/D1-datenmodell.md#d13-categories); `NFR-14c-01` in [N1](spec/N1-nichtfunktional.md).

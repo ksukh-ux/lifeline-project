@@ -121,7 +121,42 @@ verbindlich, bei `NB-02` ist ihr Fehlen ein regulärer, erwarteter Fall.
 
 ---
 
-## S1.4 Nicht Teil von S1
+## S1.4 NB-03 — Instagram (vorgeschlagene Erweiterung)
+
+Import eigener Instagram-Beiträge als Lifeline-Ereignisse.
+
+### S1.4.1 Abgrenzung für die Abgabe
+
+Instagram wurde als mögliches weiteres Nachbarsystem vorgeschlagen. Eine echte
+Anbindung über die Instagram Graph API ist für die aktuelle Abgabe nicht Bestandteil
+des verbindlichen Funktionsumfangs: Sie benötigt eine Meta-App, OAuth-Berechtigungen,
+ein geeignetes Instagram-Konto und gegebenenfalls eine Prüfung durch Meta.
+
+Als abgabefähiger Prototyp ist ein manueller Import eines vorher festgelegten
+Instagram-Exportformats vorgesehen. Ein Importdatensatz enthält mindestens eine
+Instagram-Medien-ID, eine Caption, ein Veröffentlichungsdatum und optional ein Bild.
+Lifeline wandelt jeden gültigen Datensatz in ein eigenes Event um und speichert das
+Bild mit derselben Bildpersistenz wie manuell erfasste Events. Die Medien-ID verhindert
+doppelte Importe.
+
+| Aspekt | Festlegung |
+|---|---|
+| Richtung | Ausgehend: Instagram bzw. Exportdatei → Lifeline |
+| Auslösung | Manuell durch die Nutzer:in; kein Scheduler und keine automatische Synchronisation |
+| Persistenz | Importierte Beiträge werden als normale Lifeline-Events gespeichert; Bilder liegen unter `backend/uploads/`, in SQLite steht nur der Pfad |
+| Authentifizierung | Im Prototyp keine echte Instagram-Anmeldung; für die spätere API-Anbindung ist OAuth erforderlich |
+| Fehlerbehandlung | Ungültige Datensätze werden abgewiesen; bereits importierte Medien werden übersprungen |
+| Status | Vorgeschlagene Erweiterung, nicht Teil des aktuell implementierten Kernumfangs |
+
+### S1.4.2 Spätere echte Anbindung
+
+Eine spätere Produktivversion kann den manuellen Import durch OAuth und die Instagram
+Graph API ersetzen. Sie darf nur Medien des vom jeweiligen Konto autorisierten
+Instagram-Profils importieren. Die extern gelieferte Medien-URL sollte nicht als
+dauerhafte Lifeline-Datenhaltung verwendet werden; das Bild muss beim Import in die
+eigene Ablage übernommen werden.
+
+## S1.5 Nicht Teil von S1
 
 - **Interner Ablauf innerhalb von Lifeline.** Wie Anwendungslogik und Datenhaltung
   zusammenspielen, ist keine Nachbarsysteminteraktion — siehe
@@ -139,14 +174,14 @@ verbindlich, bei `NB-02` ist ihr Fehlen ein regulärer, erwarteter Fall.
 
 ---
 
-## S1.5 Referenzen auf S1
+## S1.6 Referenzen auf S1
 
 Anders als eine gewöhnliche Querverweistabelle zeigt diese Tabelle die Richtung **von den
 anderen Bausteinen auf S1**: was dort konkret aus S1 aufgerufen oder vorausgesetzt wird.
 
 | Baustein | Bezug zu S1 |
 |---|---|
-| **F2** | UC-04 Schritt 6 ruft S1.3 auf. Alle übrigen Anwendungsfälle rufen ausschließlich S1.2 auf. |
+| **F2** | UC-04 Schritt 6 ruft S1.3 auf. Ein späterer Import-Anwendungsfall würde S1.4 aufrufen; alle übrigen Anwendungsfälle rufen ausschließlich S1.2 auf. |
 | **F3** | Kein Bezug. AF-01 bis AF-04 verarbeiten nur bereits geladene, eigene Daten; das Ergebnis von S1.3 fließt in keine Anwendungsfunktion ein. |
 | **D1** | Kein Attribut wird durch S1 befüllt. Feiertage aus S1.3 werden ausdrücklich **nicht** gespeichert — das ist eine bewusste Festlegung, keine Lücke. |
 | **B1** | DLG-01 zeigt das Ergebnis von S1.3 als Hintergrundmarkierung. Kein Dialog stellt einen Fehler dar, wenn S1.3 ausfällt (B1.4.2 ist hier bewusst nicht angewendet). |
