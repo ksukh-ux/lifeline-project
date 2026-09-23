@@ -16,7 +16,9 @@ import {
   fetchHolidays,
   fetchStats,
   getCurrentUser,
+  imageUrlToDataUri,
   logout as logoutOnServer,
+  UNAUTHORIZED_EVENT,
   updateEvent as updateEventOnServer,
   type AuthUser,
 } from './api/client'
@@ -129,12 +131,28 @@ export default function App() {
       setLoadError(
         error instanceof Error
           ? error.message
-          : 'Verbindung zum Backend fehlgeschlagen. Läuft der Server (npm run dev im backend/-Ordner)?',
+          : 'Deine Ereignisse konnten nicht geladen werden.',
       )
     } finally {
       setIsLoading(false)
     }
   }
+
+  const resetSession = () => {
+    setUser(null)
+    setEvents([])
+    setCategories([])
+    setStats(null)
+    setFilter('alle')
+    setModalEvent(undefined)
+  }
+
+  // B1.4.1: Ist die Session abgelaufen (z. B. nach einem Serverneustart),
+  // führt jede abgewiesene Anfrage zurück zum Anmeldeformular.
+  useEffect(() => {
+    window.addEventListener(UNAUTHORIZED_EVENT, resetSession)
+    return () => window.removeEventListener(UNAUTHORIZED_EVENT, resetSession)
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -164,11 +182,11 @@ export default function App() {
   }
 
   const handleLogout = async () => {
-    await logoutOnServer()
-    setUser(null)
-    setEvents([])
-    setCategories([])
-    setStats(null)
+    try {
+      await logoutOnServer()
+    } finally {
+      resetSession()
+    }
   }
 
   const handleCreateCategory = async (label: string, color: string) => {
@@ -417,8 +435,20 @@ export default function App() {
         }
       }
 
+      // Exportierte Events verweisen auf bereits gespeicherte Bilder. Damit
+      // sie beim Import nicht verloren gehen, werden sie geladen und als
+      // neues Bild mitgeschickt; ist ein Bild nicht mehr abrufbar, wird das
+      // Event ohne Bild importiert.
+      const eventsWithImages = await Promise.all(
+        eventsForImport.map(async (event) =>
+          event.image && !event.image.startsWith('data:')
+            ? { ...event, image: await imageUrlToDataUri(event.image) }
+            : event,
+        ),
+      )
+
       const results = await Promise.allSettled(
-        eventsForImport.map((event) => createEvent(event)),
+        eventsWithImages.map((event) => createEvent(event)),
       )
 
       const failedImports = results.filter(
@@ -432,6 +462,7 @@ export default function App() {
 
       setEvents(updatedEvents)
       setFilter('alle')
+      setStats(await fetchStats().catch(() => null))
 
       if (failedImports === 0) {
         alert(
@@ -512,11 +543,35 @@ export default function App() {
             Lade Ereignisse …
           </p>
         ) : loadError ? (
-          <p className="mt-6 text-sm text-red-400">{loadError}</p>
+          // B1 DLG-01: Meldung mit der Möglichkeit, erneut zu laden.
+          <div role="alert" className="mt-6 flex flex-wrap items-center gap-3 text-sm text-red-400">
+            <span>{loadError}</span>
+            <button
+              type="button"
+              onClick={loadEvents}
+              className="rounded-md border border-white/10 px-3 py-1 text-xs text-slate-200 hover:bg-white/5"
+            >
+              Erneut laden
+            </button>
+          </div>
+        ) : events.length === 0 ? (
+          // B1.4.4: leerer Bestand mit direktem Weg zum Anlegen.
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>Du hast noch keine Ereignisse erfasst.</span>
+            <button
+              type="button"
+              onClick={() => setModalEvent(null)}
+              className="rounded-md border border-white/10 px-3 py-1 text-xs text-slate-200 hover:bg-white/5"
+            >
+              Erstes Ereignis anlegen
+            </button>
+          </div>
         ) : filtered.length > 0 ? (
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[...filtered]
-              .sort((a, b) => b.date.localeCompare(a.date))
+              .sort((a, b) =>
+                `${b.date}T${b.time ?? ''}`.localeCompare(`${a.date}T${a.time ?? ''}`),
+              )
               .map((event) => (
                 <EventCard
                   key={event.id}
@@ -528,16 +583,20 @@ export default function App() {
               ))}
           </div>
         ) : (
-          <p className="mt-6 text-sm text-slate-500">
-            Keine Ereignisse in dieser Kategorie.
-          </p>
+          // B1.4.4: leere Filtermenge ist kein Fehler; Filter aufheben anbieten.
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>Keine Ereignisse in dieser Kategorie. Ein Filter ist aktiv.</span>
+            <button
+              type="button"
+              onClick={() => setFilter('alle')}
+              className="rounded-md border border-white/10 px-3 py-1 text-xs text-slate-200 hover:bg-white/5"
+            >
+              Filter aufheben
+            </button>
+          </div>
         )}
 
-        {stats && <StatsDashboard stats={stats} />}
-
-        <p className="mt-10 text-center font-mono text-[11px] text-slate-600">
-          Hinweis: Alle Daten werden im Backend gespeichert (SQLite).
-        </p>
+        {stats && <StatsDashboard stats={stats} isFiltered={filter !== 'alle'} />}
       </main>
 
       {modalEvent !== undefined && (

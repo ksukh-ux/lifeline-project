@@ -1,9 +1,15 @@
 import type { Category, Holiday, LifeEvent } from '../types'
 
-// Verbindung zu unserem Backend (siehe backend/, Branch feat/backend-db).
+// Verbindung zu unserem Backend (siehe backend/).
 // Adresse per .env konfigurierbar (VITE_API_URL), Standard ist der lokale
-// Entwicklungsserver aus "npm run dev" im backend/-Ordner.
+// Entwicklungsserver aus "npm run dev" im backend/-Ordner. Wird das gebaute
+// Frontend vom Backend selbst ausgeliefert (A07), VITE_API_URL leer lassen.
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+
+// Wird ausgelöst, wenn das Backend eine Anfrage mit 401 ablehnt, z. B. weil
+// die Session nach einem Serverneustart nicht mehr existiert. App.tsx
+// reagiert darauf mit der Rückkehr zum Anmeldeformular (B1.4.1).
+export const UNAUTHORIZED_EVENT = 'lifeline:unauthorized'
 
 export interface AuthUser {
   id: number
@@ -41,14 +47,45 @@ interface ApiEventRow {
 }
 
 async function apiFetch(path: string, options: RequestInit = {}): Promise<Response> {
-  return fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  })
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    })
+  } catch {
+    // Netzwerkfehler ("Failed to fetch") nicht technisch anzeigen (NFR-11c-01).
+    throw new Error('Keine Verbindung zum Server. Bitte später erneut versuchen.')
+  }
+  // Anmeldung/Registrierung liefern bei falschen Daten ebenfalls 401 — das
+  // ist dort kein Sessionverlust und wird im Formular selbst angezeigt.
+  if (response.status === 401 && !path.startsWith('/api/auth/')) {
+    window.dispatchEvent(new Event(UNAUTHORIZED_EVENT))
+  }
+  return response
+}
+
+// Lädt ein bereits gespeichertes Bild und wandelt es in eine Data-URI um,
+// damit es beim JSON-Import als neues Bild hochgeladen werden kann.
+// Gibt undefined zurück, wenn das Bild nicht (mehr) abrufbar ist.
+export async function imageUrlToDataUri(url: string): Promise<string | undefined> {
+  try {
+    const response = await fetch(url, { credentials: 'include' })
+    if (!response.ok) return undefined
+    const blob = await response.blob()
+    return await new Promise<string | undefined>((resolve) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(typeof reader.result === 'string' ? reader.result : undefined)
+      reader.onerror = () => resolve(undefined)
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return undefined
+  }
 }
 
 // Echte Registrierung/Anmeldung (UC-07, ADR-004). Ersetzt die frühere
@@ -60,9 +97,13 @@ async function apiFetch(path: string, options: RequestInit = {}): Promise<Respon
 // statt einen Fehler zu werfen — das ist der normale, erwartete Fall beim
 // ersten Aufruf der Seite.
 export async function getCurrentUser(): Promise<AuthUser | null> {
-  const response = await apiFetch('/api/auth/me')
-  if (!response.ok) return null
-  return response.json()
+  try {
+    const response = await apiFetch('/api/auth/me')
+    if (!response.ok) return null
+    return response.json()
+  } catch {
+    return null
+  }
 }
 
 export async function login(email: string, password: string): Promise<AuthUser> {
