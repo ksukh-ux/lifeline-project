@@ -103,6 +103,18 @@ Die Tests starten das Backend jeweils mit einer temporären Datenbank und
 prüfen u. a. Registrierung/Anmeldung, Event-CRUD, den Schutz fremder Daten,
 das Anlegen von Kategorien und die Dauerhaftigkeit nach einem Neustart.
 
+Zusätzlich prüft ein Browser-Test die nichtfunktionalen Anforderungen aus
+[N1](docs/spec/N1-nichtfunktional.md) (Ladezeit mit 200 und 500 Events,
+Reihenfolge, Filter ohne Serveranfrage, Layout auf Smartphone und Desktop,
+Schutz vor Skript-Eingaben):
+
+```bash
+npm --prefix frontend run test:browser
+```
+
+Der Test startet Backend und Frontend selbst (Ports 3190 und 5191, temporäre
+Datenbank) und benötigt einen installierten Google Chrome oder Microsoft Edge.
+
 ## Produktionsbetrieb (ein Prozess)
 
 Im Produktionsbetrieb liefert das Backend das gebaute Frontend selbst aus
@@ -124,6 +136,21 @@ Betrieb im Internet muss davor ein HTTPS-Endpunkt liegen, und die Ordner
 `backend/data/` (Datenbank) und `backend/uploads/` (Bilder) müssen auf
 dauerhaftem Speicher liegen und gemeinsam gesichert werden
 (siehe [S3](docs/betrieb/S3-inbetriebnahme.md)).
+
+### Optional: öffentliche HTTPS-Adresse für eine Vorführung
+
+Für eine Präsentation kann der lokal laufende Produktionsbetrieb über einen
+kostenlosen Cloudflare Quick Tunnel vorübergehend unter einer HTTPS-Adresse
+erreichbar gemacht werden, ohne Konto und ohne Codeänderung:
+
+1. `cloudflared` installieren (z. B. `winget install Cloudflare.cloudflared`).
+2. Lifeline wie oben im Produktionsbetrieb starten.
+3. In einem zweiten Terminal: `cloudflared tunnel --url http://localhost:3000`
+4. Die ausgegebene Adresse `https://…trycloudflare.com` im Browser öffnen.
+
+Die Daten bleiben auf dem eigenen Rechner; die Adresse ist nur erreichbar,
+solange beide Prozesse laufen. Für einen dauerhaften Betrieb ist das nicht
+gedacht.
 
 ## Dokumentation
 
