@@ -18,7 +18,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Fraunces"', 'serif'],
+        display: ['"Fraunces Variable"', 'serif'],
         body: ['"Inter"', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },

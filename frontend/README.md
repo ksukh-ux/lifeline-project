@@ -2,7 +2,7 @@
 
 Interaktive Timeline-Webanwendung zur visuellen Darstellung persönlicher Meilensteine, Ziele und Ereignisse.
 
-Dieses MVP setzt das Frontend-Dashboard aus dem [lifeline-project](https://github.com/ksukh-ux/lifeline-project) Architektur-/Team-Setup um (React, TypeScript, Tailwind CSS, Dark-Mode UI, Kategorien & Farben).
+Dieses Frontend setzt die Benutzeroberfläche aus dem [lifeline-project](https://github.com/ksukh-ux/lifeline-project) Architektur-/Team-Setup um (React, TypeScript, Tailwind CSS, Dark-Mode UI, Kategorien & Farben).
 
 ## Funktionen
 
@@ -50,7 +50,6 @@ Produktionsauslieferung kann das gebaute Frontend über den Express-Server bedie
 src/
   components/       # Header, Timeline, EventCard, EventFormModal, CategoryFilter
   api/              # HTTP-Client
-  hooks/            # historische lokale Speicherhilfe
   types.ts          # LifeEvent, Category, Holiday
   App.tsx
 ```
