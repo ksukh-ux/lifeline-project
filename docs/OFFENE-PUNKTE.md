@@ -103,3 +103,21 @@ Standard- von einer eigenen Kategorie unterscheidet.
 **Status:** Gelöst. DLG-06 wurde auf den tatsächlichen Funktionsumfang gekürzt
 (nur noch Anlegen); Umbenennen, Umfärben und Löschen sind bewusst nicht spezifiziert,
 solange es dafür keine Backend-Endpunkte gibt.
+
+## OP-08 – Bilddatei und Datenbank nicht vollständig atomar
+
+**Bezug:** [NFR-12d-02](spec/N1-nichtfunktional.md#nfr-12d-02-keine-teilzustände),
+[D2.3](spec/D2-datentypenverzeichnis.md#d23-bild-image_path),
+`backend/src/routes/events.ts` und `backend/src/utils/image.ts`.
+
+Bilddateien werden außerhalb der SQLite-Datenbank gespeichert. Die aktuelle
+Implementierung räumt eine neu angelegte Bilddatei bei einem nachfolgenden
+Datenbankfehler wieder auf und löscht beim Ersetzen beziehungsweise Löschen eines
+Events die alte Datei. Eine echte atomare Transaktion über Dateisystem und SQLite ist
+damit jedoch nicht möglich; ein Fehler genau während einer Dateioperation kann in
+seltenen Fällen einen verwaisten Datei- oder Datenbankverweis hinterlassen.
+
+**Status:** Bewusst akzeptiertes Restrisiko des Prototyps. Die zentrale
+Bildpersistenz und die Kompensation für die üblichen Fehlerfälle sind implementiert;
+ein separates Storage-/Transaktionssystem wäre für den aktuellen Abgabeumfang
+unverhältnismäßig.
