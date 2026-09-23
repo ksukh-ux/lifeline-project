@@ -318,7 +318,8 @@ Stand 23.09.2026. **Erfüllt** heißt: umgesetzt und mit dem genannten Nachweis 
 Automatisierte Tests: `npm --prefix backend test` (Integrationstests gegen die laufende
 API sowie Einzeltests für Validierung und Bildprüfung) und
 `npm --prefix frontend run test:browser` (Browser-Test in Chrome oder Edge; startet Backend
-und Frontend selbst und prüft die hier genannten Anforderungen mit Messwerten).
+und den Produktions-Build des Frontends selbst und prüft die hier genannten Anforderungen
+mit Messwerten).
 
 | Anforderung | Stand | Nachweis bzw. Einschränkung |
 |---|---|---|
@@ -326,12 +327,12 @@ und Frontend selbst und prüft die hier genannten Anforderungen mit Messwerten).
 | NFR-11a-01 Erfassen ohne Anleitung | Offen | Kein Test mit einer unbeteiligten Person durchgeführt. |
 | NFR-11c-01 Verständliche Rückmeldungen | Erfüllt | Meldungen der Anwendungslogik ohne Feldnamen und Formate; zentraler Fehler-Handler ohne Stapelspuren; Netzwerkfehler werden übersetzt. |
 | NFR-11d-01 Grundlegende Zugänglichkeit | Teilweise | Formularfelder beschriftet, Kategorie überall als Text. Vollständige Tastaturbedienung nicht systematisch geprüft (z. B. kein Fokusfang im Formularfenster). |
-| NFR-12a-01 Ladeverhalten | Erfüllt | Browser-Test: 200 Events in rund 1,3 s vollständig dargestellt (gemessen gegen den Entwicklungsserver, Grenze 2 s). |
+| NFR-12a-01 Ladeverhalten | Erfüllt | Browser-Test: 200 Events in unter 1 s vollständig dargestellt (Produktions-Build, Median aus drei Ladevorgängen, in mehreren Läufen 0,5–1,0 s; Grenze 2 s). |
 | NFR-12a-02 Filterung ohne Verzögerung | Erfüllt | Browser-Test: Filterwechsel ohne Serveranfrage, Darstellung nach rund 40 ms (Grenze 200 ms). |
 | NFR-12c-01 Chronologische Ordnung | Erfüllt | Browser-Test mit mehreren Events am selben Tag mit und ohne Uhrzeit: Zeitachse und Event-Liste folgen derselben Ordnung (Datum, dann Uhrzeit, ohne Uhrzeit am Tagesende). |
 | NFR-12d-01 Dauerhaftigkeit | Erfüllt | Test „Events bleiben nach einem Neustart erhalten“. |
 | NFR-12d-02 Keine Teilzustände | Teilweise | Konto und Startkategorien in einer Transaktion; Bilder werden kompensierend aufgeräumt. Restrisiko zwischen Datei und Datenbank siehe OP-08. |
-| NFR-12e-01 Bestandsgröße | Erfüllt | Browser-Test mit 500 Events: Darstellung in rund 2,4 s; Filtern, Jahresansicht, Jahreswechsel, Anlegen und Bearbeiten funktionieren. |
+| NFR-12e-01 Bestandsgröße | Erfüllt | Browser-Test mit 500 Events: Darstellung in unter 2 s (Produktions-Build, Median aus drei Ladevorgängen, in mehreren Läufen 1,2–1,4 s); Filtern, Jahresansicht, Jahreswechsel, Anlegen und Bearbeiten funktionieren. |
 | NFR-13b-01 Betrieb ohne Zusatzdienste | Teilweise | Produktionsbetrieb als ein Prozess ohne Datenbankserver lokal geprüft; Betrieb hinter HTTPS nicht nachgewiesen. |
 | NFR-13b-02 Nutzung ohne Installation | Teilweise | Durchlauf von Registrierung bis Anlegen in Chrome; zweiter Browser nicht protokolliert. |
 | NFR-14a-01 Nachvollziehbarkeit | Teilweise | Versionierung und Pull Requests auf GitHub; der Abgabe-Tag `v1.0.0` wird mit der Abgabe gesetzt. |

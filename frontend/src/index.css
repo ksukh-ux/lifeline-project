@@ -280,6 +280,9 @@ body::after {
 
 body::after {
   animation: twinkle 7s ease-in-out infinite alternate;
+  /* Eigene Grafikebene: das Funkeln animiert nur die Deckkraft, ohne die
+     vielen Sterne bei jedem Bild neu zu zeichnen. */
+  will-change: opacity;
 }
 
 @keyframes twinkle {

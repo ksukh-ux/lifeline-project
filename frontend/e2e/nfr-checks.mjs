@@ -1,8 +1,9 @@
 // Browser-Prüfungen für nichtfunktionale Anforderungen aus docs/spec/N1.
 //
-// Startet Backend (mit temporärer Datenbank) und Frontend auf eigenen Ports,
-// legt Testdaten über die API an und prüft die Oberfläche in einem echten
-// Chrome bzw. Edge (über playwright-core, ohne Browser-Download).
+// Startet Backend (mit temporärer Datenbank) und den Produktions-Build des
+// Frontends auf eigenen Ports, legt Testdaten über die API an und prüft die
+// Oberfläche in einem echten Chrome bzw. Edge (über playwright-core, ohne
+// Browser-Download).
 //
 // Aufruf: npm --prefix frontend run test:browser
 import { spawn } from 'node:child_process'
@@ -215,13 +216,20 @@ async function checkLoadTime(browser, count, requirement, limitMs) {
   const page = await context.newPage()
   await login(page, user.email)
 
-  // Neu laden und die Zeit bis zur vollständigen Darstellung messen.
-  const start = Date.now()
-  await page.reload()
-  await page.waitForFunction((expected) => document.querySelectorAll('h3').length === expected, count, { timeout: 30000 })
-  await page.waitForFunction(() => document.querySelectorAll('button[aria-label*=", Kategorie "]').length > 0)
-  const milliseconds = Date.now() - start
-  record(requirement, milliseconds < limitMs, `${count} Events in ${milliseconds} ms dargestellt (Grenze ${limitMs} ms)`)
+  // Dreimal neu laden und jeweils die Zeit bis zur vollständigen Darstellung
+  // messen; bewertet wird der Median, damit ein einzelner Ausreißer (z. B.
+  // kurz ausgelasteter Rechner) das Ergebnis nicht verfälscht.
+  const measurements = []
+  for (let run = 0; run < 3; run++) {
+    const start = Date.now()
+    await page.reload()
+    await page.waitForFunction((expected) => document.querySelectorAll('h3').length === expected, count, { timeout: 30000 })
+    await page.waitForFunction(() => document.querySelectorAll('button[aria-label*=", Kategorie "]').length > 0)
+    measurements.push(Date.now() - start)
+  }
+  const milliseconds = [...measurements].sort((a, b) => a - b)[1]
+  record(requirement, milliseconds < limitMs,
+    `${count} Events in ${milliseconds} ms dargestellt (Median aus ${measurements.join(', ')} ms; Grenze ${limitMs} ms)`)
   return { page, context, user }
 }
 
@@ -300,9 +308,19 @@ try {
     FRONTEND_ORIGIN: APP,
     NODE_ENV: 'test',
   })
-  start(path.join(FRONTEND_DIR, 'node_modules', 'vite', 'bin', 'vite.js'), ['--port', String(APP_PORT), '--strictPort'], FRONTEND_DIR, {
-    VITE_API_URL: API,
+  // Gemessen wird gegen den Produktions-Build (wie ihn Nutzer:innen erhalten),
+  // nicht gegen den Entwicklungsserver, der jedes Modul einzeln ausliefert.
+  const vite = path.join(FRONTEND_DIR, 'node_modules', 'vite', 'bin', 'vite.js')
+  const buildDir = path.join(tempDir, 'dist')
+  await new Promise((resolve, reject) => {
+    const build = spawn(process.execPath, [vite, 'build', '--outDir', buildDir, '--emptyOutDir', '--logLevel', 'error'], {
+      cwd: FRONTEND_DIR,
+      env: { ...process.env, VITE_API_URL: API },
+      stdio: 'ignore',
+    })
+    build.once('exit', (code) => (code === 0 ? resolve() : reject(new Error('Frontend-Build fehlgeschlagen.'))))
   })
+  start(vite, ['preview', '--outDir', buildDir, '--port', String(APP_PORT), '--strictPort'], FRONTEND_DIR, {})
   await waitFor(`${API}/api/health`)
   await waitFor(APP)
 
