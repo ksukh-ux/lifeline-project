@@ -90,7 +90,7 @@ Lifeline dokumentiert.
 |---|---|
 | **Rahmenbedingung** | Quellcode, Spezifikation und Architekturdokumentation werden versioniert im selben Repository geführt; Abgabestände müssen nachvollziehbar markiert sein. |
 | **Begründung** | Vorgabe des Moduls WK_1106 sowie Grundlage für [`SC-07`](P1-ziele-rahmenbedingungen.md#p16-erfolgskriterien) und `NFR-14a-01` in [N1](N1-nichtfunktional.md). |
-| **Konsequenz** | Versionierung mit Git/GitHub und Commit-Nachrichten nach Conventional Commits. Abgabestände werden als Git-Tags markiert und bleiben dadurch nachvollziehbar; die konkrete Bezeichnung des finalen Tags wird erst nach der finalen Teamabstimmung festgelegt. |
+| **Konsequenz** | Versionierung mit Git/GitHub und Commit-Nachrichten nach Conventional Commits. Abgabestände werden als Git-Tags markiert und bleiben dadurch nachvollziehbar; die finale Abgabe (M3) wird mit dem annotierten Tag `v1.0.0` auf `main` markiert. |
 
 ### CON-3j-01 Persönliche Daten
 
