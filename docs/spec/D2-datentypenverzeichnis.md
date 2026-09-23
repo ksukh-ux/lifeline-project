@@ -35,7 +35,7 @@ Ein Event kann optional genau ein Bild besitzen. Das Bild wird nicht in der Date
 |---|---|
 | Erlaubte Formate | JPEG, PNG, WEBP |
 | Maximale Dateigröße | 5 MB |
-| Verhalten bei Verstoß | Backend lehnt Upload ab, `image_path` bleibt leer. |
+| Verhalten bei Verstoß | Backend lehnt Upload ab, `image_path` bleibt leer. Zusätzlich wird der tatsächliche Dateiinhalt anhand der Bildsignatur geprüft. |
 
 ---
 

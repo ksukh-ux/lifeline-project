@@ -10,6 +10,23 @@ export interface EventInput {
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_PATTERN = /^\d{2}:\d{2}$/;
 
+function isValidDate(value: string): boolean {
+  if (!DATE_PATTERN.test(value)) return false;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
+function isValidTime(value: string): boolean {
+  if (!TIME_PATTERN.test(value)) return false;
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours <= 23 && minutes <= 59;
+}
+
 function isPositiveInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value > 0;
 }
@@ -28,11 +45,11 @@ export function validateEventInput(body: EventInput): string | null {
   if (typeof body.title !== "string" || body.title.trim().length === 0) {
     return "Titel ist erforderlich.";
   }
-  if (typeof body.date !== "string" || !DATE_PATTERN.test(body.date)) {
+  if (typeof body.date !== "string" || !isValidDate(body.date)) {
     return "date ist erforderlich (Format: YYYY-MM-DD).";
   }
   if (body.time !== undefined && body.time !== null) {
-    if (typeof body.time !== "string" || !TIME_PATTERN.test(body.time)) {
+    if (typeof body.time !== "string" || !isValidTime(body.time)) {
       return "time muss im Format HH:MM angegeben werden.";
     }
   }

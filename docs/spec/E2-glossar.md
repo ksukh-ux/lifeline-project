@@ -17,10 +17,7 @@ Das Glossar definiert die zentralen fachlichen Begriffe der Lifeline-Anwendung u
 | Gesundheit | Kategorie für Events im Zusammenhang mit Gesundheit und Wohlbefinden. |
 | Bedeutung (significance) | Numerischer Wert (0–100), der die Wichtigkeit eines Events für die visuelle Gewichtung in der Timeline angibt. |
 | Nutzer:in | Person, die Lifeline verwendet und eigene Events verwalten kann. |
-| Tag | Schlagwort zur zusätzlichen Beschreibung oder Einordnung eines Events. |
-| Startdatum | Datum, an dem ein Event beginnt. |
-| Enddatum | Datum, an dem ein Event endet. |
-| Standort | Ort, der einem Event zugeordnet werden kann. |
+| Uhrzeit | Optionale Uhrzeit eines Events im Format `HH:MM`. |
 | Bild (image_path) | Optional einem Event zugeordnetes Bild; wird als Datei im Backend gespeichert, in der Datenbank steht nur der Pfad. |
 | Registrierung | Vorgang zum Erstellen eines Benutzerkontos in Lifeline. |
 | Login | Anmeldung einer registrierten Nutzerin bzw. eines registrierten Nutzers bei Lifeline. |

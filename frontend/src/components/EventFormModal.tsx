@@ -102,6 +102,15 @@ export default function EventFormModal({ categories, initial, onSave, onClose }:
               }}
               className="w-full text-sm text-slate-300"
             />
+            {image && !isReadingImage && (
+              <button
+                type="button"
+                onClick={() => setImage('')}
+                className="mt-1 text-xs text-slate-500 hover:text-rose-300"
+              >
+                Bild entfernen
+              </button>
+            )}
             {isReadingImage && (
               <p className="mt-1 text-xs text-slate-500">Bild wird geladen …</p>
             )}

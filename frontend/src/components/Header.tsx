@@ -147,7 +147,7 @@ export default function Header({
                   className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm text-rose-300/90 transition hover:bg-rose-400/10 hover:text-rose-300"
                 >
                   <Trash2 size={16} />
-                  Alle Daten löschen
+                  Alle Ereignisse löschen
                 </button>
 
                 <div className="my-1.5 border-t border-white/10" />

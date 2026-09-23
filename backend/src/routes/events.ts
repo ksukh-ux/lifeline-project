@@ -88,21 +88,27 @@ eventsRouter.post("/", (req, res) => {
     imagePath = saveImage(parsed);
   }
 
-  const result = db
-    .prepare(
-      `INSERT INTO events (user_id, category_id, title, description, date, time, significance, image_path)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(
-      req.userId!,
-      body.category_id,
-      body.title,
-      body.description ?? null,
-      body.date,
-      body.time ?? null,
-      body.significance ?? null,
-      imagePath
-    );
+  let result;
+  try {
+    result = db
+      .prepare(
+        `INSERT INTO events (user_id, category_id, title, description, date, time, significance, image_path)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        req.userId!,
+        body.category_id,
+        body.title,
+        body.description ?? null,
+        body.date,
+        body.time ?? null,
+        body.significance ?? null,
+        imagePath
+      );
+  } catch (error) {
+    deleteImage(imagePath);
+    throw error;
+  }
 
   const created = db.prepare("SELECT * FROM events WHERE id = ?").get(result.lastInsertRowid);
   res.status(201).json(created);
@@ -134,6 +140,7 @@ eventsRouter.put("/:id", (req, res) => {
   }
 
   let imagePath = existing.image_path;
+  let replacementImagePath: string | null = null;
   if (body.image !== undefined) {
     if (body.image === null) {
       deleteImage(existing.image_path);
@@ -144,28 +151,37 @@ eventsRouter.put("/:id", (req, res) => {
         res.status(422).json({ error: IMAGE_ERROR });
         return;
       }
-      deleteImage(existing.image_path);
-      imagePath = saveImage(parsed);
+      replacementImagePath = saveImage(parsed);
+      imagePath = replacementImagePath;
     } else {
       res.status(422).json({ error: IMAGE_ERROR });
       return;
     }
   }
 
-  db.prepare(
-    `UPDATE events SET category_id = ?, title = ?, description = ?, date = ?, time = ?, significance = ?, image_path = ?
-     WHERE id = ? AND user_id = ?`
-  ).run(
-    body.category_id,
-    body.title,
-    body.description ?? null,
-    body.date,
-    body.time ?? null,
-    body.significance ?? null,
-    imagePath,
-    req.params.id,
-    req.userId!
-  );
+  try {
+    db.prepare(
+      `UPDATE events SET category_id = ?, title = ?, description = ?, date = ?, time = ?, significance = ?, image_path = ?
+       WHERE id = ? AND user_id = ?`
+    ).run(
+      body.category_id,
+      body.title,
+      body.description ?? null,
+      body.date,
+      body.time ?? null,
+      body.significance ?? null,
+      imagePath,
+      req.params.id,
+      req.userId!
+    );
+  } catch (error) {
+    deleteImage(replacementImagePath);
+    throw error;
+  }
+
+  if (body.image === null || replacementImagePath) {
+    deleteImage(existing.image_path);
+  }
 
   const updated = db.prepare("SELECT * FROM events WHERE id = ?").get(req.params.id);
   res.json(updated);

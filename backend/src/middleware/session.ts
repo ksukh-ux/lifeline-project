@@ -18,6 +18,7 @@ const sessions = new Map<string, SessionRecord>();
 
 const SESSION_COOKIE_NAME = "sid";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24; // 24 Stunden
+const SECURE_COOKIE = process.env.NODE_ENV === "production";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -38,7 +39,11 @@ export function parseCookies(header: string | undefined): Record<string, string>
     const key = part.slice(0, separatorIndex).trim();
     const value = part.slice(separatorIndex + 1).trim();
     if (!key) continue;
-    cookies[key] = decodeURIComponent(value);
+    try {
+      cookies[key] = decodeURIComponent(value);
+    } catch {
+      continue;
+    }
   }
 
   return cookies;
@@ -51,7 +56,7 @@ export function createSession(userId: number, res: Response): void {
   const maxAgeSeconds = SESSION_TTL_MS / 1000;
   res.setHeader(
     "Set-Cookie",
-    `${SESSION_COOKIE_NAME}=${id}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${maxAgeSeconds}`
+    `${SESSION_COOKIE_NAME}=${id}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${maxAgeSeconds}${SECURE_COOKIE ? "; Secure" : ""}`
   );
 }
 
@@ -60,7 +65,7 @@ export function destroySession(req: Request, res: Response): void {
   const id = cookies[SESSION_COOKIE_NAME];
   if (id) sessions.delete(id);
 
-  res.setHeader("Set-Cookie", `${SESSION_COOKIE_NAME}=; HttpOnly; Path=/; Max-Age=0`);
+  res.setHeader("Set-Cookie", `${SESSION_COOKIE_NAME}=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0${SECURE_COOKIE ? "; Secure" : ""}`);
 }
 
 export function sessionMiddleware(req: Request, _res: Response, next: NextFunction): void {

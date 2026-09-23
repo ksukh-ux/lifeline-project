@@ -1,18 +1,20 @@
-# Lifeline — Dashboard MVP
+# Lifeline — Frontend
 
 Interaktive Timeline-Webanwendung zur visuellen Darstellung persönlicher Meilensteine, Ziele und Ereignisse.
 
 Dieses MVP setzt das Frontend-Dashboard aus dem [lifeline-project](https://github.com/ksukh-ux/lifeline-project) Architektur-/Team-Setup um (React, TypeScript, Tailwind CSS, Dark-Mode UI, Kategorien & Farben).
 
-## Features (MVP-Umfang)
+## Funktionen
 
 - Interaktive horizontale Timeline mit Kategorie-Farben
 - Event-Karten mit Titel, Datum, Beschreibung, Kategorie, Bedeutung (0–100 %)
 - Ereignis hinzufügen / bearbeiten / löschen (Modal-Formular)
 - Filter nach Kategorie
 - Export der Timeline als PNG
-- "Alle Daten löschen"
-- Persistenz via `localStorage` (kein Backend nötig für dieses MVP)
+- Alle Ereignisse löschen
+- Registrierung und Anmeldung
+- Persistenz über die Backend-API und SQLite
+- JSON-Sicherung exportieren und importieren
 
 ## Tech-Stack
 
@@ -36,23 +38,19 @@ npm run build     # Production-Build nach dist/
 npm run preview   # Production-Build lokal testen
 ```
 
-## Nächste Schritte (Backend-Anbindung)
+## Backend
 
-Aktuell werden Events im Browser-`localStorage` gespeichert. Für die im Team-Setup vorgesehene
-Node.js/Express + SQLite-Anbindung:
-
-- `src/hooks/useLocalStorage.ts` durch einen API-Client (fetch/axios) ersetzen bzw. ergänzen
-- Express-Routen für `GET/POST/PUT/DELETE /api/events` bereitstellen
-- SQLite-Schema passend zu `src/types.ts` (`LifeEvent`) anlegen
-- Reminder-System & Progress-Tracking (siehe TEAMINFO.md) als nächste Features
+Das Frontend kommuniziert über `src/api/client.ts` mit dem Express-Backend. Für
+die Entwicklung müssen Backend und Frontend separat gestartet werden; die
+Produktionsauslieferung kann das gebaute Frontend über den Express-Server bedienen.
 
 ## Projektstruktur
 
 ```
 src/
   components/       # Header, Timeline, EventCard, EventFormModal, CategoryFilter
-  data/             # Beispiel-Events (Startdaten)
-  hooks/            # useLocalStorage
-  types.ts          # LifeEvent, Category, CATEGORIES
+  api/              # HTTP-Client
+  hooks/            # historische lokale Speicherhilfe
+  types.ts          # LifeEvent, Category, Holiday
   App.tsx
 ```
