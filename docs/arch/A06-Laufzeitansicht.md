@@ -87,18 +87,14 @@ sequenceDiagram
 
     N->>AC: fordert Statistik an
     AC->>R: GET /api/stats
-    R->>DB: SELECT category, COUNT(*), AVG(significance)<br/>GROUP BY category
+    R->>DB: SELECT Gesamtanzahl, MIN(date), MAX(date),<br/>Kategorieanzahl und AVG(significance)
     DB-->>R: aggregierte Zeilen je Kategorie
     R-->>AC: 200 OK, Statistikdaten
 ```
 
-**Anmerkung:** Die Aggregation erfolgt als einzelne SQL-Abfrage direkt
-in `routes/stats` (`GROUP BY category`), nicht über einen separaten
-`statsService` – für den aktuellen Funktionsumfang ausreichend und ohne
-zusätzliche Anwendungslogik. **Hinweis:** Ein `StatsDashboard`-Baustein,
-der diese Anfrage im Frontend auslöst, ist noch nicht umgesetzt (siehe
-5.2.1); der Endpunkt `GET /api/stats` existiert bereits im Backend, wird
-aber aktuell von keiner Frontend-Ansicht aufgerufen.
+**Anmerkung:** Die Aggregation erfolgt direkt in `routes/stats`, nicht über
+einen separaten `statsService`. `StatsDashboard` ruft den Endpunkt über den
+`ApiClient` auf und zeigt Gesamtanzahl, Zeitspanne und Kategorieaggregation an.
 
 **Bewusst nicht diagrammiert:** UC-04 (Timeline ansehen, einfaches GET)
 und UC-05 (Filtern) – Filterung findet clientseitig auf bereits
