@@ -64,7 +64,7 @@ Die Spezifikation richtet sich insbesondere an:
 
 | Baustein | Bezeichnung          | Status | Datei                                                      |
 | -------- | --------------------- | -----: | ------------------------------------------------------------ |
-| F1       | Geschäftsprozesse    |     🛠 | [`F1-geschaeftsprozesse.md`](F1-geschaeftsprozesse.md)     |
+| F1       | Geschäftsprozesse    |      — | Entfällt nach Abstimmung mit dem Betreuer; die fachlichen Abläufe sind in F2 beschrieben. |
 | F2       | Anwendungsfälle      |     🛠 | [`F2-anwendungsfaelle.md`](F2-anwendungsfaelle.md)         |
 | F3       | Anwendungsfunktionen |     🛠 | [`F3-anwendungsfunktionen.md`](F3-anwendungsfunktionen.md) |
 
