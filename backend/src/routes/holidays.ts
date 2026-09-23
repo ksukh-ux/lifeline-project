@@ -96,7 +96,7 @@ holidaysRouter.get("/", async (req, res) => {
   const yearParam = req.query.year;
   const year = Number(yearParam);
 
-  if (!Number.isInteger(year) || year < 1900 || year > 2200) {
+  if (!Number.isInteger(year) || year < 1900 || year > 2100) {
     res.status(422).json({ error: "Ungültiges Jahr." });
     return;
   }
