@@ -95,6 +95,31 @@ Ein:e Nutzer:in kann mehrere Kategorien und mehrere Events besitzen; beide gehö
 
 ## D1.6 Persistenz
 
-Die persistente Speicherung der Daten erfolgt in einer SQLite-Datenbank. Das Backend übernimmt den Zugriff auf die Datenbank. Direkte Datenbankzugriffe durch das Frontend finden nicht statt.
+Die persistente Speicherung der Daten erfolgt in einer SQLite-Datenbank; Bilder liegen als Dateien in einer separaten Bildablage, in der Datenbank steht nur der Pfad. Das Backend übernimmt den Zugriff auf beide. Direkte Zugriffe durch das Frontend finden nicht statt.
 
 Bestehende Installationen mit der alten, fest codierten Kategorie-Liste (`EVENTS.category` als Text) werden beim Serverstart einmalig automatisch auf das hier beschriebene Modell umgestellt; bereits vorhandene Events bleiben dabei erhalten und werden der passenden neuen Kategorie-Zeile zugeordnet.
+
+## D1.7 Invarianten
+
+Invarianten sind Bedingungen, die für den gespeicherten Datenbestand **immer** gelten
+müssen. Andere Bausteine verweisen über die Kennungen `INV-…` darauf; die
+Absicherung erfolgt durch Datenbankbedingungen bzw. durch die Prüfung in der
+Anwendungslogik ([N2.2](N2-querschnittskonzepte.md#n22-validierung)).
+
+| ID | Entität | Invariante |
+|---|---|---|
+| INV-U1 | USERS | Jede E-Mail-Adresse gehört zu höchstens einem Konto. Groß-/Kleinschreibung spielt keine Rolle. |
+| INV-U2 | USERS | Das Passwort wird nur als Hash (`password_hash`) gespeichert, nie im Klartext. |
+| INV-C1 | CATEGORIES | Der Anzeigename (`label`) ist innerhalb der Kategorien einer Person eindeutig. |
+| INV-C2 | CATEGORIES | `label` ist 1 bis 40 Zeichen lang; `color` ist ein Farbcode im Format `#RRGGBB`. |
+| INV-C3 | CATEGORIES | Jede Kategorie gehört genau einer Person. Kategorien werden im aktuellen Funktionsumfang weder umbenannt noch gelöscht ([OP-06](../OFFENE-PUNKTE.md)); ein Event verliert seine Kategorie deshalb nie. |
+| INV-C4 | CATEGORIES | Eine Person sieht und verwendet ausschließlich ihre eigenen Kategorien; dazu gehören die sechs Startkategorien, die bei der Registrierung für sie angelegt werden. |
+| INV-E1 | EVENTS | Jedes Event gehört genau einer Person (`user_id`). |
+| INV-E2 | EVENTS | `category_id` verweist auf eine Kategorie **derselben** Person. |
+| INV-E3 | EVENTS | `title` ist nicht leer; `date` ist ein existierender Kalendertag; `time` ist leer oder eine gültige Uhrzeit im Format `HH:MM`. |
+| INV-E4 | EVENTS | `significance` ist leer oder eine ganze Zahl von 0 bis 100 ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)). |
+| INV-E5 | EVENTS | Ist `image_path` gesetzt, existiert die zugehörige Bilddatei in der Bildablage ([D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path)). Wird ein Event gelöscht oder sein Bild ersetzt, wird die alte Datei entfernt. |
+
+INV-E5 lässt sich nicht durch eine gemeinsame Transaktion von Datenbank und
+Dateisystem garantieren; das verbleibende Restrisiko ist in
+[OP-08](../OFFENE-PUNKTE.md) beschrieben.
