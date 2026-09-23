@@ -16,14 +16,15 @@ flowchart LR
 
     N -->|"Erfasst, bearbeitet, filtert Events;<br/>Registrierung/Login<br/>[HTTPS, Browser]"| L
     L -->|"Timeline, Statistik,<br/>Bestätigungen, Fehlermeldungen<br/>[HTTPS]"| N
+    I["«externes System»<br/>Instagram<br/><small>vorgeschlagene Erweiterung</small>"]
+    L -.->|"Manueller Medienimport<br/>[später: OAuth/Graph API]"| I
 ```
 
-Lifeline hat genau einen Kommunikationskanal, der in beide Richtungen
-genutzt wird [HTTPS, Browser], und genau einen Kommunikationspartner
-(Nutzer:in). Es sind aktuell keine weiteren externen Systeme angebunden
-(siehe S1 – Nachbarsysteme); eine spätere Anbindung (z. B. Kalender-
-oder Benachrichtigungsdienste) ist grundsätzlich möglich, aber nicht
-Bestandteil des aktuellen Projektumfangs.
+Lifeline hat aktuell einen verbindlichen Kommunikationskanal zum Browser der
+Nutzer:in [HTTPS]. Instagram ist als vorgeschlagene, noch nicht produktiv
+angebundene Erweiterung dokumentiert. Für die Abgabe ist nur ein klar abgegrenzter
+manueller Importprototyp vorgesehen; OAuth und die Instagram Graph API bleiben ein
+späterer Ausbau.
 
 ### 3.2 Ein- und Ausgaben im Detail
 

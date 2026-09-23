@@ -5,7 +5,7 @@
 - **React, TypeScript, Vite** als Frontend – Single Page Application im Browser (TECH-01)
 - **Node.js, TypeScript, Express** als Backend – stellt eine REST-API bereit (TECH-02)
 - **SQLite** als eingebettete Datenbank, kein separater Datenbankserver nötig (TECH-03)
-- Keine externen Systeme, keine Warteschlangen/Worker, keine Mehrbenutzer-Infrastruktur – der Projektumfang bleibt bewusst schlank (vgl. P1 §7 Abgrenzung)
+- Keine produktive Instagram-OAuth-Anbindung, keine Warteschlangen/Worker und keine zusätzliche Infrastruktur. Ein manueller Instagram-Importprototyp ist als abgegrenzte Erweiterung in S1.4 dokumentiert; der Projektumfang bleibt ansonsten bewusst schlank (vgl. P1 §7 Abgrenzung).
 
 ### 4.2 Grobzerlegung
 
@@ -13,7 +13,9 @@ Drei Bausteine: **Frontend (React-SPA)** → **Backend/API (Express)** →
 **Datenbank (SQLite)**.
 
 Das Frontend kommuniziert ausschließlich über HTTP-Anfragen mit dem
-Backend; das Backend ist der einzige Zugriffspunkt auf die Datenbank.
+Backend; das Backend ist der einzige Zugriffspunkt auf die Datenbank. Ein
+Instagram-Import wird wie ein normaler Event-Import verarbeitet; Bilder werden
+in der eigenen Upload-Ablage persistiert, nicht nur über eine externe URL referenziert.
 Keine separate Worker- oder Queue-Schicht, da alle Operationen
 synchron innerhalb einer Anfrage abgeschlossen werden können.
 
