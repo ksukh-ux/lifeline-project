@@ -219,7 +219,7 @@ Das Diagramm zeigt vier Gruppen: *Zugang* (UC-07, ohne bestehende Session erreic
 
 #### Hauptablauf
 
-1. Die Nutzer:in wählt in der Filterleiste „Neue Kategorie“ ([DLG-06](B1-dialogspezifikation.md#dlg-06--kategorieverwaltung)).
+1. Die Nutzer:in wählt in der Filterleiste „Neue Kategorie“ ([DLG-06](B1-dialogspezifikation.md#dlg-06--kategorie-anlegen)).
 2. Die Nutzer:in gibt einen Anzeigenamen ein und übernimmt oder ändert die vorgeschlagene Farbe.
 3. Die Nutzer:in speichert.
 4. Lifeline prüft die Eingaben und legt die Kategorie an.
