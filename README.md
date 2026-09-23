@@ -1,19 +1,22 @@
 # Lifeline
 
 Lifeline ist eine interaktive Timeline-Webanwendung zur visuellen Darstellung
-persönlicher Meilensteine, Ziele und Ereignisse. Nutzer:innen können Events
-organisieren, kategorisieren und Erinnerungen verwalten. Der Fokus des
-Projekts liegt auf moderner UI, Benutzerfreundlichkeit und interaktiver
-Visualisierung.
+persönlicher Meilensteine, Ziele und Ereignisse. Nutzer:innen erfassen Events
+mit Datum, Kategorie, Bedeutung und optionalem Bild und sehen sie in einer
+chronologischen Timeline. Der Fokus des Projekts liegt auf moderner UI,
+Benutzerfreundlichkeit und interaktiver Visualisierung.
 
 ## Features
 
-- Anlegen, Bearbeiten und Löschen persönlicher Lebensereignisse
-- Kategorisierung von Events
-- Interaktive Timeline-Ansicht
-- Verwaltung von Erinnerungen
-- Export der Timeline als Bild
-- Benutzerregistrierung und Anmeldung
+- Registrierung, Anmeldung und Abmeldung (jede Person sieht nur eigene Events)
+- Anlegen, Bearbeiten und Löschen persönlicher Lebensereignisse, optional mit Bild
+- Eigene Kategorien anlegen (sechs Startkategorien sind vorbelegt)
+- Interaktive Timeline mit Übersicht, Jahresansicht und Zoom
+- Filtern nach Kategorie
+- Statistik (Anzahl je Kategorie, Zeitspanne, Tendenz der Bedeutung)
+- Gesetzliche Feiertage als Markierung in der Jahresansicht (öffentliche Feiertags-API)
+- Export der Timeline als PNG-Bild
+- Sicherung als JSON-Datei exportieren und wieder importieren
 
 ## Tech-Stack
 
@@ -89,6 +92,38 @@ Beide Terminals während der Nutzung geöffnet lassen.
 
 Zum Testen über die Registrierung ein eigenes Konto erstellen
 und anschließend damit anmelden.
+
+## Tests
+
+```bash
+npm --prefix backend test
+```
+
+Die Tests starten das Backend jeweils mit einer temporären Datenbank und
+prüfen u. a. Registrierung/Anmeldung, Event-CRUD, den Schutz fremder Daten,
+das Anlegen von Kategorien und die Dauerhaftigkeit nach einem Neustart.
+
+## Produktionsbetrieb (ein Prozess)
+
+Im Produktionsbetrieb liefert das Backend das gebaute Frontend selbst aus
+(siehe [A07](docs/arch/A07-Bereitstellungsansicht.md)). Dafür beim Frontend-Build
+`VITE_API_URL` leer setzen, damit die API unter derselben Adresse
+angesprochen wird:
+
+```bash
+npm --prefix frontend install
+npm --prefix backend install
+VITE_API_URL= npm --prefix frontend run build
+npm --prefix backend run build
+npm --prefix backend run migrate
+NODE_ENV=production npm --prefix backend start
+```
+
+Die Anwendung ist dann unter http://localhost:3000 erreichbar. Für den
+Betrieb im Internet muss davor ein HTTPS-Endpunkt liegen, und die Ordner
+`backend/data/` (Datenbank) und `backend/uploads/` (Bilder) müssen auf
+dauerhaftem Speicher liegen und gemeinsam gesichert werden
+(siehe [S3](docs/betrieb/S3-inbetriebnahme.md)).
 
 ## Dokumentation
 

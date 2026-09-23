@@ -1,6 +1,6 @@
 -- Lifeline database schema
 -- Must stay in sync with docs/spec/D1-datenmodell.md, docs/spec/D2-datentypenverzeichnis.md
--- and docs/arch/A08-Querschnittskonzepte.md (8.1 Datenmodell und Persistenz).
+-- and docs/arch/A08-Querschnittskonzepte.md (8.1 Validierung).
 --
 -- Kategorien sind eine eigene Entität (siehe D1.3 / N1 NFR-14c-01
 -- "Erweiterbarkeit der Kategorien"): jede Person verwaltet ihre eigene Liste,

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -40,10 +40,11 @@ if (fs.existsSync(frontendDist)) {
   });
 }
 
-// Einfacher Health-Check: zeigt, dass die DB-Verbindung funktioniert.
+// Einfacher Health-Check: zeigt, dass die DB-Verbindung funktioniert, ohne
+// Angaben über gespeicherte Daten preiszugeben.
 app.get("/api/health", (_req, res) => {
-  const row = db.prepare("SELECT COUNT(*) AS count FROM events").get();
-  res.json({ status: "ok", events: row });
+  db.prepare("SELECT 1").get();
+  res.json({ status: "ok" });
 });
 
 app.use("/api/auth", authRouter);
@@ -51,6 +52,19 @@ app.use("/api/categories", categoriesRouter);
 app.use("/api/events", eventsRouter);
 app.use("/api/stats", statsRouter);
 app.use("/api/holidays", holidaysRouter);
+
+// Zentraler Fehler-Handler (N2.4): unerwartete Fehler werden protokolliert,
+// die Antwort enthält aber nie Stapelspuren oder interne Meldungen
+// (NFR-11c-01). Ein zu großer Request-Body (z. B. ein sehr großes Bild)
+// wird als verständlicher 413 beantwortet.
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  if ((err as { type?: string })?.type === "entity.too.large") {
+    res.status(413).json({ error: "Die Anfrage ist zu groß. Bitte ein kleineres Bild wählen." });
+    return;
+  }
+  console.error(err);
+  res.status(500).json({ error: "Ein interner Fehler ist aufgetreten. Bitte später erneut versuchen." });
+});
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => {

@@ -101,7 +101,7 @@ eventsRouter.post("/", (req, res) => {
         body.title,
         body.description ?? null,
         body.date,
-        body.time ?? null,
+        body.time || null,
         body.significance ?? null,
         imagePath
       );
@@ -139,11 +139,13 @@ eventsRouter.put("/:id", (req, res) => {
     return;
   }
 
+  // Das alte Bild wird erst nach erfolgreichem UPDATE gelöscht (siehe unten),
+  // damit ein Datenbankfehler keinen Verweis auf eine fehlende Datei
+  // hinterlässt (NFR-12d-02, OP-08).
   let imagePath = existing.image_path;
   let replacementImagePath: string | null = null;
   if (body.image !== undefined) {
     if (body.image === null) {
-      deleteImage(existing.image_path);
       imagePath = null;
     } else if (typeof body.image === "string") {
       const parsed = parseDataUri(body.image);
@@ -168,7 +170,7 @@ eventsRouter.put("/:id", (req, res) => {
       body.title,
       body.description ?? null,
       body.date,
-      body.time ?? null,
+      body.time || null,
       body.significance ?? null,
       imagePath,
       req.params.id,
