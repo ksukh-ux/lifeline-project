@@ -9,6 +9,8 @@ export interface EventInput {
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_PATTERN = /^\d{2}:\d{2}$/;
+const MAX_TITLE_LENGTH = 120;
+const MAX_DESCRIPTION_LENGTH = 2000;
 
 function isValidDate(value: string): boolean {
   if (!DATE_PATTERN.test(value)) return false;
@@ -31,7 +33,9 @@ function isPositiveInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value > 0;
 }
 
-// Zentrale Validierung für POST/PUT /api/events, gemäß D1/D2/A08.2.
+// Zentrale Validierung für POST/PUT /api/events, gemäß D1/D2/A08.1.
+// Die Meldungen werden direkt in der Oberfläche angezeigt und enthalten
+// deshalb keine Feldnamen oder Formatangaben aus dem Code (NFR-11c-01).
 //
 // Prüft hier nur die Form von category_id (positive Ganzzahl) — ob die ID
 // wirklich zu einer Kategorie der angemeldeten Person gehört, wird in
@@ -43,20 +47,37 @@ export function validateEventInput(body: EventInput): string | null {
     return "Ungültige Kategorie.";
   }
   if (typeof body.title !== "string" || body.title.trim().length === 0) {
-    return "Titel ist erforderlich.";
+    return "Bitte gib einen Titel ein.";
+  }
+  if (body.title.trim().length > MAX_TITLE_LENGTH) {
+    return `Der Titel darf höchstens ${MAX_TITLE_LENGTH} Zeichen lang sein.`;
+  }
+  if (body.description !== undefined && body.description !== null) {
+    if (typeof body.description !== "string") {
+      return "Die Beschreibung ist ungültig.";
+    }
+    if (body.description.length > MAX_DESCRIPTION_LENGTH) {
+      return `Die Beschreibung darf höchstens ${MAX_DESCRIPTION_LENGTH} Zeichen lang sein.`;
+    }
   }
   if (typeof body.date !== "string" || !isValidDate(body.date)) {
-    return "date ist erforderlich (Format: YYYY-MM-DD).";
+    return "Bitte gib ein gültiges Datum ein.";
   }
-  if (body.time !== undefined && body.time !== null) {
+  if (body.time !== undefined && body.time !== null && body.time !== "") {
     if (typeof body.time !== "string" || !isValidTime(body.time)) {
-      return "time muss im Format HH:MM angegeben werden.";
+      return "Bitte gib eine gültige Uhrzeit ein.";
     }
   }
   if (body.significance !== undefined && body.significance !== null) {
-    const significance = Number(body.significance);
-    if (Number.isNaN(significance) || significance < 0 || significance > 100) {
-      return "significance muss eine Zahl zwischen 0 und 100 sein.";
+    // D2.2: ganzzahliger Wertebereich 0–100.
+    const significance = body.significance;
+    if (
+      typeof significance !== "number" ||
+      !Number.isInteger(significance) ||
+      significance < 0 ||
+      significance > 100
+    ) {
+      return "Die Bedeutung muss eine ganze Zahl zwischen 0 und 100 sein.";
     }
   }
   return null;
