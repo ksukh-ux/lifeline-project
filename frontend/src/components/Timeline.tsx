@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Category, Holiday, LifeEvent } from '../types'
 import { getCategory } from '../types'
 
@@ -47,6 +47,23 @@ export default function Timeline({
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const isDraggingSlider = useRef(false)
+  const scrollFrame = useRef<number | null>(null)
+  // Ist die Zeitachse kaum breiter als der sichtbare Bereich, gibt es nichts
+  // zu scrollen; der Positionsregler wird dann gesperrt, statt sich zu
+  // bewegen, ohne dass die Zeitachse mitgeht.
+  const [canScroll, setCanScroll] = useState(false)
+
+  useEffect(() => {
+    const element = scrollRef.current
+    if (!element) return
+    const update = () => setCanScroll(element.scrollWidth - element.clientWidth > 24)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(element)
+    if (element.firstElementChild) observer.observe(element.firstElementChild)
+    return () => observer.disconnect()
+  }, [])
   const [zoom, setZoom] = useState(0)
   const [viewMode, setViewMode] = useState<ViewMode>('overview')
 
@@ -155,20 +172,28 @@ export default function Timeline({
     resetScroll()
   }
 
+  // Scroll-Ereignisse kommen sehr häufig; die Reglerposition wird höchstens
+  // einmal pro Bild aktualisiert. Solange der Regler gezogen wird, führt er
+  // selbst und die Rückmeldung aus dem Scrollen wird ignoriert, sonst ziehen
+  // sich Regler und Scrollposition gegenseitig hin und her.
   const handleScroll = () => {
-    const element = scrollRef.current
-    if (!element) return
-    const maximum = element.scrollWidth - element.clientWidth
-    setScrollProgress(
-      maximum > 0 ? (element.scrollLeft / maximum) * 100 : 0,
-    )
+    if (isDraggingSlider.current || scrollFrame.current !== null) return
+    scrollFrame.current = requestAnimationFrame(() => {
+      scrollFrame.current = null
+      const element = scrollRef.current
+      if (!element) return
+      const maximum = element.scrollWidth - element.clientWidth
+      setScrollProgress(maximum > 0 ? (element.scrollLeft / maximum) * 100 : 0)
+    })
   }
 
   const handleSliderChange = (value: number) => {
     const element = scrollRef.current
     if (!element) return
     const maximum = element.scrollWidth - element.clientWidth
-    element.scrollLeft = (value / 100) * maximum
+    // Direkt springen statt animiert scrollen: der Regler liefert selbst
+    // eine fließende Folge von Positionen.
+    element.scrollTo({ left: (value / 100) * maximum, behavior: 'instant' })
     setScrollProgress(value)
   }
 
@@ -242,7 +267,7 @@ export default function Timeline({
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="scrollbar-hidden scroll-smooth overflow-x-auto pb-2"
+        className="scrollbar-hidden overflow-x-auto overscroll-x-contain pb-2"
       >
         <div
           className="relative h-[30rem] overflow-x-clip px-4 transition-[min-width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
@@ -366,9 +391,16 @@ export default function Timeline({
           type="range"
           min="0"
           max="100"
-          value={scrollProgress}
+          step="0.1"
+          disabled={!canScroll}
+          title={canScroll ? undefined : 'Zum Verschieben zuerst hineinzoomen'}
+          value={canScroll ? scrollProgress : 0}
           onChange={(event) => handleSliderChange(Number(event.target.value))}
-          className="timeline-slider flex-1"
+          onPointerDown={() => { isDraggingSlider.current = true }}
+          onPointerUp={() => { isDraggingSlider.current = false }}
+          onPointerCancel={() => { isDraggingSlider.current = false }}
+          onBlur={() => { isDraggingSlider.current = false }}
+          className="timeline-slider flex-1 transition-opacity disabled:cursor-default disabled:opacity-30"
           aria-label="Position auf der Timeline"
         />
         <div className="flex shrink-0 items-center gap-2">
