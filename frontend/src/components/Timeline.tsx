@@ -21,6 +21,11 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez',
 ]
 
+// Breite einer Event-Beschriftung (Tailwind w-32) plus Abstand und
+// zusätzlicher Abstand der fernen Beschriftungsebenen zur Zeitachse.
+const LABEL_WIDTH_PX = 136
+const FAR_LANE_OFFSET = 76
+
 const formatDate = (date: string) =>
   new Intl.DateTimeFormat('de-DE', {
     day: '2-digit',
@@ -98,6 +103,23 @@ export default function Timeline({
           960,
           overviewYears.length * 80 * zoomFactor,
         )
+
+  // Beschriftungen nah beieinanderliegender Events würden sich überlappen.
+  // Jedes Event bekommt deshalb eine von vier Ebenen (oben/unten, jeweils
+  // nah/fern): die erste freie, deren letzte Beschriftung weit genug links
+  // endet. Die Suche beginnt abwechselnd oben und unten, damit die
+  // Beschriftungen gleichmäßig um die Zeitachse verteilt sind.
+  const labelLanes = (() => {
+    const laneEnds = [-Infinity, -Infinity, -Infinity, -Infinity]
+    return displayedEvents.map((event, index) => {
+      const x = (posFor(event.date) / 100) * timelineWidth
+      const preference = index % 2 === 0 ? [0, 1, 2, 3] : [1, 0, 3, 2]
+      let lane = preference.find((candidate) => laneEnds[candidate] <= x - LABEL_WIDTH_PX) ?? -1
+      if (lane === -1) lane = laneEnds.indexOf(Math.min(...laneEnds))
+      laneEnds[lane] = x
+      return lane
+    })
+  })()
 
   const visibleHolidays =
     effectiveViewMode === 'year'
@@ -209,7 +231,7 @@ export default function Timeline({
         className="scrollbar-hidden scroll-smooth overflow-x-auto pb-2"
       >
         <div
-          className="relative h-80 px-4"
+          className="relative h-[30rem] px-4"
           style={{ minWidth: `${timelineWidth}px` }}
         >
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
@@ -262,12 +284,13 @@ export default function Timeline({
 
           {displayedEvents.map((event, index) => {
             const category = getCategory(categories, event.category)
-            const pointsUp = index % 2 === 0
+            const lane = labelLanes[index]
+            const pointsUp = lane % 2 === 0
             // Visuelle Gewichtung nach Bedeutung (B1 DLG-01, D2.2): wichtigere
             // Events haben einen höheren und breiteren Marker.
             const markerHeight = 24 + Math.round((event.significance / 100) * 40)
             const markerWidth = event.significance >= 67 ? 6 : event.significance >= 34 ? 4 : 3
-            const labelOffset = markerHeight / 2 + 30
+            const labelOffset = markerHeight / 2 + 30 + (lane >= 2 ? FAR_LANE_OFFSET : 0)
             return (
               <button
                 key={event.id}

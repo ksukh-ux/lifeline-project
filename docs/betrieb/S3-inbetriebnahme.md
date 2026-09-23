@@ -87,7 +87,7 @@ Jede Zeile ist eine Bedingung, nicht ein Befehl.
 | I2 | Persistenten Speicherbereich einrichten und der Anwendung zuweisen. | Beide Flächen aus S3.3 liegen dort. |
 | I3 | Laufzeitkonfiguration setzen (S3.7). | Anwendung startfähig. Aktive Sessions müssen nach einem Neustart neu aufgebaut werden. |
 | I4 | Auslieferungsartefakt bereitstellen und Anwendung starten. | Anwendung erreichbar. |
-| I5 | Leeres Datenschema anlegen, einschließlich der vorbelegten Standardkategorien ([D1.3](../spec/D1-datenmodell.md#d13-categories)). | Leere Datenbank mit nutzbaren Kategorien. |
+| I5 | Leeres Datenschema anlegen. Die Standardkategorien entstehen nicht mit dem Schema, sondern bei jeder Registrierung für das neue Konto ([D1.3](../spec/D1-datenmodell.md#d13-categories)). | Leere, betriebsbereite Datenbank. |
 | I6 | Abnahme: Konto anlegen, Event erfassen, **Anwendung neu starten**, Event ist noch vorhanden. | `SC-01` und **`SC-04`** nachgewiesen. |
 
 Schritt I6 ist kein Formalismus: er ist der einzige Test, der die Gefahr aus `HOST-03`
@@ -137,7 +137,7 @@ Repository.
 |---|---|---|
 | Netzwerkport | Port, auf dem die Anwendung Anfragen annimmt | Anwendung nicht erreichbar. |
 | Pfad des Chronikbestands | Ablageort der Datenbank | Muss auf die persistente Fläche zeigen, sonst Datenverlust bei jedem Deployment. |
-| Pfad der Bildablage | Ablageort der Bilddateien | Muss auf die persistente Fläche zeigen, sonst fehlende Bilder. |
+| Ablageort der Bilder | Ort der Bilddateien | Muss auf der persistenten Fläche liegen, sonst fehlende Bilder. Im aktuellen Stand ist der Ort nicht einstellbar, sondern fest vorgegeben (siehe A07.2); die Zielumgebung muss ihn deshalb auf persistentem Speicher bereitstellen. |
 | Betriebsmodus | Unterscheidung Entwicklung/Produktion | Im Produktionsmodus dürfen keine internen Fehlerdetails ausgeliefert werden ([N2.4](../spec/N2-querschnittskonzepte.md)). |
 
 Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansicht.md).

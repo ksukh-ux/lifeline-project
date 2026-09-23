@@ -2,138 +2,146 @@
 
 ## 1. Zweck
 
-Dieses Dokument beschreibt die geplante technische Grundstruktur der Webanwendung **Lifeline**. Es gibt einen Überblick über die zentralen Systembestandteile, deren Aufgaben und ihr Zusammenspiel. Detaillierte Architekturdiagramme und technische Einzelentscheidungen werden bei Bedarf separat unter `docs/arch/` dokumentiert.
+P2 gibt einen groben Überblick darüber, aus welchen Teilen Lifeline besteht,
+mit welchen Nachbarsystemen es zusammenarbeitet und wie ein typischer Ablauf
+aussieht. Er dient als Orientierung für alle weiteren Bausteine der
+Spezifikation. Die ausführliche, technische Beschreibung mit Komponenten,
+Abläufen, Verteilung und Architekturentscheidungen steht in
+[`docs/arch/`](../arch/) (arc42).
 
 ## 2. Systemüberblick
 
-Lifeline wird als browserbasierte Webanwendung umgesetzt. Nutzerinnen und Nutzer können persönliche Ziele, Ereignisse und Meilensteine in einer interaktiven Timeline erfassen, anzeigen und verwalten.
+Lifeline ist eine browserbasierte Webanwendung. Nutzer:innen erfassen
+persönliche Ereignisse mit Datum, Kategorie und Bedeutung und sehen sie in
+einer interaktiven, chronologischen Timeline.
 
-Die Anwendung wird in drei Hauptbereiche gegliedert:
+Die Anwendung gliedert sich in vier Bestandteile:
 
-1. **Frontend** für Darstellung und Bedienung,
-2. **Backend** für Anwendungslogik und Datenzugriff,
-3. **Datenbank** für die dauerhafte Speicherung der Daten.
+1. **Oberfläche (Frontend)** für Darstellung und Bedienung im Browser,
+2. **Anwendungslogik (Backend)** für Anmeldung, Prüfung der Eingaben,
+   Zugriffsschutz und Auswertung,
+3. **Datenbank** für die dauerhafte Speicherung von Konten, Kategorien und Events,
+4. **Bildablage** für die zu Events hochgeladenen Bilder.
 
-## 3. Systemkontext
+Datenbank und Bildablage werden ausschließlich über die Anwendungslogik
+angesprochen, nie direkt aus dem Browser.
 
-Die Nutzerinnen und Nutzer greifen über einen Webbrowser auf Lifeline zu. Die Bedienung erfolgt über das Frontend. Das Frontend sendet Anfragen an das Backend, welches die Eingaben verarbeitet und die benötigten Daten in der Datenbank speichert oder daraus abruft.
+## 3. Systemkontext und Nachbarsysteme
 
-In der ersten Projektphase sind keine zwingend erforderlichen externen Systeme vorgesehen. Mögliche spätere Schnittstellen, beispielsweise für Benachrichtigungen oder Kalenderfunktionen, werden erst nach einer Abstimmung im Team berücksichtigt.
+```mermaid
+flowchart LR
+    N["Nutzer:in<br/>(Browser, Desktop oder Smartphone)"]
+    L(("Lifeline"))
+    H["Feiertagsdienst<br/>(öffentlich, ohne Schlüssel)"]
+    I["Instagram<br/>(vorgeschlagen, nicht umgesetzt)"]
+    N <-->|"verbindlich"| L
+    L -.->|"optional"| H
+    I -.->|"spätere Erweiterung"| L
+```
+
+Vollständiges Inventar der Nachbarsysteme; die Schnittstellen sind in
+[S1](S1-nachbarsysteme.md) spezifiziert:
+
+| ID | Nachbarsystem | Art | Status |
+|---|---|---|---|
+| NB-01 | Browser der Nutzer:in | Verbindlich: einziger Zugangskanal | Umgesetzt |
+| NB-02 | Feiertagsdienst | Optional: Anzeige gesetzlicher Feiertage; ein Ausfall stört die Timeline nicht | Umgesetzt |
+| NB-03 | Instagram | Vorgeschlagene Erweiterung: Übernahme eigener Beiträge als Events | Nicht umgesetzt ([OP-07](../OFFENE-PUNKTE.md)) |
+
+Externe Anmeldedienste, Kalender und Benachrichtigungsdienste sind bewusst
+nicht angebunden ([NG-04](P1-ziele-rahmenbedingungen.md#p142-nichtziele),
+[NG-05](P1-ziele-rahmenbedingungen.md#p142-nichtziele)).
 
 ## 4. Hauptbestandteile
 
-### 4.1 Frontend
+### 4.1 Oberfläche
 
-Das Frontend bildet die sichtbare und bedienbare Oberfläche der Anwendung. Es stellt insbesondere die Timeline, Meilensteine, Ziele, Detailansichten und Eingabeformulare dar.
+Die Oberfläche zeigt die Timeline (Übersicht über alle Jahre und
+Jahresansicht mit Feiertagen), die Event-Karten, das Formular zum Anlegen und
+Bearbeiten, die Filterleiste mit dem Anlegen eigener Kategorien und die
+Statistik. Filtern, PNG-Export und das Erzeugen bzw. Einlesen einer
+Sicherungsdatei laufen vollständig im Browser. Die Dialoge sind in
+[B1](B1-dialogspezifikation.md) beschrieben.
 
-Für das Frontend sind folgende Technologien vorgesehen:
+### 4.2 Anwendungslogik
 
-- **React** zur komponentenbasierten Entwicklung der Benutzeroberfläche,
-- **TypeScript** zur typisierten und besser wartbaren Programmierung,
-- **Vite** als Entwicklungs- und Build-Werkzeug,
-- **CSS** für die Gestaltung der Oberfläche,
-- **Visual Studio Code** als Entwicklungsumgebung.
+Die Anwendungslogik stellt eine HTTP-Schnittstelle bereit und übernimmt:
 
-Der Einsatz von Claude beziehungsweise Claude Artifacts kann während der Entwurfsphase zur Erstellung und Erprobung visueller Prototypen geprüft werden. Die eigentliche Implementierung und Verwaltung des Quellcodes erfolgt im gemeinsamen Git-Projekt.
+- Registrierung, Anmeldung und Abmeldung mit Session,
+- Anlegen, Lesen, Ändern und Löschen der eigenen Events und Kategorien,
+- verbindliche Prüfung aller Eingaben ([N2.2](N2-querschnittskonzepte.md#n22-validierung)),
+- Zugriffsschutz: jede Person erreicht nur ihre eigenen Daten
+  ([NFR-15a-01](N1-nichtfunktional.md)),
+- Speichern und Ausliefern der Bilder,
+- Berechnung der Statistik ([AF-02](F3-anwendungsfunktionen.md)),
+- Vermittlung des Feiertagsdienstes (NB-02).
 
-### 4.2 Backend
+### 4.3 Datenbank und Bildablage
 
-Das Backend stellt die Verbindung zwischen Frontend und Datenbank her. Es verarbeitet die vom Frontend gesendeten Anfragen, prüft Eingaben und führt die erforderlichen Datenbankoperationen aus.
-
-Für das Backend sind folgende Technologien vorgesehen:
-
-- **Node.js** als Laufzeitumgebung,
-- **TypeScript** als Programmiersprache,
-- **Express** zur Bereitstellung einer Programmierschnittstelle (API).
-
-Zu den vorgesehenen Aufgaben des Backends gehören:
-
-- Timeline-Einträge abrufen,
-- neue Einträge anlegen,
-- vorhandene Einträge bearbeiten,
-- Einträge löschen,
-- Eingaben validieren,
-- Daten für das Frontend bereitstellen.
-
-### 4.3 Datenbank
-
-Für die dauerhafte Speicherung der Anwendungsdaten ist **SQLite** vorgesehen. SQLite eignet sich für den geplanten Projektumfang, da die Datenbank ohne separaten Datenbankserver betrieben und in die Anwendung eingebunden werden kann.
-
-Gespeichert werden Timeline-Einträge mit Titel, Beschreibung, Datum bzw. Zeitraum, Kategorie und Bedeutung sowie die Benutzerinformationen für Registrierung und Login. Das vollständige Datenmodell ist in D1 und D2 festgelegt.
+Gespeichert werden Benutzerkonten, Kategorien und Events; das vollständige
+Datenmodell steht in [D1](D1-datenmodell.md), die fachlichen Wertebereiche in
+[D2](D2-datentypenverzeichnis.md). Bilder liegen als Dateien in der
+Bildablage, die Datenbank enthält nur den Verweis. Beide zusammen bilden den
+Datenbestand, der jede Auslieferung überdauern muss
+([S3.3](../betrieb/S3-inbetriebnahme.md)).
 
 ## 5. Zusammenspiel der Bestandteile
 
-Der grundlegende Ablauf ist wie folgt vorgesehen:
+Typischer Ablauf am Beispiel „Event anlegen“ ([UC-01](F2-anwendungsfaelle.md#uc-01--event-anlegen)):
 
-1. Eine Nutzerin oder ein Nutzer führt im Browser eine Aktion aus, beispielsweise das Anlegen eines Meilensteins.
-2. Das React-Frontend erfasst die Eingabe und sendet eine Anfrage an die API des Backends.
-3. Das Express-Backend prüft und verarbeitet die übermittelten Daten.
-4. Das Backend speichert die Daten in SQLite oder liest vorhandene Daten daraus aus.
-5. Das Backend sendet das Ergebnis an das Frontend zurück.
-6. Das Frontend aktualisiert die angezeigte Timeline.
+1. Die Nutzer:in füllt im Browser das Formular aus und speichert.
+2. Die Oberfläche sendet die Eingaben an die Anwendungslogik.
+3. Die Anwendungslogik prüft Session, Eingaben und Kategorie.
+4. Ist ein Bild dabei, wird es geprüft und in der Bildablage gespeichert.
+5. Das Event wird in der Datenbank gespeichert und zurückgemeldet.
+6. Die Oberfläche aktualisiert Timeline und Statistik.
 
-Die Kommunikation zwischen Frontend und Backend soll über eine HTTP-basierte API erfolgen. Das genaue API-Design wird später festgelegt.
+Parallel zum Laden der Timeline fragt die Oberfläche die Feiertage des
+angezeigten Jahres an. Diese Anfrage ist unabhängig: Die Timeline wird nie auf
+sie warten ([S1.3.2](S1-nachbarsysteme.md#s132-bindende-regel-fehlerverhalten)).
+
+Die technischen Abläufe sind in [A06](../arch/A06-Laufzeitansicht.md) als
+Sequenzdiagramme beschrieben.
 
 ## 6. Projekt- und Codeorganisation
 
-Frontend und Backend sollen klar voneinander getrennt, aber im gemeinsamen Git-Repository verwaltet werden. Die Projektstruktur ist:
+Oberfläche und Anwendungslogik liegen getrennt, aber im selben Repository:
 
 ```text
 lifeline-project/
-├── frontend/
-├── backend/
+├── frontend/          Oberfläche (React, TypeScript, Vite, Tailwind CSS)
+├── backend/           Anwendungslogik (Node.js, TypeScript, Express, SQLite)
 ├── docs/
-│   ├── spec/
-│   └── arch/
-└── README.md
+│   ├── spec/          Spezifikation nach Siedersleben
+│   ├── arch/          Architektur nach arc42
+│   └── betrieb/       Inbetriebnahme (S3)
+└── README.md          Einrichtung, Start, Tests
 ```
-
-`frontend/` ist bereits angelegt, `backend/` folgt mit der Backend-Implementierung.
 
 ## 7. Sicherheit und Datenschutz
 
-Da Lifeline persönliche Ziele und Lebensereignisse enthalten kann, müssen Datenschutz und ein angemessener Schutz der gespeicherten Daten berücksichtigt werden.
+Lifeline speichert persönliche Lebensereignisse
+([CON-3j-01](P1-constraints.md#con-3j-01-persönliche-daten)). Daraus folgen:
 
-Vorgesehen sind insbesondere:
+- verbindliche Prüfung aller Eingaben in der Anwendungslogik,
+- Zugriff auf Datenbank und Bildablage ausschließlich über die Anwendungslogik,
+- Zugriff jeder Person nur auf ihre eigenen Daten, auch bei direkter Adressierung,
+- Speicherung von Passwörtern nur als Hash,
+- Datensparsamkeit: nur die fachlich nötigen Angaben (E-Mail, Passwort, Events),
+- kein direkter Kontakt des Browsers zu Drittanbietern; auch Schriften werden
+  von Lifeline selbst ausgeliefert.
 
-- Prüfung und Validierung von Eingaben im Backend,
-- kontrollierter Zugriff auf die Datenbank ausschließlich über das Backend,
-- Vermeidung unnötiger personenbezogener Daten,
-- sichere Behandlung möglicher Anmeldedaten,
-- keine Speicherung sensibler Daten ohne fachliche Notwendigkeit.
+Die messbaren Anforderungen stehen in [N1](N1-nichtfunktional.md) §15, die
+Umsetzung in [A08](../arch/A08-Querschnittskonzepte.md).
 
-Die Benutzeranmeldung ist erforderlich; jede Nutzer:in sieht ausschließlich die eigenen Events.
+## 8. Technologiestack
 
-## 8. Externe Systeme und Schnittstellen
+| Bereich | Technologie |
+|---|---|
+| Oberfläche | React, TypeScript, Vite, Tailwind CSS |
+| Anwendungslogik | Node.js (ab 22.13), TypeScript, Express |
+| Datenbank | SQLite, eingebettet im Backend-Prozess |
+| Versionsverwaltung | Git und GitHub |
 
-Für die erste Version sind zunächst keine externen Systeme zwingend vorgesehen. Folgende Erweiterungen sind denkbar, aber noch nicht Bestandteil des verbindlichen Umfangs:
-
-- Kalenderanbindung,
-- E-Mail- oder Push-Benachrichtigungen,
-- Export oder Import von Timeline-Daten,
-- externe Authentifizierungsdienste.
-
-Solche Erweiterungen werden nur umgesetzt, wenn sie mit der Aufgabenstellung, dem verfügbaren Zeitrahmen und dem Team abgestimmt wurden.
-
-## 9. Offene Architekturentscheidungen
-
-Folgende Punkte müssen noch im Team und gegebenenfalls mit dem Betreuer abgestimmt werden:
-
-- genaue API-Struktur und Benennung der Endpunkte und
-- konkrete Gestaltung und Responsivität der Benutzeroberfläche.
-
-## 10. Festgelegter Technologiestack
-
-| Bereich | Vorgesehene Technologie | Status |
-|---|---|---|
-| Frontend | React, TypeScript und Vite | festgelegt |
-| Gestaltung | CSS mit Tailwind CSS | festgelegt |
-| Backend | Node.js, TypeScript und Express | festgelegt |
-| Datenbank | SQLite | festgelegt |
-| Entwicklungsumgebung | Visual Studio Code | festgelegt |
-| Versionsverwaltung | Git und GitHub | festgelegt |
-| UI-Prototyping | möglicherweise Claude/Artifacts | optional, noch zu prüfen |
-
-## 11. Abgrenzung
-
-Dieser Architekturüberblick beschreibt den gegenwärtig geplanten technischen Aufbau auf einer groben Ebene. Er ersetzt weder ein detailliertes Datenmodell noch eine vollständige Beschreibung der API oder der einzelnen Komponenten. Änderungen können sich durch die weitere Anforderungsanalyse und die Abstimmung im Projektteam ergeben.
+Die Begründungen der Technologiewahl stehen in den ADRs in
+[A09](../arch/A09-Architekturentscheidungen.md).

@@ -68,6 +68,9 @@ Anwendungsfall nur zu, ob er zum verbindlichen Kern gehört oder eine Erweiterun
 | [UC-04](F2-anwendungsfaelle.md) Timeline ansehen | **Muss** | Kern von `G-02`. |
 | [UC-05](F2-anwendungsfaelle.md) Timeline filtern | **Muss** | Kern von `G-03`. |
 | [UC-06](F2-anwendungsfaelle.md) Statistik berechnen | Erweiterung | Nützlich, aber der Auftrag ist ohne sie erfüllt. |
+| [UC-08](F2-anwendungsfaelle.md) Kategorie anlegen | **Muss** | Ohne sie ist die Erweiterbarkeit der Kategorien (`NFR-14c-01`) nicht erfüllbar. |
+| [UC-09](F2-anwendungsfaelle.md) Sicherung exportieren | Erweiterung | Gibt der Nutzer:in eine Kopie ihrer Daten in die Hand; der Auftrag ist ohne sie erfüllt. |
+| [UC-10](F2-anwendungsfaelle.md) Sicherung importieren | Erweiterung | Gegenstück zu UC-09. |
 
 Bereits umgesetzte Erweiterungen dürfen im Produkt bleiben; sie werden dadurch nicht zu
 Muss-Funktionen und die Erfolgskriterien in P1.6 hängen nicht an ihnen.
@@ -84,7 +87,7 @@ Speicherung, Validierung, Zugriffstrennung — sind als messbare Anforderungen i
 | NG-02 | Rollen, Rechte, Administration, Mehrbenutzerzugriff auf dieselbe Timeline | Persönliche Anwendung; jede Nutzer:in sieht ausschließlich eigene Events. |
 | NG-03 | Synchronisation zwischen Geräten über den Serverstand hinaus | Der Server ist die einzige Wahrheit. |
 | NG-04 | Erinnerungen und Benachrichtigungen | Würde eine Zeitsteuerung und damit einen Batch-Anteil einführen. |
-| NG-05 | Externe Authentifizierungsdienste | Nicht im Zeitrahmen (`CON-3h-01`). Der lokale JSON-Import und -Export einer Datensicherung ist umgesetzt. |
+| NG-05 | Externe Authentifizierungsdienste (z. B. Anmeldung mit Google) | Nicht im Zeitrahmen (`CON-3h-01`); die eigene Registrierung mit E-Mail und Passwort genügt. |
 | NG-06 | Übernahme von Daten aus einem Vorgängersystem | Greenfield; Baustein S2 entfällt. |
 | NG-07 | Berichte, PDF- oder Druckausgaben | Kein Berichtsanwendungsfall. |
 
@@ -118,7 +121,7 @@ Index.
 **Bewusst nicht hier:** die Wahl von Programmiersprache, Framework, Build-Werkzeug,
 Datenbankprodukt und Hosting-Anbieter. Das sind *Entwurfsentscheidungen* und stehen in
 [`docs/arch/`](../arch/) — als technische Randbedingungen in A02 und mit Begründung in
-A09 (ADR-001 bis ADR-005).
+A09 (ADR-001 bis ADR-008).
 
 ---
 
@@ -145,7 +148,7 @@ Browser-Speicherung, und SC-04 ist zugleich der einzige Nachweis für
 | ID | Annahme | Konsequenz, falls sie nicht gilt |
 |----|---------|----------------------------------|
 | AS-01 | Nutzer:innen sind während der Nutzung durchgehend online. | Offlinebetrieb ist nicht vorgesehen; die entsprechende Abgrenzung in NG-01 wäre bei Wegfall dieser Annahme neu zu bewerten. |
-| AS-02 | Die Einträge werden von den Nutzer:innen selbst erfasst; es gibt keinen automatisierten Import. | Ein Importbaustein wäre zu spezifizieren. |
+| AS-02 | Die Einträge werden von den Nutzer:innen selbst erfasst. Ein Import ist nur für die eigene, zuvor aus Lifeline exportierte Sicherung vorgesehen (UC-10); es gibt keinen automatisierten Import aus Fremdsystemen. | Ein Importbaustein für Fremdsysteme wäre zu spezifizieren (vgl. S1.4, OP-07). |
 | AS-03 | Eine persönliche Timeline umfasst einige hundert Events, nicht zehntausende. | Das Ladeverhalten aus [NFR-12a-01](N1-nichtfunktional.md) wäre neu zu bemessen. |
 | AS-04 | Die Hosting-Umgebung stellt einen über Neustarts hinweg persistenten Speicherbereich bereit. | Totalverlust aller Daten bei jedem Deployment; siehe ADR-003, Konsequenzen. |
 
@@ -159,6 +162,7 @@ Browser-Speicherung, und SC-04 ist zugleich der einzige Nachweis für
 | 0.2 | 21.08.2026 | MVP-Abgrenzung ergänzt | Sukhmani Kaur |
 | 0.3 | 25.08.2026 | Registrierung und Anmeldung als Muss-Funktion ergänzt | Mary Rose Alghanem |
 | 0.4 | *offen* | Umfang über F2 definiert statt als Liste; Rahmenbedingungen mit IDs und Anhang; offene Punkte ausgelagert | *offen* |
+| 0.5 | 23.09.2026 | Abgleich mit dem umgesetzten Stand: UC-08 bis UC-10 eingestuft, AS-02 und NG-05 präzisiert | Projektteam Lifeline |
 
 ---
 
@@ -167,7 +171,7 @@ Browser-Speicherung, und SC-04 ist zugleich der einzige Nachweis für
 | Baustein | Bezug zu P1 |
 |---|---|
 | [P1-constraints](P1-constraints.md) | Anhang mit den ausführlichen Rahmenbedingungen. |
-| [P2](P2-architekturüberblick.md) | `NG-05` begründet, warum das Nachbarsysteminventar nur einen Eintrag hat. |
+| [P2](P2-architekturüberblick.md) | Enthält das Nachbarsysteminventar; `NG-04` und `NG-05` begründen, warum keine Kalender-, Benachrichtigungs- oder Anmeldedienste angebunden sind. |
 | [F2](F2-anwendungsfaelle.md) | Definiert den Funktionsumfang; P1.4.1 stuft ihn nur ein. |
 | [N1](N1-nichtfunktional.md) | `CON-3e-01` und `CON-3j-01` sind die Ursprünge der Anforderungen in §10 bzw. §15. |
 | [`docs/betrieb/`](../betrieb/) | `AS-04` und `CON-3b-01` sind der Grund für die persistenten Zustandsflächen. |

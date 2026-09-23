@@ -90,7 +90,16 @@ export default function App() {
 
   const timelineRef = useRef<HTMLDivElement>(null)
 
+  // Feiertage erst laden, wenn eine Session besteht (die Route ist geschützt),
+  // und nach jeder Anmeldung erneut. Vorher gab es eine abgewiesene Anfrage
+  // vor dem Login und danach keine Feiertage bis zum ersten Jahreswechsel.
+  const userId = user?.id
   useEffect(() => {
+    if (userId === undefined) {
+      setHolidays([])
+      return
+    }
+
     let cancelled = false
 
     fetchHolidays(selectedYear).then(
@@ -106,7 +115,7 @@ export default function App() {
     return () => {
       cancelled = true
     }
-  }, [selectedYear])
+  }, [selectedYear, userId])
 
   const loadEvents = async () => {
     setIsLoading(true)

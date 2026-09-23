@@ -3,12 +3,12 @@
 Dialogspezifikation im Sinne von Siedersleben (Kap. 4.5): die Bildschirme, die Lifeline
 der Nutzer:in anbietet, die Navigation zwischen ihnen und die Dialogmuster, die alle
 Bildschirme teilen. B1 beschreibt, **was ein Bildschirm der Nutzer:in anbietet** und **wie
-Bildschirme zusammenhängen** — unabhängig von Gestaltungssprache, Komponentenbibliothek
-und Frontend-Technologie.
+Bildschirme zusammenhängen**.
 
 Die visuelle Identität (Farben, Typografie, Abstände) ist **nicht** Teil von B1. Ebenso
 wenig die Komponentenstruktur: welche React-Komponente welchen Dialogteil rendert, steht
-in [A05](../arch/A05-Bausteinansicht.md).
+in [A05](../arch/A05-Bausteinansicht.md). Die Bildschirmfotos in B1.7 zeigen den
+umgesetzten Stand und dienen nur der Orientierung.
 
 Jeder Dialog realisiert einen oder mehrere Anwendungsfälle aus
 [F2](F2-anwendungsfaelle.md); umgekehrt wird jeder für die Nutzer:in bedeutsame Schritt
@@ -16,47 +16,44 @@ aus F2 von genau einem Dialog dargestellt. Die Dialogkennungen (`DLG-xx`) sind s
 
 ---
 
-### B1.1 Dialogindex
+## B1.1 Dialogindex
 
-| ID | Dialog | Gruppe | Realisiert | Session nötig |
+Lifeline hat **zwei Bildschirme**: das Zugangsformular (ohne Session) und die
+Hauptansicht (mit Session). Die Hauptansicht besteht aus mehreren Dialogteilen mit
+eigener Kennung, weil sie jeweils eigene Anwendungsfälle realisieren. Das
+Ereignisformular öffnet sich als Dialogfenster über der Hauptansicht.
+
+| ID | Dialog | Form | Realisiert | Session nötig |
 |---|---|---|---|:--:|
-| [DLG-01](#dlg-01--timeline) | Timeline | Chronik | UC-04; Einstieg für UC-01 bis UC-03, UC-05, UC-06 | ja |
-| [DLG-02](#dlg-02--ereignisformular) | Ereignisformular | Chronik | UC-01, UC-02 | ja |
-| [DLG-03](#dlg-03--filterleiste) | Filterleiste | Chronik | UC-05 | ja |
-| [DLG-04](#dlg-04--auswertungsansicht) | Auswertungsansicht | Auswertung | UC-06 | ja |
-| [DLG-05](#dlg-05--zugangsformular) | Zugangsformular | Zugang | UC-07 | nein |
-| [DLG-06](#dlg-06--kategorieverwaltung) | Kategorieverwaltung | Stammdaten | UC-08 | ja |
+| [DLG-05](#dlg-05--zugangsformular) | Zugangsformular | eigener Bildschirm | UC-07 | nein |
+| [DLG-01](#dlg-01--timeline) | Timeline | Hauptansicht | UC-04, UC-03 (inkl. „Alle löschen“), UC-09, UC-10; Einstieg für UC-01, UC-02 | ja |
+| [DLG-02](#dlg-02--ereignisformular) | Ereignisformular | Dialogfenster über DLG-01 | UC-01, UC-02 | ja |
+| [DLG-03](#dlg-03--filterleiste) | Filterleiste | Teil der Hauptansicht | UC-05 | ja |
+| [DLG-06](#dlg-06--kategorie-anlegen) | Kategorie anlegen | Teil der Filterleiste | UC-08 | ja |
+| [DLG-04](#dlg-04--auswertung) | Auswertung | Teil der Hauptansicht | UC-06 | ja |
 
 ### Navigationskarte
 
 ```mermaid
 flowchart TD
-    A["DLG-05 Zugangsformular<br/>(einziger Dialog ohne Session)"]
-    B["DLG-01 Timeline<br/>Einstiegs- und Rückkehrpunkt"]
-    C["DLG-03 Filterleiste<br/>eingebettet in DLG-01"]
-    D["DLG-02 Ereignisformular<br/>Anlegen / Bearbeiten"]
-    E["DLG-04 Auswertungsansicht"]
-    F["DLG-06 Kategorieverwaltung"]
+    A["DLG-05 Zugangsformular<br/>(einziger Bildschirm ohne Session)"]
+    subgraph H["Hauptansicht"]
+        B["DLG-01 Timeline<br/>mit Event-Liste und Anwendungsrahmen"]
+        C["DLG-03 Filterleiste"]
+        F["DLG-06 Kategorie anlegen"]
+        E["DLG-04 Auswertung"]
+        C --- F
+    end
+    D["DLG-02 Ereignisformular<br/>Dialogfenster: Anlegen / Bearbeiten"]
 
-    A -->|nach Anmeldung| B
-    B --- C
-    B -->|Neues Event / Bearbeiten| D
+    A -->|Anmelden / Registrieren| B
+    B -->|Ereignis hinzufügen / Event wählen / Bearbeiten| D
     D -->|Speichern / Abbrechen| B
-    B -->|Auswertung öffnen| E
-    E -->|Zurück| B
-    B -->|Kategorien verwalten| F
-    D -->|Neue Kategorie anlegen| F
-    F -->|Zurück| D
+    B -->|Abmelden oder Session abgelaufen| A
 ```
 
-DLG-01 ist Einstiegs- und Rückkehrpunkt: jede Aktion in DLG-02, DLG-04 und DLG-06 endet
-wieder dort. DLG-03 ist kein eigener Bildschirm, sondern ein fest in DLG-01 eingebetteter
-Dialogteil; er erhält eine eigene Kennung, weil er einen eigenen Anwendungsfall
-realisiert.
-
-**Ebenfalls offen:** für „Alle Events löschen" existiert kein Dialog. Zu ergänzen ist
-voraussichtlich eine Aktion in DLG-01 mit einer Rückfrage nach
-[B1.4.3](#b143-bestätigung-zerstörerischer-aktionen) (OP-01).
+DLG-01 ist Einstiegs- und Rückkehrpunkt. DLG-03, DLG-06 und DLG-04 sind keine eigenen
+Bildschirme, sondern fest in die Hauptansicht eingebettet und damit jederzeit erreichbar.
 
 ---
 
@@ -83,55 +80,69 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 | Merkmal | Inhalt |
 |---|---|
 | **Kennung** | DLG-01 |
-| **Zweck** | Chronologische Darstellung aller eigenen Events und Einstiegspunkt für alle weiteren Aktionen. |
-| **Realisiert** | [UC-04](F2-anwendungsfaelle.md); Einstieg für UC-01, UC-02, UC-03, UC-05, UC-06 |
-| **Erreichbarkeit** | Einstiegsdialog nach der Anmeldung; Rückkehrziel aus allen anderen Dialogen |
+| **Zweck** | Chronologische Darstellung aller eigenen Events und Ausgangspunkt für alle weiteren Aktionen. |
+| **Realisiert** | [UC-04](F2-anwendungsfaelle.md#uc-04--timeline-ansehen), [UC-03](F2-anwendungsfaelle.md#uc-03--event-löschen), [UC-09](F2-anwendungsfaelle.md#uc-09--sicherung-exportieren), [UC-10](F2-anwendungsfaelle.md#uc-10--sicherung-importieren); Einstieg für UC-01, UC-02 |
+| **Erreichbarkeit** | Nach der Anmeldung; Rückkehrziel nach DLG-02 |
 | **Vorbedingung** | Bestehende Session ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)) |
 
 **Statik**
 
-- Horizontale Zeitachse mit den Events der angemeldeten Nutzer:in in chronologischer
-  Reihenfolge, positioniert nach `date`. Bei gleichem Datum entscheidet die optionale
-  Uhrzeit über die Reihenfolge ([NFR-12c-01](N1-nichtfunktional.md)).
-- Je Event mindestens: Titel, Datum, Kategorie. Die Kategorie ist farblich unterschieden —
-  die Farbe stammt aus dem Attribut `color` der Kategorie
-  ([D1.3](D1-datenmodell.md#d13-categories)), der Anzeigename aus `label`.
-- Die Bedeutung bestimmt die visuelle Gewichtung des Eintrags. Sie wird als **Rangfolge**
-  dargestellt, nicht als Maßzahl
-  ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).
-- Jedes Event ist ein Zeitpunkt, kein Zeitraum. Es gibt keine Balkendarstellung über eine
-  Dauer ([D1.4](D1-datenmodell.md#d14-events)).
-- Eingebettet: die Filterleiste [DLG-03](#dlg-03--filterleiste).
+- **Anwendungsrahmen** nach [B1.4.5](#b145-anwendungsrahmen).
+- **Zeitachse** mit zwei Ansichten:
+  - *Übersicht*: alle Jahre, in denen Events liegen, mit Jahresmarken.
+  - *Jahresansicht*: ein Kalenderjahr mit Monatsmarken und Auswahl des Jahres; zusätzlich
+    die gesetzlichen Feiertage als dezente Markierungen
+    ([S1.3](S1-nachbarsysteme.md#s13-nb-02--feiertagsdienst)).
+- Je Event auf der Zeitachse: ein Marker in der Farbe der Kategorie sowie Titel,
+  Kategoriename und Datum als Text. Die Kategorie ist damit nie nur an der Farbe
+  erkennbar ([B1.4.7](#b147-farbe-ist-nie-das-einzige-merkmal)).
+- Die Bedeutung bestimmt die **Größe** des Markers. Sie wird als Rangfolge dargestellt,
+  nicht als Maßzahl ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).
+- Jedes Event ist ein Zeitpunkt, kein Zeitraum; es gibt keine Balkendarstellung.
+- Reihenfolge nach `date`, bei gleichem Datum nach `time`; Events ohne Uhrzeit stehen am
+  Ende des Tages ([NFR-12c-01](N1-nichtfunktional.md)).
+- **Event-Liste** unter der Zeitachse: je Event eine Karte mit Kategorie, Datum, ggf.
+  Uhrzeit, Titel, Beschreibung, Bild und Bedeutung (`95 / 100`), neueste zuerst.
+- Eingebettet: die Filterleiste [DLG-03](#dlg-03--filterleiste) mit
+  [DLG-06](#dlg-06--kategorie-anlegen) und die Auswertung [DLG-04](#dlg-04--auswertung).
 
 **Dynamik**
 
 | Aktion | Wirkung |
 |---|---|
-| Event auswählen | Zusätzliche Angaben werden eingeblendet: Beschreibung, Uhrzeit und Bild. |
-| Neues Event anlegen | Öffnet [DLG-02](#dlg-02--ereignisformular) im Anlegemodus. |
-| Event bearbeiten | Öffnet DLG-02 im Bearbeitungsmodus mit den vorhandenen Werten. |
-| Event löschen | Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen), danach Entfernen aus der Darstellung. |
-| Horizontal navigieren | Verschiebt den sichtbaren Zeitbereich. |
-| Zoomstufe ändern | Ändert die dargestellte Zeitspanne. |
-| Auswertung öffnen | Öffnet [DLG-04](#dlg-04--auswertungsansicht). |
-| Kategorien verwalten | Öffnet [DLG-06](#dlg-06--kategorieverwaltung). |
-| Darstellung als Bild ausleiten | Erzeugt eine Abbildung des aktuell Sichtbaren ([AF-04](F3-anwendungsfunktionen.md)). Erweiterung, nicht Muss. |
+| Ereignis hinzufügen | Öffnet [DLG-02](#dlg-02--ereignisformular) im Anlegemodus. |
+| Event auf der Zeitachse wählen | Öffnet DLG-02 im Bearbeitungsmodus mit den vorhandenen Werten. |
+| Bearbeiten an einer Karte | Öffnet DLG-02 im Bearbeitungsmodus. |
+| Löschen an einer Karte | Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen), danach Entfernen aus der Darstellung. |
+| Übersicht / Jahresansicht | Wechselt die Ansicht der Zeitachse. |
+| Jahr wählen (vor, zurück, Eingabe) | Zeigt ein anderes Jahr in der Jahresansicht und lädt dessen Feiertage. |
+| Horizontal navigieren | Verschiebt den sichtbaren Zeitbereich (Wischen, Scrollen oder Positionsregler). |
+| Zoom ändern | Ändert die Breite der Zeitachse. |
+| Menü: Timeline als Bild exportieren | Lädt die aktuelle Darstellung als PNG herunter ([AF-04](F3-anwendungsfunktionen.md#af-04--timeline-export)). Erweiterung. |
+| Menü: Daten exportieren | Lädt eine Sicherungsdatei (JSON) herunter (UC-09). Erweiterung. |
+| Menü: Daten importieren | Wählt eine Sicherungsdatei, fragt nach und importiert die Events zusätzlich (UC-10, [AF-05](F3-anwendungsfunktionen.md#af-05--kategorien-beim-import-zuordnen)); meldet anschließend die Anzahl. Erweiterung. |
+| Menü: Alle Ereignisse löschen | Rückfrage nach B1.4.3, danach werden alle eigenen Events gelöscht (UC-03). |
+| Menü: Abmelden | Beendet die Session und führt zu DLG-05. |
 
-Sichtbarer Zeitbereich, Zoomstufe und aktiver Filter sind **flüchtiger Anzeigezustand**:
-sie werden nicht gespeichert und sind deshalb kein Gegenstand von
-[D1](D1-datenmodell.md#d11-übersicht).
+Ansicht, Jahr, Zoom und aktiver Filter sind **flüchtiger Anzeigezustand**: sie werden
+nicht gespeichert und sind deshalb kein Gegenstand von [D1](D1-datenmodell.md).
 
-Nach jedem Anlegen, Bearbeiten oder Löschen wird die Darstellung unmittelbar aktualisiert.
-Ein aktiver Filter bleibt dabei erhalten.
+Nach jedem Anlegen, Bearbeiten, Löschen und Import werden Darstellung und Auswertung
+unmittelbar aktualisiert. Ein aktiver Filter bleibt dabei erhalten; nach einem Import
+wird er aufgehoben, damit alle importierten Events sichtbar sind.
 
 **Fehler- und Sonderzustände**
 
-- Events nicht ladbar: Meldung nach [B1.4.2](#b142-fehlermeldungen) mit der Möglichkeit,
-  erneut zu laden.
-- Keine Events vorhanden: leerer Zustand nach [B1.4.4](#b144-leere-zustände) mit
-  unmittelbarem Weg zum Anlegen.
+- Events nicht ladbar: Meldung nach [B1.4.2](#b142-fehlermeldungen) mit der Schaltfläche
+  „Erneut laden“.
+- Keine Events vorhanden: leerer Zustand nach [B1.4.4](#b144-leere-zustände) mit der
+  Schaltfläche „Erstes Ereignis anlegen“; die Zeitachse zeigt die Jahresansicht.
 - Events vorhanden, aber keines passt zum Filter: leerer Zustand mit dem Hinweis, dass ein
-  Filter aktiv ist, und der Möglichkeit, ihn aufzuheben. **Nicht** als Fehler darstellen.
+  Filter aktiv ist, und der Schaltfläche „Filter aufheben“. **Nicht** als Fehler darstellen.
+- Keine Events im gewählten Jahr: Hinweis unter der Zeitachse.
+- Feiertagsdienst nicht erreichbar: keine Markierungen, keine Meldung
+  ([S1.3.2](S1-nachbarsysteme.md#s132-bindende-regel-fehlerverhalten)).
+- Ungültige Sicherungsdatei: Meldung, es wird nichts importiert.
 
 ---
 
@@ -141,47 +152,46 @@ Ein aktiver Filter bleibt dabei erhalten.
 |---|---|
 | **Kennung** | DLG-02 |
 | **Zweck** | Erfassen eines neuen und Ändern eines vorhandenen Events. |
-| **Realisiert** | [UC-01](F2-anwendungsfaelle.md), [UC-02](F2-anwendungsfaelle.md) |
-| **Erreichbarkeit** | Aus DLG-01 |
+| **Realisiert** | [UC-01](F2-anwendungsfaelle.md#uc-01--event-anlegen), [UC-02](F2-anwendungsfaelle.md#uc-02--event-bearbeiten) |
+| **Erreichbarkeit** | Aus DLG-01, als Dialogfenster über der Hauptansicht |
 | **Vorbedingung** | Bestehende Session. Im Bearbeitungsmodus zusätzlich: das Event gehört der angemeldeten Nutzer:in ([NFR-15a-02](N1-nichtfunktional.md)). |
 
 **Zwei Zustände.** Anlege- und Bearbeitungsmodus teilen Felder, Prüfregeln und Verhalten.
 Sie unterscheiden sich in drei Punkten: der Bearbeitungsmodus ist mit den vorhandenen
-Werten vorbelegt, seine Beschriftung benennt das Ändern, und er ändert einen Datensatz,
-statt einen anzulegen.
+Werten vorbelegt, seine Überschrift und Schaltfläche benennen das Ändern, und er ändert
+einen Datensatz, statt einen anzulegen.
 
 **Statik — Eingaben**
 
 | Feld | Pflicht | Regel |
 |---|:--:|---|
-| Titel | ● | nicht leer |
-| Datum | ● | gültiges Datum; bestimmt die Position in der Timeline |
-| Uhrzeit | | gültige Uhrzeit; nur relevant zur Feinsortierung innerhalb eines Tages |
-| Beschreibung | | Freitext |
-| Kategorie | ● | Auswahl aus den für diese Nutzer:in sichtbaren Kategorien: die vorbelegten Standardkategorien und ihre eigenen (`INV-C4`). Vorbelegt mit der ersten Kategorie der Person (nach Anlagereihenfolge). |
-| Bedeutung | ● | Regler 0–100 ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)), vorbelegt mit einem mittleren Wert |
-| Bild | | ein Bild; Formate und Größe nach [D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path) |
+| Titel | ● | 1–120 Zeichen ([D2.7](D2-datentypenverzeichnis.md#d27-titel-und-beschreibung)) |
+| Beschreibung | | Freitext, höchstens 2000 Zeichen |
+| Bild | | ein Bild; JPEG, PNG oder WEBP bis 5 MB ([D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path)) |
+| Datum | ● | gültiges Datum, vorbelegt mit dem heutigen Tag ([D2.5](D2-datentypenverzeichnis.md#d25-kalenderdatum)) |
+| Uhrzeit | | leer vorbelegt; nur relevant zur Reihenfolge innerhalb eines Tages ([D2.6](D2-datentypenverzeichnis.md#d26-uhrzeit)) |
+| Kategorie | ● | Auswahl aus den eigenen Kategorien (`INV-C4`), vorbelegt mit der ersten Kategorie der Person |
+| Bedeutung | ● | Regler 0–100, vorbelegt mit 50, angezeigt als „50 / 100“ ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)) |
 
-Die Kategorieauswahl zeigt `label`, arbeitet aber auf der Kennung der Kategorie. Der
-Anzeigename kann sich ändern, ohne dass bestehende Events ihre Zuordnung verlieren.
+Die Kategorieauswahl zeigt `label`, arbeitet aber auf der Kennung der Kategorie. Fehlt
+eine passende Kategorie, legt die Nutzer:in sie zuvor in der Filterleiste an
+([DLG-06](#dlg-06--kategorie-anlegen)).
 
 **Dynamik**
 
 | Aktion | Wirkung |
 |---|---|
-| Speichern | Prüfung nach [N2.2](N2-querschnittskonzepte.md#n22-validierung); bei Erfolg Rückkehr zu DLG-01 mit aktualisierter Darstellung. |
-| Abbrechen | Rückkehr zu DLG-01 ohne Änderung. Bei bereits eingegebenen Werten Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen). |
-| Neue Kategorie anlegen | Öffnet [DLG-06](#dlg-06--kategorieverwaltung); nach Rückkehr ist die neue Kategorie auswählbar und die bisherigen Eingaben sind erhalten. |
+| Hinzufügen / Speichern | Prüfung nach [N2.2](N2-querschnittskonzepte.md#n22-validierung); bei Erfolg schließt das Formular und DLG-01 wird aktualisiert. |
+| Abbrechen, Schließen-Symbol oder Escape | Schließt ohne Änderung. Wurden Werte geändert, erst nach Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen). |
+| Bild wählen | Das Bild wird eingelesen; bis dahin ist Speichern gesperrt. |
 | Bild entfernen | Setzt den Bildverweis zurück; wirksam erst mit dem Speichern. |
 
 **Fehler- und Sonderzustände**
 
-- Verletzte Prüfregel: Rückmeldung **am betroffenen Feld**, nicht als globale Meldung. Das
-  Formular behält alle Eingaben.
-- Abgewiesener Bildupload: Meldung am Bildfeld; das Event wird nicht gespeichert,
-  bis der ungültige Upload entfernt oder ersetzt wurde.
-- Fehlgeschlagene Speicherung: Meldung nach [B1.4.2](#b142-fehlermeldungen); Eingaben
-  bleiben erhalten, damit sie nicht erneut erfasst werden müssen
+- Fehlende Pflichtangabe: Hinweis direkt am Feld; das Formular wird nicht abgeschickt.
+- Unzulässiges Bild: Meldung am Bildfeld, das Bild wird nicht übernommen.
+- Von der Anwendungslogik abgewiesene Eingabe oder fehlgeschlagene Speicherung: Meldung nach
+  [B1.4.2](#b142-fehlermeldungen); das Formular bleibt geöffnet und behält alle Eingaben
   ([N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung)).
 
 ---
@@ -192,22 +202,21 @@ Anzeigename kann sich ändern, ohne dass bestehende Events ihre Zuordnung verlie
 |---|---|
 | **Kennung** | DLG-03 |
 | **Zweck** | Eingrenzen der dargestellten Events auf eine Kategorie. |
-| **Realisiert** | [UC-05](F2-anwendungsfaelle.md) |
-| **Erreichbarkeit** | Fest eingebettet in DLG-01 |
+| **Realisiert** | [UC-05](F2-anwendungsfaelle.md#uc-05--timeline-filtern) |
+| **Erreichbarkeit** | Fest eingebettet in die Hauptansicht, oberhalb der Event-Liste |
 | **Vorbedingung** | Bestehende Session |
 
 **Statik**
 
-Auswahl über die für diese Nutzer:in sichtbaren Kategorien sowie den Zustand „kein
-Filter". Der aktive Filter ist jederzeit erkennbar. Die angebotene Liste wächst
-automatisch mit, sobald in DLG-06 eine Kategorie angelegt wird.
+Eine Schaltfläche „Alle“ und je eigene Kategorie eine Schaltfläche mit Farbpunkt **und**
+Namen. Der aktive Filter ist hervorgehoben. Die Liste wächst automatisch mit, sobald in
+DLG-06 eine Kategorie angelegt wird. Am Ende steht „Neue Kategorie“ (DLG-06).
 
 **Dynamik**
 
-Die Auswahl wirkt unmittelbar auf DLG-01 und arbeitet auf den **bereits geladenen**
-Events ([AF-03](F3-anwendungsfunktionen.md)) — es wird nichts nachgeladen
-([NFR-12a-02](N1-nichtfunktional.md)). Der Filter lässt sich jederzeit wechseln oder
-aufheben; das Aufheben stellt den vollständigen Bestand wieder her.
+Die Auswahl wirkt unmittelbar auf Zeitachse und Event-Liste und arbeitet auf den **bereits
+geladenen** Events ([AF-03](F3-anwendungsfunktionen.md#af-03--timeline-filterung)) — es
+wird nichts nachgeladen ([NFR-12a-02](N1-nichtfunktional.md)). „Alle“ hebt den Filter auf.
 
 **Fehler- und Sonderzustände**
 
@@ -215,39 +224,77 @@ Keine eigenen. Eine leere Ergebnismenge ist ein Zustand von DLG-01, kein Fehler.
 
 ---
 
-### DLG-04 — Auswertungsansicht
+### DLG-06 — Kategorie anlegen
+
+| Merkmal | Inhalt |
+|---|---|
+| **Kennung** | DLG-06 |
+| **Zweck** | Eigene Kategorien anlegen. |
+| **Realisiert** | [UC-08](F2-anwendungsfaelle.md#uc-08--kategorie-anlegen) |
+| **Erreichbarkeit** | Über „Neue Kategorie“ am Ende der Filterleiste (DLG-03) |
+| **Vorbedingung** | Bestehende Session |
+
+Dieser Dialogteil ist die Oberfläche zu [NFR-14c-01](N1-nichtfunktional.md): ohne ihn
+bliebe die Erweiterbarkeit der Kategorien eine Behauptung.
+
+**Statik — Eingaben**
+
+| Feld | Pflicht | Regel |
+|---|:--:|---|
+| Farbe | ● | Farbwähler, vorbelegt mit einem Vorschlag aus einer festen Palette ([D2.8](D2-datentypenverzeichnis.md#d28-kategoriename-und-farbcode)) |
+| Name | ● | 1–40 Zeichen, bei der Person eindeutig |
+
+**Dynamik**
+
+| Aktion | Wirkung |
+|---|---|
+| OK | Legt die Kategorie an; sie erscheint sofort in DLG-03 und in der Auswahl von DLG-02. Die Eingabezeile schließt sich. |
+| Abbrechen | Schließt die Eingabezeile ohne Änderung. |
+
+**Fehler- und Sonderzustände**
+
+- Name bereits vergeben (`INV-C1`) oder ungültig: Meldung direkt unter der Filterleiste; die
+  Eingabe bleibt erhalten.
+
+Umbenennen, Umfärben und Löschen eigener Kategorien sind bewusst nicht Teil dieses Dialogs
+([OP-06](../OFFENE-PUNKTE.md)).
+
+---
+
+### DLG-04 — Auswertung
 
 | Merkmal | Inhalt |
 |---|---|
 | **Kennung** | DLG-04 |
 | **Zweck** | Verdichtete Rückschau auf den eigenen Bestand. |
-| **Realisiert** | [UC-06](F2-anwendungsfaelle.md) |
-| **Erreichbarkeit** | Aus DLG-01 |
+| **Realisiert** | [UC-06](F2-anwendungsfaelle.md#uc-06--statistik-berechnen) |
+| **Erreichbarkeit** | Fest eingebettet in die Hauptansicht, unterhalb der Event-Liste („Rückblick – Statistik“) |
 | **Vorbedingung** | Bestehende Session. Erweiterung, kein Muss-Umfang. |
 
 **Statik**
 
-Die von [AF-02](F3-anwendungsfunktionen.md) gelieferten Kennzahlen: Anzahl Events je
-Kategorie, Gesamtanzahl, Zeitspanne vom ältesten bis zum jüngsten Event, mittlere
-Bedeutung je Kategorie.
+Die Kennzahlen aus [AF-02](F3-anwendungsfunktionen.md#af-02--statistik-aggregation):
+Anzahl Events, Zeitspanne in Tagen, Zeitraum vom ältesten bis zum jüngsten Event und je
+Kategorie Anzahl und Tendenz der Bedeutung („Ø 95“).
 
-Die Mittelwerte sind als **Tendenz** zu beschriften, nicht als „durchschnittliche
-Wichtigkeit": die Bedeutungsskala ist ordinal, eine Mittelwertbildung darauf ist streng
-genommen nicht zulässig und wird nur als grobe Orientierung geführt
+Die Mittelwerte sind als **Tendenz** beschriftet, nicht als „durchschnittliche
+Wichtigkeit“: die Bedeutungsskala ist ordinal, eine Mittelwertbildung darauf ist streng
+genommen nicht zulässig und dient nur als grobe Orientierung
 ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).
 
 **Dynamik**
 
-Die Ansicht ist lesend; sie verändert keine Daten. Rückkehr zu DLG-01 jederzeit möglich.
+Die Ansicht ist lesend. Sie wird nach jedem Anlegen, Bearbeiten, Löschen und Import neu
+ermittelt.
 
 Ein in DLG-03 gesetzter Filter wirkt **nicht** auf die Auswertung: sie betrachtet stets
-den vollständigen Bestand. Diese Festlegung ist bewusst getroffen und in der Ansicht
-kenntlich zu machen, sonst wirken die Zahlen widersprüchlich zur gefilterten Timeline.
+den vollständigen Bestand. Solange ein Filter aktiv ist, weist ein Hinweis darauf hin.
 
 **Fehler- und Sonderzustände**
 
-- Keine Events vorhanden: neutrale Werte (0) statt einer Fehlermeldung.
-- Kennzahlen nicht ermittelbar: Meldung nach [B1.4.2](#b142-fehlermeldungen).
+- Keine Events vorhanden: neutrale Werte (0) und „Noch keine Ereignisse“.
+- Kennzahlen nicht ermittelbar: Die Auswertung wird ausgeblendet; die Timeline bleibt
+  nutzbar.
 
 ---
 
@@ -257,8 +304,8 @@ kenntlich zu machen, sonst wirken die Zahlen widersprüchlich zur gefilterten Ti
 |---|---|
 | **Kennung** | DLG-05 |
 | **Zweck** | Anlegen eines Kontos und Anmelden an einem vorhandenen Konto. |
-| **Realisiert** | [UC-07](F2-anwendungsfaelle.md) |
-| **Erreichbarkeit** | Einziger ohne Session erreichbarer Dialog; Ziel der Umleitung nach [B1.4.1](#b141-umleitung-ohne-session) |
+| **Realisiert** | [UC-07](F2-anwendungsfaelle.md#uc-07--registrieren-und-login) |
+| **Erreichbarkeit** | Einziger ohne Session erreichbarer Bildschirm; Ziel der Umleitung nach [B1.4.1](#b141-umleitung-ohne-session) |
 | **Vorbedingung** | Keine |
 
 **Zwei Zustände.** *Anmelden* und *Registrieren* sind zwei Zustände desselben Dialogs mit
@@ -270,74 +317,26 @@ Registrierung fordert zusätzlich eine Bestätigung des Passworts.
 | Feld | Zustand | Pflicht |
 |---|---|:--:|
 | E-Mail | beide | ● |
-| Passwort | beide | ● |
-| Passwortbestätigung | nur Registrieren | ● |
+| Passwort | beide | ● (bei Registrierung mindestens 8 Zeichen) |
+| Passwort bestätigen | nur Registrieren | ● |
 
 **Dynamik**
 
 | Aktion | Wirkung |
 |---|---|
-| Anmelden | Bei gültigen Zugangsdaten wird eine Session eingerichtet und zu DLG-01 weitergeleitet. |
-| Registrieren | Bei gültigen Eingaben wird ein Konto angelegt; anschließend Anmeldung. Die Standardkategorien stehen sofort zur Verfügung. |
+| Anmelden | Bei gültigen Zugangsdaten wird eine Session eingerichtet und DLG-01 angezeigt. |
+| Konto erstellen | Bei gültigen Eingaben wird ein Konto mit den Startkategorien angelegt und die Nutzer:in angemeldet. |
 | Zustand wechseln | Wechsel zwischen Anmelden und Registrieren ohne Verlassen des Dialogs. |
-| Abmelden | Nicht Teil dieses Dialogs; ausgelöst aus dem Anwendungsrahmen ([B1.4.5](#b145-anwendungsrahmen)), beendet die Session und führt hierher zurück. |
 
 **Fehler- und Sonderzustände**
 
 - Ungültige Zugangsdaten: **eine** allgemeine Meldung, die nicht verrät, ob die Adresse
-  unbekannt oder das Passwort falsch war. Andernfalls ließe sich prüfen, welche Adressen
-  registriert sind ([N2.4](N2-querschnittskonzepte.md)).
-- Bereits vergebene E-Mail bei der Registrierung: Meldung am Feld (`INV-U1`).
-- Nicht übereinstimmende Passwortbestätigung: Meldung am Bestätigungsfeld.
+  unbekannt oder das Passwort falsch war.
+- Passwörter stimmen nicht überein oder Passwort zu kurz: Meldung im Formular, keine
+  Anfrage an die Anwendungslogik.
+- Bereits vergebene E-Mail bei der Registrierung (`INV-U1`): Meldung im Formular.
 - Es gibt **keinen** Weg, ein vergessenes Passwort zurückzusetzen. Bewusste Lücke, siehe
-  `docs/OFFENE-PUNKTE.md`, OP-03.
-
-> **Umsetzungsstand.** Der Dialog ist in `frontend/src/components/AuthForms.tsx`
-> umgesetzt. Die Session bleibt bei einem Serverneustart nicht erhalten, die
-> persistenten Events bleiben jedoch in SQLite gespeichert.
-
----
-
-### DLG-06 — Kategorieverwaltung
-
-| Merkmal | Inhalt |
-|---|---|
-| **Kennung** | DLG-06 |
-| **Zweck** | Eigene Kategorien anlegen. |
-| **Realisiert** | [UC-08](F2-anwendungsfaelle.md#uc-08--kategorie-anlegen) |
-| **Erreichbarkeit** | Aus DLG-01 sowie aus DLG-02 heraus, wenn beim Erfassen eine passende Kategorie fehlt |
-| **Vorbedingung** | Bestehende Session |
-
-Dieser Dialog ist die Oberfläche zu [NFR-14c-01](N1-nichtfunktional.md): ohne ihn bliebe
-die Erweiterbarkeit der Kategorien eine Behauptung, weil eine neue Kategorie weiterhin
-eine Code-Änderung erforderte.
-
-**Statik**
-
-Liste der für die Nutzer:in sichtbaren Kategorien, jeweils mit Anzeigename, Farbe und
-Anzahl zugeordneter Events.
-
-**Eingaben je Kategorie**
-
-| Feld | Pflicht | Regel |
-|---|:--:|---|
-| Anzeigename | ● | nicht leer |
-| Farbe | ● | vorbelegt mit einem freien Wert aus der Palette |
-
-**Dynamik**
-
-| Aktion | Wirkung |
-|---|---|
-| Kategorie anlegen | Neue eigene Kategorie; sofort in DLG-02 und DLG-03 verfügbar. |
-| Zurück | Rückkehr zum aufrufenden Dialog. Wurde DLG-06 aus DLG-02 geöffnet, bleiben die dortigen Eingaben erhalten. |
-
-**Fehler- und Sonderzustände**
-
-- Name bereits vergeben: Meldung am Feld (`INV-C1`).
-
-Umbenennen, Umfärben und Löschen eigener Kategorien sowie ein Schutz der
-Standardkategorien vor Bearbeitung sind bewusst nicht Teil dieses Dialogs — siehe
-`docs/OFFENE-PUNKTE.md`, OP-06.
+  [OP-03](../OFFENE-PUNKTE.md).
 
 ---
 
@@ -348,22 +347,27 @@ wiederholt.
 
 ### B1.4.1 Umleitung ohne Session
 
-Wird ein Dialog ohne gültige Session aufgerufen, führt Lifeline zu DLG-05. Nach
-erfolgreicher Anmeldung wird der ursprünglich angeforderte Dialog angezeigt.
+Wird Lifeline ohne gültige Session geöffnet oder läuft die Session während der Nutzung ab
+(z. B. nach einem Neustart der Anwendung), führt Lifeline beim nächsten Zugriff zu DLG-05.
+Nach erfolgreicher Anmeldung wird die Hauptansicht angezeigt; die Daten sind unverändert.
 
 ### B1.4.2 Fehlermeldungen
 
-Fehler werden dort gemeldet, wo sie entstehen: Feldfehler am Feld, Vorgangsfehler am
-Vorgang. Jede Meldung sagt, was nicht möglich war und was die Nutzer:in tun kann. Interne
-Einzelheiten — Statuscodes, technische Meldungen, Stapelspuren — erscheinen nie in der
-Oberfläche ([NFR-11c-01](N1-nichtfunktional.md), [N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung)).
+Fehler werden möglichst dort gemeldet, wo sie entstehen: Hinweise zu Pflichtfeldern und
+zum Bild am Feld, Fehler beim Laden in der Hauptansicht, Fehler beim Anlegen einer
+Kategorie unter der Filterleiste. Vom Server abgewiesene Speicher-, Lösch- und
+Importvorgänge werden als Meldungsfenster angezeigt. Jede Meldung sagt, was nicht möglich
+war; interne Einzelheiten — Statuscodes, technische Meldungen, Stapelspuren — erscheinen
+nie in der Oberfläche ([NFR-11c-01](N1-nichtfunktional.md),
+[N2.4](N2-querschnittskonzepte.md#n24-fehlerbehandlung)).
 
 ### B1.4.3 Bestätigung zerstörerischer Aktionen
 
 Aktionen, die Daten unwiederbringlich entfernen oder Eingaben verwerfen, werden erst nach
-ausdrücklicher Bestätigung ausgeführt. Die Rückfrage benennt konkret, was entfernt wird
-(„Dieses Event löschen?", „Alle Events löschen?", „Kategorie löschen?"). Die
-zerstörerische Option ist nie vorausgewählt.
+ausdrücklicher Bestätigung ausgeführt. Die Rückfrage benennt konkret, was geschieht:
+„Dieses Ereignis wirklich löschen?“, „Wirklich alle Ereignisse unwiderruflich löschen?“,
+„Ungespeicherte Eingaben verwerfen?“. Auch der Import wird vorher bestätigt, weil er den
+Bestand verändert.
 
 ### B1.4.4 Leere Zustände
 
@@ -373,23 +377,27 @@ Events, bei leerer Filtermenge das Aufheben des Filters.
 
 ### B1.4.5 Anwendungsrahmen
 
-Alle Dialoge außer DLG-05 tragen denselben Rahmen: Zugang zur Timeline, zur Auswertung,
-zur Kategorieverwaltung und zum Abmelden. Der Rahmen zeigt an, welche Nutzer:in angemeldet
-ist.
+Die Hauptansicht trägt oben einen festen Rahmen: Anzahl der erfassten Events und E-Mail
+der angemeldeten Person, die Schaltfläche „Ereignis hinzufügen“ und ein Menü mit
+„Timeline als Bild exportieren“, „Daten exportieren“, „Daten importieren“, „Alle
+Ereignisse löschen“ und „Abmelden“. Filterleiste und Auswertung sind ohne Navigation in der
+Hauptansicht erreichbar.
 
 ### B1.4.6 Bedienung auf Desktop und Smartphone
 
 Alle Dialoge sind auf beiden Gerätearten vollständig bedienbar
 ([CON-3e-01](P1-constraints.md#con-3e-01-desktop-und-smartphone-gleichrangig),
-[NFR-10a-01](N1-nichtfunktional.md)). Für die Timeline heißt das insbesondere, dass
-horizontales Navigieren und Zoomen auch per Berührung möglich sind.
+[NFR-10a-01](N1-nichtfunktional.md)). Für die Zeitachse heißt das: horizontales Navigieren
+per Wischen und Zoomen über einen Regler. Aktionen, die auf dem Desktop erst beim
+Überfahren mit der Maus erscheinen (Bearbeiten und Löschen an den Karten), sind auf
+Touch-Geräten immer sichtbar.
 
 ### B1.4.7 Farbe ist nie das einzige Merkmal
 
 Wo Kategorien farblich unterschieden werden, ist die Kategorie zusätzlich als Text
-erkennbar ([NFR-11d-01](N1-nichtfunktional.md)). Das gilt für DLG-01, DLG-03, DLG-04 und
-DLG-06 gleichermaßen — und es ist der Grund, warum eine Kategorie nicht allein über
-`color` identifiziert werden darf.
+erkennbar ([NFR-11d-01](N1-nichtfunktional.md)). Das gilt für die Zeitachse und die Karten
+in DLG-01 sowie für DLG-03 und DLG-04 — und es ist der Grund, warum eine Kategorie nicht
+allein über `color` identifiziert werden darf.
 
 ---
 
@@ -400,7 +408,7 @@ DLG-06 gleichermaßen — und es ist der Grund, warum eine Kategorie nicht allei
 - **Abläufe zwischen Nutzer:in und System.** Sie stehen als Anwendungsfälle in
   [F2](F2-anwendungsfaelle.md); B1 beschreibt die Oberfläche, auf der sie stattfinden.
 - **Algorithmen hinter den Aktionen** — [F3](F3-anwendungsfunktionen.md).
-- **Adressen und Routen.** Welcher Pfad welchen Dialog anzeigt, ist Implementierung.
+- **Adressen und Routen.** Lifeline hat keine eigenen Adressen je Dialog.
 
 ---
 
@@ -408,10 +416,25 @@ DLG-06 gleichermaßen — und es ist der Grund, warum eine Kategorie nicht allei
 
 | Baustein | Bezug zu B1 |
 |---|---|
-| [F2](F2-anwendungsfaelle.md) | Jeder Anwendungsfall ist genau einem Dialog zugeordnet (B1.1). |
-| [F3](F3-anwendungsfunktionen.md) | AF-03 wirkt in DLG-03, AF-02 in DLG-04, AF-04 in DLG-01. |
-| [D1](D1-datenmodell.md) | DLG-02 bildet `EVENTS` ab, DLG-06 bildet `CATEGORIES` ab; beide setzen deren Invarianten um. |
-| [D2](D2-datentypenverzeichnis.md) | Bedeutungsregler und Bildupload in DLG-02 setzen D2.2 und D2.3 um. |
+| [F2](F2-anwendungsfaelle.md) | Jeder Anwendungsfall ist einem Dialog zugeordnet (B1.1). |
+| [F3](F3-anwendungsfunktionen.md) | AF-03 wirkt in DLG-03, AF-02 in DLG-04, AF-04 und AF-05 in DLG-01. |
+| [D1](D1-datenmodell.md) | DLG-02 bildet `EVENTS` ab, DLG-06 bildet `CATEGORIES` ab; beide setzen deren Invarianten (D1.7) um. |
+| [D2](D2-datentypenverzeichnis.md) | Die Eingaberegeln in DLG-02, DLG-05 und DLG-06 folgen D2. |
 | [N1](N1-nichtfunktional.md) | `NFR-10a-01`, `NFR-11a-01`, `NFR-11c-01`, `NFR-11d-01` binden die Dialoge; `NFR-14c-01` ist der Grund für DLG-06. |
 | [N2](N2-querschnittskonzepte.md) | B1.4.1 bis B1.4.3 sind die Oberflächenseite von N2.3 und N2.4. |
 | [A05](../arch/A05-Bausteinansicht.md) | Ordnet den Dialogen die umsetzenden Frontend-Bausteine zu. |
+
+---
+
+## B1.7 Bildschirmfotos (Umsetzungsstand)
+
+| Dialog | Bild |
+|---|---|
+| DLG-05 Zugangsformular (Registrieren) | ![DLG-05](screenshots/dlg-05-registrieren.png) |
+| DLG-01 Timeline, Übersicht, mit DLG-03 und DLG-04 | ![DLG-01 Übersicht](screenshots/dlg-01-uebersicht.png) |
+| DLG-01 Timeline, Jahresansicht mit Feiertagen | ![DLG-01 Jahresansicht](screenshots/dlg-01-jahresansicht.png) |
+| DLG-01 Menü des Anwendungsrahmens | ![DLG-01 Menü](screenshots/dlg-01-menue.png) |
+| DLG-02 Ereignisformular | ![DLG-02](screenshots/dlg-02-ereignisformular.png) |
+| DLG-03 Filter aktiv, leere Filtermenge | ![DLG-03](screenshots/dlg-03-filter-leer.png) |
+| DLG-06 Kategorie anlegen | ![DLG-06](screenshots/dlg-06-kategorie-anlegen.png) |
+| DLG-01 auf dem Smartphone (375 px) | ![Smartphone](screenshots/dlg-01-smartphone.png) |

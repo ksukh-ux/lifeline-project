@@ -306,3 +306,42 @@ und gelöscht werden können.
 | [B1](B1-dialogspezifikation.md) | §10 und §11 binden die Dialoge. |
 | [S3](../betrieb/S3-inbetriebnahme.md) | `NFR-12d-01` ist der Grund für die persistenten Zustandsflächen. |
 | [`docs/arch/A01`](../arch/A01-Einleitung-und-Ziele.md) | Die Qualitätsziele QG-01 bis QG-03 werden durch die Anforderungen dieses Bausteins konkretisiert. |
+
+---
+
+## N1.11 Erfüllungsstand zur Abgabe
+
+Stand 23.09.2026. **Erfüllt** heißt: umgesetzt und mit dem genannten Nachweis geprüft.
+**Teilweise** heißt: umgesetzt, aber das Prüfkriterium ist nicht vollständig nachgewiesen.
+**Offen** heißt: nicht nachgewiesen.
+
+Automatisierte Tests: `npm --prefix backend test` (Integrationstests gegen die laufende
+API sowie Einzeltests für Validierung und Bildprüfung). Browser-Test: manueller bzw.
+skriptgesteuerter Durchlauf in Chrome am Desktop und mit 375 px Breite.
+
+| Anforderung | Stand | Nachweis bzw. Einschränkung |
+|---|---|---|
+| NFR-10a-01 Desktop und Smartphone | Teilweise | Browser-Test mit Desktop-Breite und 375 px; Aktionen auf Touch-Geräten sichtbar. Nicht mit 1920 × 1080 und 375 × 667 je Dialog protokolliert. |
+| NFR-11a-01 Erfassen ohne Anleitung | Offen | Kein Test mit einer unbeteiligten Person durchgeführt. |
+| NFR-11c-01 Verständliche Rückmeldungen | Erfüllt | Meldungen der Anwendungslogik ohne Feldnamen und Formate; zentraler Fehler-Handler ohne Stapelspuren; Netzwerkfehler werden übersetzt. |
+| NFR-11d-01 Grundlegende Zugänglichkeit | Teilweise | Formularfelder beschriftet, Kategorie überall als Text. Vollständige Tastaturbedienung nicht systematisch geprüft (z. B. kein Fokusfang im Formularfenster). |
+| NFR-12a-01 Ladeverhalten | Offen | Nicht mit 200 Events gemessen. |
+| NFR-12a-02 Filterung ohne Verzögerung | Erfüllt | Filterung arbeitet ohne Serveranfrage auf den geladenen Daten (AF-03). |
+| NFR-12c-01 Chronologische Ordnung | Teilweise | Sortierung nach Datum, dann Uhrzeit umgesetzt; kein automatisierter Test mit mehreren Events am selben Tag. |
+| NFR-12d-01 Dauerhaftigkeit | Erfüllt | Test „Events bleiben nach einem Neustart erhalten“. |
+| NFR-12d-02 Keine Teilzustände | Teilweise | Konto und Startkategorien in einer Transaktion; Bilder werden kompensierend aufgeräumt. Restrisiko zwischen Datei und Datenbank siehe OP-08. |
+| NFR-12e-01 Bestandsgröße | Offen | Nicht mit 500 Events geprüft. |
+| NFR-13b-01 Betrieb ohne Zusatzdienste | Teilweise | Produktionsbetrieb als ein Prozess ohne Datenbankserver lokal geprüft; Betrieb hinter HTTPS nicht nachgewiesen. |
+| NFR-13b-02 Nutzung ohne Installation | Teilweise | Durchlauf von Registrierung bis Anlegen in Chrome; zweiter Browser nicht protokolliert. |
+| NFR-14a-01 Nachvollziehbarkeit | Teilweise | Versionierung und Pull Requests auf GitHub; der Abgabe-Tag `v1.0.0` wird mit der Abgabe gesetzt. |
+| NFR-14a-02 Prüfbarkeit der Kernabläufe | Teilweise | Automatisiert: UC-01, UC-02, UC-03, UC-04 (Laden), UC-07, UC-08. UC-05 läuft ohne Server und ist nur im Browser-Test abgedeckt. |
+| NFR-14c-01 Erweiterbarkeit der Kategorien | Erfüllt | Test „Kategorie anlegen und verwenden“; Anlegen über die Oberfläche ohne Neustart. |
+| NFR-15a-01 Zugriff nur auf eigene Daten | Erfüllt | Test: fremdes Event wird mit 404 beantwortet, genau wie ein nicht existierendes. |
+| NFR-15a-02 Prüfung bei jeder Operation | Erfüllt | Test für Lesen, Ändern und Löschen eines fremden Events sowie für eine fremde Kategorie. |
+| NFR-15b-01 Verschlüsselte Übertragung | Offen | Im Produktionsmodus wird das Cookie nur über HTTPS gesendet; eine Zielumgebung mit HTTPS ist nicht nachgewiesen. |
+| NFR-15b-02 Passwörter nie im Klartext | Erfüllt | Speicherung nur als scrypt-Hash; Passwörter werden nicht protokolliert. |
+| NFR-15b-03 Neutralisierung von Freitext | Teilweise | Alle Texte werden als Text dargestellt, nicht als HTML; kein eigener Test mit Skriptsyntax. |
+| NFR-15b-04 Prüfung hochgeladener Dateien | Erfüllt | Einzeltest: Datei mit falscher Signatur und nicht erlaubter Typ werden abgewiesen. |
+| NFR-15c-01 Datensparsamkeit | Erfüllt | Es werden nur E-Mail, Passwort-Hash, Kategorien und Events gespeichert; jedes Attribut gehört zu einem Anwendungsfall. |
+| NFR-15c-02 Keine personenbezogenen Daten in Protokollen | Erfüllt | Protokolliert werden nur Start, Migrationen und unerwartete Fehler. |
+| NFR-17a-01 Auskunft und Löschung | Teilweise | Events einsehen, exportieren (UC-09) und löschen (UC-03) ist möglich; das Löschen des eigenen Kontos ist nicht umgesetzt. |
