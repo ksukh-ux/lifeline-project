@@ -2,9 +2,9 @@ import { randomBytes } from "node:crypto";
 import type { NextFunction, Request, Response } from "express";
 
 // Session-basierte Authentifizierung per httpOnly-Cookie, gemäß ADR-004
-// (Session-Cookie statt JWT/Token). Der Session-Store ist bewusst ein
-// einfacher In-Memory-Map (dokumentierte technische Schuld D-02, siehe
-// A09-Architekturentscheidungen.md) — für den Projektumfang ausreichend,
+// (Session-Cookie statt JWT/Token). Der Session-Store ist ein
+// einfacher In-Memory-Map (bewusst in Kauf genommene Einschränkung, siehe
+// ADR-004 und A08 Kapitel 8.2) — für den Projektumfang ausreichend,
 // geht aber bei einem Server-Neustart verloren und skaliert nicht über
 // mehrere Prozesse. Kein zusätzliches npm-Paket (z. B. express-session)
 // nötig.
