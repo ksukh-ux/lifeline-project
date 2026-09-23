@@ -148,13 +148,25 @@ export default function EventFormModal({ categories, initial, onSave, onClose }:
               className="w-full text-sm text-slate-300"
             />
             {image && !isReadingImage && (
-              <button
-                type="button"
-                onClick={() => setImage('')}
-                className="mt-1 text-xs text-slate-500 hover:text-rose-300"
-              >
-                Bild entfernen
-              </button>
+              <div className="mt-2 flex items-center gap-3">
+                <img
+                  src={image}
+                  alt="Bildvorschau"
+                  className="h-16 w-16 rounded-md border border-white/10 object-cover"
+                />
+                <div className="flex flex-col items-start gap-1">
+                  <p className="text-xs text-slate-500">
+                    {isEdit ? 'Aktuelles Bild. Neue Datei wählen, um es zu ersetzen.' : 'Ausgewähltes Bild.'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setImage('')}
+                    className="text-xs text-slate-500 hover:text-rose-300"
+                  >
+                    Bild entfernen
+                  </button>
+                </div>
+              </div>
             )}
             {isReadingImage && (
               <p className="mt-1 text-xs text-slate-500">Bild wird geladen …</p>
