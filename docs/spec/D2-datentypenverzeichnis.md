@@ -30,7 +30,7 @@ Was bleibt, sind Wertebereiche und Formatregeln, die tatsächlich eine fachliche
 
 `EVENTS.significance` ist eine **ganze Zahl** zwischen 0 und 100 (0 = geringste, 100 = höchste Bedeutung für die Nutzer:in). Ohne Angabe gilt 50. Der Wert bestimmt die visuelle Gewichtung des Events in der Timeline (Größe des Markers) und fließt in die Tendenz je Kategorie in [F3.AF-02](F3-anwendungsfunktionen.md#af-02--statistik-aggregation) ein.
 
-Die Skala ist **ordinal**: 80 bedeutet „wichtiger als 40“, aber nicht „doppelt so wichtig“. Die Oberfläche zeigt den Wert deshalb als „95 / 100“ und nicht als Prozentangabe, und der Mittelwert je Kategorie wird nur als Tendenz ausgewiesen.
+Die Skala ist **ordinal**: 80 bedeutet „wichtiger als 40“, aber nicht „doppelt so wichtig“. Die Oberfläche zeigt den Wert deshalb als Zahl von 0 bis 100 (auf den Karten „95“ mit Tooltip „Bedeutung 95 von 100“, im Formular „95 / 100“) und nie als Prozentangabe, und der Mittelwert je Kategorie wird nur als Tendenz ausgewiesen.
 
 Werte außerhalb von 0–100 und Werte mit Nachkommastellen werden abgewiesen.
 

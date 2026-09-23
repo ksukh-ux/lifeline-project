@@ -102,7 +102,8 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 - Reihenfolge nach `date`, bei gleichem Datum nach `time`; Events ohne Uhrzeit stehen am
   Ende des Tages ([NFR-12c-01](N1-nichtfunktional.md)).
 - **Event-Liste** unter der Zeitachse: je Event eine Karte mit Kategorie, Datum, ggf.
-  Uhrzeit, Titel, Beschreibung, Bild und Bedeutung (`95 / 100`), neueste zuerst.
+  Uhrzeit, Titel, Beschreibung, Bild und Bedeutung als Balken mit Zahl (z. B. „95“; Tooltip
+  und Screenreader: „Bedeutung 95 von 100“), neueste zuerst.
 - Eingebettet: die Filterleiste [DLG-03](#dlg-03--filterleiste) mit
   [DLG-06](#dlg-06--kategorie-anlegen) und die Auswertung [DLG-04](#dlg-04--auswertung).
 
