@@ -106,7 +106,7 @@ solange es dafür keine Backend-Endpunkte gibt.
 
 ## OP-08 – Bilddatei und Datenbank nicht vollständig atomar
 
-**Bezug:** [NFR-12d-02](spec/N1-nichtfunktional.md#nfr-12d-02-keine-teilzustände),
+**Bezug:** [NFR-12d-02](spec/N1-nichtfunktional.md#12-anforderungen-an-das-laufzeitverhalten),
 [D2.3](spec/D2-datentypenverzeichnis.md#d23-bild-image_path),
 `backend/src/routes/events.ts` und `backend/src/utils/image.ts`.
 

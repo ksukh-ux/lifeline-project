@@ -15,3 +15,9 @@ dieses Architekturdokument sind.
 | TECH- / ORG- / CONV- | ID-Präfixe für technische bzw. organisatorische Randbedingungen und Konventionen (Kapitel 2) |
 | UC (Use Case) | ID-Präfix für einen Anwendungsfall aus der Spezifikation (Baustein F2) |
 | Session | Serverseitig gespeicherter Anmeldezustand einer Nutzerin/eines Nutzers (Kapitel 8.2) |
+| Origin | Kombination aus Protokoll, Host und Port (z. B. `http://localhost:5173`); Browser trennen Cookies und Anfragen nach Origin (Kapitel 8.2) |
+| CORS | Cross-Origin Resource Sharing: Regeln, mit denen das Backend Anfragen von einem anderen Origin (in der Entwicklung das Frontend auf Port 5173) erlaubt |
+| Data-URI | Bilddaten als Text im Format `data:image/png;base64,…`; so werden Bilder im JSON-Body hochgeladen (Kapitel 8.3, ADR-006) |
+| Migration | Einmalige Anpassung eines bestehenden Datenbestands an ein geändertes Schema (Kapitel 8.6) |
+| NB (Nachbarsystem) | ID-Präfix für ein System außerhalb von Lifeline, mit dem Daten ausgetauscht werden (Spezifikation S1, Kapitel 3) |
+| Reverse Proxy | Vorgeschalteter Server, der HTTPS entgegennimmt und die Anfragen an den Express-Prozess weiterleitet (Kapitel 7.1.2) |

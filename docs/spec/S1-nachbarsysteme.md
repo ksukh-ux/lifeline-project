@@ -45,7 +45,7 @@ Die folgenden Konventionen gelten für jede unten aufgeführte Operation:
 - **Authentifizierung.** Zugriffe über `NB-01` sind sitzungsgebunden
   ([N2.3](N2-querschnittskonzepte.md#n23-authentifizierung-und-session)). `NB-02`
   erfordert keinen Schlüssel; Geheimnisse werden ohnehin nie im Repository oder Protokoll
-  geführt ([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-logging)).
+  geführt ([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-protokollierung)).
 - **Details auf Payload-Ebene.** Konkrete Endpunkt-URLs, Feldnamen, Statuscodes und
   Wiederholungsbudgets sind Implementierungssache und leben in
   [`docs/arch/`](../arch/) und im Code, nicht hier. S1 legt fest, **welche** Operationen

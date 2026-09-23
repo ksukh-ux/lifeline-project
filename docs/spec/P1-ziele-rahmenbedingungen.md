@@ -161,7 +161,7 @@ Browser-Speicherung, und SC-04 ist zugleich der einzige Nachweis für
 | 0.1 | 01.08.2026 | Entwurf | Projektteam Lifeline |
 | 0.2 | 21.08.2026 | MVP-Abgrenzung ergänzt | Sukhmani Kaur |
 | 0.3 | 25.08.2026 | Registrierung und Anmeldung als Muss-Funktion ergänzt | Mary Rose Alghanem |
-| 0.4 | *offen* | Umfang über F2 definiert statt als Liste; Rahmenbedingungen mit IDs und Anhang; offene Punkte ausgelagert | *offen* |
+| 0.4 | 08.09.2026 | Umfang über F2 definiert statt als Liste; Rahmenbedingungen mit IDs und Anhang; offene Punkte ausgelagert | Ahmed Al-Gumaeli |
 | 0.5 | 23.09.2026 | Abgleich mit dem umgesetzten Stand: UC-08 bis UC-10 eingestuft, AS-02 und NG-05 präzisiert | Projektteam Lifeline |
 
 ---

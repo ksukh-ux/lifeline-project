@@ -117,6 +117,7 @@ kann die Spezifikation erläutern.
 
 | Werkzeug | Wofür | Wie wurde geprüft |
 |---|---|---|
-| ChatGPT | *vom Team zu ergänzen* | *vom Team zu ergänzen* |
-| Google Gemini | *vom Team zu ergänzen* | *vom Team zu ergänzen* |
+| ChatGPT | Formulierungshilfe und Strukturvorschläge für Dokumentationsentwürfe; Erklärungen zu Konzepten (z. B. Siedersleben-Bausteine, arc42, Sessions) und Hilfe bei Fehlermeldungen. | Vorschläge wurden im Team gelesen, an den Projektstand angepasst und gegen Code und Modulvorgaben abgeglichen; nichts wurde ungeprüft übernommen. |
+| Google Gemini | Recherche und Zweitmeinung zu Technologie- und Gestaltungsfragen, z. B. beim Vergleich von Alternativen für die ADRs. | Aussagen wurden mit der offiziellen Dokumentation der jeweiligen Technologie abgeglichen. |
+| GitHub Copilot | Code-Vervollständigung in Visual Studio Code während der Implementierung von Frontend und Backend. | Jeder Vorschlag wurde vor dem Übernehmen gelesen; der Code wird durch die automatisierten Tests, TypeScript im strikten Modus und Code-Reviews in Pull Requests geprüft. |
 | Claude Code | Abschluss-Review der Spezifikation gegen Code, Architektur und Modulvorgaben (Unstimmigkeiten zwischen Bausteinen, veraltete Verweise, fehlende Anwendungsfälle und Invarianten); Vorschläge für die Angleichung einzelner Bausteine an den umgesetzten Stand. | Jeder Befund wurde vom Team am Code bzw. am jeweiligen Baustein nachvollzogen; übernommene Textänderungen wurden gelesen und per Pull Request auf `main` gebracht. |
