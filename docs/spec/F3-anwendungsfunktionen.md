@@ -81,7 +81,7 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 
 | Baustein | Bezug zu F3 |
 |---|---|
-| [F1](F1-geschaeftsprozesse.md) | F1.4 *Statistiken auswerten* motiviert AF-02; F1.3 *Timeline filtern* motiviert AF-03. |
+| F1 | Entfällt nach Abstimmung mit dem Betreuer; AF-02 und AF-03 werden durch UC-06 bzw. UC-05 in F2 eingeordnet. |
 | [F2](F2-anwendungsfaelle.md) | UC-05 nutzt AF-03; UC-06 nutzt AF-01 und AF-02. |
 | [D1](D1-datenmodell.md) | AF-01 und AF-02 rechnen auf den Attributen von `EVENTS` (`start_date`, `end_date`, `category`, `significance`). |
 | [D2](D2-datentypenverzeichnis.md) | Wertebereich von `category` bestimmt die Gruppierung in AF-02 und AF-03. |

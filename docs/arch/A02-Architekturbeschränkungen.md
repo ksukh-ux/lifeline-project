@@ -16,7 +16,7 @@
 |---|---|---|
 | ORG-01 | Teamgröße | 4 Personen |
 | ORG-02 | Betreuung | Prof. Dr. Carsten Lucke |
-| ORG-03 | Harte Abgabefrist | 25. September 2026 (M3), Git-Tag `v1.0.0` |
+| ORG-03 | Harte Abgabefrist | 25. September 2026 (M3) |
 | ORG-04 | Modul | Wirtschaftsinformatik-Projekt I (WK_1106), SS 2026 |
 
 ### 2.3 Konventionen

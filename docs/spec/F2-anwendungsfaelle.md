@@ -294,7 +294,7 @@ Das Diagramm zeigt die drei Gruppen von Anwendungsfällen: *Zugang* (UC-07, ohne
 
 | Baustein | Bezug zu F2 |
 |---|---|
-| [F1](F1-geschaeftsprozesse.md) | F1.1 bis F1.4 werden durch UC-07, UC-01–UC-04 bzw. UC-05, UC-06 realisiert. |
+| F1 | Entfällt nach Abstimmung mit dem Betreuer; die fachlichen Abläufe werden direkt in diesem Baustein F2 beschrieben. |
 | [F3](F3-anwendungsfunktionen.md) | AF-01, AF-02 werden von UC-06 genutzt; AF-03 von UC-05. |
 | [D1](D1-datenmodell.md) | `USERS`, `EVENTS` und (seit UC-08) `CATEGORIES` werden von den UCs gelesen bzw. geschrieben; UC-03 ist der einzige, der Events löscht. |
 | [B1](B1-dialogspezifikation.md) | Bildschirmgestaltung und Dialogablauf je UC. |
