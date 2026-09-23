@@ -84,7 +84,7 @@ flowchart TB
 | `App` | Wurzelkomponente: hält Session, Events, Kategorien und Filter; lädt Daten; führt JSON-Export/-Import, PNG-Export und „Alle löschen“ aus; führt bei abgelaufener Session zum Login zurück | UC-04, UC-09, UC-10 | DLG-01 | `frontend/src/App.tsx` |
 | `AuthForms` | Anmelde- und Registrierungsformular inkl. Passwortbestätigung | UC-07 | DLG-05 | `frontend/src/components/AuthForms.tsx` |
 | `Header` | Anwendungsrahmen: angemeldete Person, „Ereignis hinzufügen“, Menü für Export, Import, „Alle löschen“ und Abmelden | UC-07 (Abmelden), UC-09, UC-10 | B1.4.5 | `frontend/src/components/Header.tsx` |
-| `Timeline` | Chronologische Darstellung in Übersicht und Jahresansicht, Zoom, Feiertagsmarkierungen, Markergröße nach Bedeutung | UC-04 | DLG-01 | `frontend/src/components/Timeline.tsx` |
+| `Timeline` | Chronologische Darstellung in Übersicht und Jahresansicht mit fließendem Übergang (alle Events bleiben gerendert und gleiten an ihre neue Position), Zoom, Feiertagsmarkierungen, Markergröße nach Bedeutung, Verteilung der Beschriftungen auf vier Ebenen | UC-04 | DLG-01 | `frontend/src/components/Timeline.tsx` |
 | `EventCard` | Karte eines Events mit Details, Bild, Bearbeiten und Löschen | UC-02, UC-03, UC-04 | DLG-01 | `frontend/src/components/EventCard.tsx` |
 | `EventFormModal` | Formular zum Anlegen und Bearbeiten eines Events inkl. Bildauswahl | UC-01, UC-02 | DLG-02 | `frontend/src/components/EventFormModal.tsx` |
 | `CategoryFilter` | Filterleiste nach Kategorie (AF-03) und Anlegen einer neuen Kategorie | UC-05, UC-08 | DLG-03, DLG-06 | `frontend/src/components/CategoryFilter.tsx` |
