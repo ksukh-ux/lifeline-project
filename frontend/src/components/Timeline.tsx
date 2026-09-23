@@ -24,6 +24,10 @@ const MONTHS = [
 // Breite einer Event-Beschriftung (Tailwind w-32) plus Abstand und
 // zusätzlicher Abstand der fernen Beschriftungsebenen zur Zeitachse.
 const LABEL_WIDTH_PX = 136
+
+// Gemeinsamer Übergang für den Morph-Effekt zwischen Übersicht und
+// Jahresansicht; entfällt, wenn das System reduzierte Bewegung wünscht.
+const MORPH = 'transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none'
 const FAR_LANE_OFFSET = 76
 
 const formatDate = (date: string) =>
@@ -86,8 +90,15 @@ export default function Timeline({
 
   const posFor = (date: string) => {
     const time = new Date(date).getTime()
-    return 5 + ((time - minTime) / span) * 90
+    return 7 + ((time - minTime) / span) * 86
   }
+
+  // Für den Morph-Effekt bleiben alle Elemente gerendert. Was außerhalb des
+  // sichtbaren Bereichs liegt, wird knapp neben den Rand gelegt und
+  // ausgeblendet, statt weit außerhalb (sonst würde die Zeitachse breiter).
+  const clampedPos = (date: string) => Math.min(104, Math.max(-4, posFor(date)))
+  const isInView = (event: LifeEvent) =>
+    effectiveViewMode === 'overview' || new Date(event.date).getFullYear() === selectedYear
 
   const overviewYears = Array.from(
     { length: overviewEndYear - overviewStartYear + 1 },
@@ -111,23 +122,22 @@ export default function Timeline({
   // Beschriftungen gleichmäßig um die Zeitachse verteilt sind.
   const labelLanes = (() => {
     const laneEnds = [-Infinity, -Infinity, -Infinity, -Infinity]
-    return displayedEvents.map((event, index) => {
+    const lanes = new Map<string, number>()
+    displayedEvents.forEach((event, index) => {
       const x = (posFor(event.date) / 100) * timelineWidth
       const preference = index % 2 === 0 ? [0, 1, 2, 3] : [1, 0, 3, 2]
       let lane = preference.find((candidate) => laneEnds[candidate] <= x - LABEL_WIDTH_PX) ?? -1
       if (lane === -1) lane = laneEnds.indexOf(Math.min(...laneEnds))
       laneEnds[lane] = x
-      return lane
+      lanes.set(event.id, lane)
     })
+    return lanes
   })()
 
-  const visibleHolidays =
-    effectiveViewMode === 'year'
-      ? holidays.filter(
-          (holiday) =>
-            new Date(holiday.date).getFullYear() === selectedYear,
-        )
-      : []
+  const yearHolidays = holidays.filter(
+    (holiday) => new Date(holiday.date).getFullYear() === selectedYear,
+  )
+  const isYearView = effectiveViewMode === 'year'
 
   const resetScroll = () => {
     setScrollProgress(0)
@@ -165,15 +175,20 @@ export default function Timeline({
   return (
     <div>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex rounded-lg border border-white/10 bg-ink-900/60 p-1">
+        {/* Umschalter als Schieberegler: die Markierung gleitet zur aktiven Ansicht. */}
+        <div className="relative grid grid-cols-2 rounded-lg border border-white/10 bg-ink-900/60 p-1" role="group" aria-label="Ansicht der Zeitachse">
+          <span
+            aria-hidden="true"
+            className="absolute bottom-1 left-1 top-1 w-[calc(50%-4px)] rounded-md bg-brass-500/20 shadow-[0_0_12px_rgba(96,165,250,0.35)] ring-1 ring-brass-400/40 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+            style={{ transform: isYearView ? 'translateX(100%)' : 'translateX(0)' }}
+          />
           <button
             type="button"
             onClick={() => changeViewMode('overview')}
             disabled={sorted.length === 0}
-            className={`rounded-md px-3 py-1.5 text-xs transition ${
-              effectiveViewMode === 'overview'
-                ? 'bg-white/10 text-brass-400'
-                : 'text-slate-500 hover:text-slate-300'
+            aria-pressed={!isYearView}
+            className={`relative z-10 rounded-md px-4 py-1.5 text-xs transition-colors duration-300 ${
+              !isYearView ? 'text-brass-400' : 'text-slate-500 hover:text-slate-300'
             } disabled:cursor-not-allowed disabled:opacity-40`}
           >
             Übersicht
@@ -181,10 +196,9 @@ export default function Timeline({
           <button
             type="button"
             onClick={() => changeViewMode('year')}
-            className={`rounded-md px-3 py-1.5 text-xs transition ${
-              effectiveViewMode === 'year'
-                ? 'bg-white/10 text-brass-400'
-                : 'text-slate-500 hover:text-slate-300'
+            aria-pressed={isYearView}
+            className={`relative z-10 rounded-md px-4 py-1.5 text-xs transition-colors duration-300 ${
+              isYearView ? 'text-brass-400' : 'text-slate-500 hover:text-slate-300'
             }`}
           >
             Jahresansicht
@@ -231,17 +245,19 @@ export default function Timeline({
         className="scrollbar-hidden scroll-smooth overflow-x-auto pb-2"
       >
         <div
-          className="relative h-[30rem] px-4"
+          className="relative h-[30rem] overflow-x-clip px-4 transition-[min-width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
           style={{ minWidth: `${timelineWidth}px` }}
         >
-          <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
+          {/* Zeitstrahl mit leichtem Leuchten */}
+          <div aria-hidden="true" className="absolute left-[10%] right-[10%] top-1/2 h-3 -translate-y-1/2 bg-brass-500/20 blur-md" />
+          <div className="absolute left-0 right-0 top-1/2 h-0.5 -translate-y-1/2 bg-gradient-to-r from-transparent via-brass-400/80 to-transparent" />
 
-          {effectiveViewMode === 'overview' &&
-            overviewYears.map((year) => (
+          {overviewYears.map((year) => (
               <div
                 key={year}
-                className="absolute bottom-6 top-6 w-px bg-white/10"
-                style={{ left: `${posFor(`${year}-01-01`)}%` }}
+                aria-hidden={isYearView}
+                className={`${MORPH} absolute bottom-6 top-6 w-px bg-white/10 ${isYearView ? 'opacity-0' : 'opacity-100'}`}
+                style={{ left: `${clampedPos(`${year}-01-01`)}%` }}
               >
                 <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
                   {year}
@@ -249,14 +265,14 @@ export default function Timeline({
               </div>
             ))}
 
-          {effectiveViewMode === 'year' &&
-            MONTHS.map((month, index) => {
+          {MONTHS.map((month, index) => {
               const monthDate = new Date(selectedYear, index, 1)
               return (
                 <div
                   key={month}
-                  className="absolute bottom-6 top-6 w-px bg-white/10"
-                  style={{ left: `${posFor(monthDate.toISOString())}%` }}
+                  aria-hidden={!isYearView}
+                  className={`${MORPH} absolute bottom-6 top-6 w-px bg-white/10 ${isYearView ? 'opacity-100' : 'opacity-0'}`}
+                  style={{ left: `${clampedPos(monthDate.toISOString())}%` }}
                 >
                   <span className="absolute left-1/2 top-0 -translate-x-1/2 font-mono text-[10px] text-slate-500">
                     {month}
@@ -265,14 +281,15 @@ export default function Timeline({
               )
             })}
 
-          {visibleHolidays.map((holiday) => (
+          {yearHolidays.map((holiday) => (
             <div
               key={`${holiday.date}-${holiday.name}`}
-              tabIndex={0}
+              tabIndex={isYearView ? 0 : -1}
               role="note"
+              aria-hidden={!isYearView}
               aria-label={`Feiertag: ${holiday.name}, ${formatDate(holiday.date)}`}
-              className="group/holiday absolute focus:outline-none top-1/2 z-10 flex -translate-x-1/2 -translate-y-full flex-col items-center"
-              style={{ left: `${posFor(holiday.date)}%` }}
+              className={`${MORPH} group/holiday absolute top-1/2 z-10 flex -translate-x-1/2 -translate-y-full flex-col items-center focus:outline-none ${isYearView ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+              style={{ left: `${clampedPos(holiday.date)}%` }}
             >
               <span className="mb-0.5 h-1.5 w-1.5 rounded-full bg-amber-400/80" />
               <span className="block h-5 w-px border-l border-dashed border-amber-400/70" />
@@ -282,9 +299,10 @@ export default function Timeline({
             </div>
           ))}
 
-          {displayedEvents.map((event, index) => {
+          {sorted.map((event) => {
             const category = getCategory(categories, event.category)
-            const lane = labelLanes[index]
+            const inView = isInView(event)
+            const lane = labelLanes.get(event.id) ?? 0
             const pointsUp = lane % 2 === 0
             // Visuelle Gewichtung nach Bedeutung (B1 DLG-01, D2.2): wichtigere
             // Events haben einen höheren und breiteren Marker.
@@ -296,13 +314,15 @@ export default function Timeline({
                 key={event.id}
                 type="button"
                 onClick={() => onSelect(event)}
+                tabIndex={inView ? 0 : -1}
+                aria-hidden={!inView}
                 aria-label={`${event.title}, ${formatDate(event.date)}, Kategorie ${category.label}, Bedeutung ${event.significance} von 100`}
                 title={`${event.title} · ${formatDate(event.date)} · ${category.label}`}
-                className="group absolute top-1/2 z-20 -translate-x-1/2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-400"
-                style={{ left: `${posFor(event.date)}%` }}
+                className={`${MORPH} group absolute top-1/2 z-20 -translate-x-1/2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-400 ${inView ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                style={{ left: `${clampedPos(event.date)}%` }}
               >
                 <div
-                  className="absolute left-1/2 w-px -translate-x-1/2 bg-white/15 transition group-hover:bg-white/30"
+                  className={`${MORPH} absolute left-1/2 w-px -translate-x-1/2 bg-white/15 group-hover:bg-white/30`}
                   style={pointsUp ? { bottom: 4, height: labelOffset - 8 } : { top: 4, height: labelOffset - 8 }}
                 />
                 <span
@@ -315,7 +335,7 @@ export default function Timeline({
                   }}
                 />
                 <div
-                  className="absolute left-1/2 w-32 -translate-x-1/2 text-left"
+                  className={`${MORPH} absolute left-1/2 w-32 -translate-x-1/2 text-left`}
                   style={pointsUp ? { bottom: labelOffset } : { top: labelOffset }}
                 >
                   <p className="line-clamp-2 text-xs font-medium leading-snug text-slate-200 group-hover:text-brass-400">

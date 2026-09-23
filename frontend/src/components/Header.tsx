@@ -62,7 +62,10 @@ export default function Header({
   }
 
   return (
-    <header className="border-b border-white/5 px-6 py-8 sm:px-10">
+    <header className="relative border-b border-white/10 px-6 py-8 sm:px-10">
+      {/* Leuchtende Trennlinie zwischen Kopfbereich und Timeline */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-brass-400/60 to-transparent" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-[15%] -bottom-2 h-4 bg-brass-500/10 blur-lg" />
       <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-brass-500">

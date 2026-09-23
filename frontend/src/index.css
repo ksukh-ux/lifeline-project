@@ -222,3 +222,72 @@ body::after {
 #root > div {
   background-color: transparent !important;
 }
+/* Dekorativer Himmel: sanfter Nebelschimmer, funkelnde Sterne und seltene
+   Sternschnuppen. Bewusst zurückhaltend, damit die Timeline im Vordergrund
+   bleibt; bei „Bewegung reduzieren“ entfallen alle Animationen. */
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nebula {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+}
+
+.nebula-a {
+  top: 8vh;
+  left: -12vw;
+  width: 42vw;
+  height: 30vw;
+  background: radial-gradient(closest-side, rgba(236, 72, 153, 0.12), transparent);
+}
+
+.nebula-b {
+  right: -14vw;
+  bottom: 4vh;
+  width: 46vw;
+  height: 32vw;
+  background: radial-gradient(closest-side, rgba(20, 184, 166, 0.1), transparent);
+}
+
+.shooting-star {
+  position: absolute;
+  width: 140px;
+  height: 1px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(147, 197, 253, 0.35) 40%, transparent);
+  opacity: 0;
+  transform: rotate(-20deg);
+  animation: shooting-star 17s linear infinite;
+}
+
+.shooting-star.s1 { top: 14%; left: 78%; animation-delay: 3s; }
+.shooting-star.s2 { top: 32%; left: 46%; animation-duration: 23s; animation-delay: 11s; }
+.shooting-star.s3 { top: 6%; left: 30%; animation-duration: 29s; animation-delay: 19s; }
+
+@keyframes shooting-star {
+  0% { opacity: 0; transform: translate(0, 0) rotate(-20deg); }
+  1% { opacity: 1; }
+  5% { opacity: 0; transform: translate(-360px, 131px) rotate(-20deg); }
+  100% { opacity: 0; transform: translate(-360px, 131px) rotate(-20deg); }
+}
+
+body::after {
+  animation: twinkle 7s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.8; }
+  to { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shooting-star { display: none; }
+  body::after { animation: none; }
+}
