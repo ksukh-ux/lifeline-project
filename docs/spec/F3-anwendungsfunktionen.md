@@ -43,7 +43,7 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 | **Zweck** | Verdichtet die Events einer Person zu Kennzahlen für die Statistik. |
 | **Eingaben** | Menge der `EVENTS`-Datensätze der angemeldeten Person mit ihren Kategorien. |
 | **Ausgaben** | Anzahl Events insgesamt; ältestes und jüngstes Datum; Zeitspanne in Tagen ([AF-01](#af-01--zeitspanne-berechnen)); je Kategorie mit mindestens einem Event: Name, Farbe, Anzahl und Mittelwert der `significance`. |
-| **Regeln** | - Sind keine Events vorhanden, liefert die Funktion neutrale Werte (0, keine Kategorien) statt eines Fehlers.<br>- Berücksichtigt werden ausschließlich die Events der angemeldeten Person.<br>- Der Mittelwert der Bedeutung wird nur als **Tendenz** ausgewiesen, weil die Skala ordinal ist ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).<br>- Ein aktiver Filter (AF-03) wirkt nicht auf die Statistik. |
+| **Regeln** | - Sind keine Events vorhanden, liefert die Funktion neutrale Werte (0, keine Kategorien) statt eines Fehlers.<br>- Berücksichtigt werden ausschließlich die Events der angemeldeten Person.<br>- Der Mittelwert der Bedeutung wird nur als **Tendenz** ausgewiesen, weil die Skala ordinal ist ([D2.2](D2-datentypenverzeichnis.md#d22-wertebereich-von-significance)).<br>- Ein aktiver Filter (AF-03) wirkt nicht auf die Statistik.<br>- Den Anteil je Kategorie leitet die Oberfläche aus Anzahl und Gesamtzahl ab und zeigt ihn mit einer Nachkommastelle, damit sich die Anteile nicht durch Runden auf über 100 % summieren. |
 | **Verwendet von** | [UC-06](F2-anwendungsfaelle.md#uc-06--statistik-berechnen) *Statistik berechnen*. |
 
 ### AF-03 — Timeline-Filterung
