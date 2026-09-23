@@ -13,6 +13,7 @@ export default function AuthForms({ onAuthenticated }: Props) {
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -24,6 +25,12 @@ export default function AuthForms({ onAuthenticated }: Props) {
 
     if (isRegister && password.length < 8) {
       setError('Das Passwort muss mindestens 8 Zeichen lang sein.')
+      return
+    }
+
+    // B1 DLG-05: Die Registrierung verlangt eine Bestätigung des Passworts.
+    if (isRegister && password !== passwordConfirmation) {
+      setError('Die Passwörter stimmen nicht überein.')
       return
     }
 
@@ -54,10 +61,11 @@ export default function AuthForms({ onAuthenticated }: Props) {
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-400">
+            <label htmlFor="auth-email" className="mb-1 block text-xs font-medium text-slate-400">
               E-Mail
             </label>
             <input
+              id="auth-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -69,10 +77,11 @@ export default function AuthForms({ onAuthenticated }: Props) {
           </div>
 
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-400">
+            <label htmlFor="auth-password" className="mb-1 block text-xs font-medium text-slate-400">
               Passwort
             </label>
             <input
+              id="auth-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -84,8 +93,26 @@ export default function AuthForms({ onAuthenticated }: Props) {
             />
           </div>
 
+          {isRegister && (
+            <div>
+              <label htmlFor="auth-password-confirmation" className="mb-1 block text-xs font-medium text-slate-400">
+                Passwort bestätigen
+              </label>
+              <input
+                id="auth-password-confirmation"
+                type="password"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                required
+                autoComplete="new-password"
+                placeholder="Passwort wiederholen"
+                className="w-full rounded-md border border-white/10 bg-ink-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-brass-500"
+              />
+            </div>
+          )}
+
           {error && (
-            <p className="rounded-md border border-rose-400/20 bg-rose-400/10 px-3 py-2 text-sm text-rose-300">
+            <p role="alert" className="rounded-md border border-rose-400/20 bg-rose-400/10 px-3 py-2 text-sm text-rose-300">
               {error}
             </p>
           )}
@@ -108,6 +135,7 @@ export default function AuthForms({ onAuthenticated }: Props) {
           type="button"
           onClick={() => {
             setMode(isRegister ? 'login' : 'register')
+            setPasswordConfirmation('')
             setError(null)
           }}
           className="mt-5 w-full text-center text-sm text-slate-400 transition hover:text-slate-200"
