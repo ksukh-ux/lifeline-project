@@ -27,7 +27,7 @@ const LABEL_WIDTH_PX = 136
 
 // Gemeinsamer Übergang für den Morph-Effekt zwischen Übersicht und
 // Jahresansicht; entfällt, wenn das System reduzierte Bewegung wünscht.
-const MORPH = 'transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none'
+const MORPH = 'transition-[left,opacity,top,bottom,height] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none'
 const FAR_LANE_OFFSET = 76
 
 const formatDate = (date: string) =>
@@ -274,7 +274,7 @@ export default function Timeline({
           style={{ minWidth: `${timelineWidth}px` }}
         >
           {/* Zeitstrahl mit leichtem Leuchten */}
-          <div aria-hidden="true" className="absolute left-[10%] right-[10%] top-1/2 h-3 -translate-y-1/2 bg-brass-500/20 blur-md" />
+          <div aria-hidden="true" className="absolute left-[8%] right-[8%] top-1/2 h-6 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.28),transparent_70%)]" />
           <div className="absolute left-0 right-0 top-1/2 h-0.5 -translate-y-1/2 bg-gradient-to-r from-transparent via-brass-400/80 to-transparent" />
 
           {overviewYears.map((year) => (
