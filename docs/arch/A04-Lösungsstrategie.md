@@ -5,19 +5,18 @@
 - **React, TypeScript, Vite** als Frontend – Single Page Application im Browser (TECH-01)
 - **Node.js, TypeScript, Express** als Backend – stellt eine REST-API bereit (TECH-02)
 - **SQLite** als eingebettete Datenbank, kein separater Datenbankserver nötig (TECH-03)
-- Keine produktive Instagram-OAuth-Anbindung, keine Warteschlangen/Worker und keine zusätzliche Infrastruktur. Ein manueller Instagram-Importprototyp ist als abgegrenzte Erweiterung in S1.4 dokumentiert; der Projektumfang bleibt ansonsten bewusst schlank (vgl. P1 §7 Abgrenzung).
+- Die Timeline wird um gesetzliche Feiertage aus einem öffentlichen Dienst ergänzt, den das Backend vermittelt (NB-02, ADR-008). Keine Warteschlangen, keine Hintergrundprozesse und keine zusätzliche Infrastruktur ([CON-3b-02](../spec/P1-constraints.md#con-3b-02-kein-scheduler-kein-hintergrundprozess)). Ein Instagram-Import ist nur als spätere Erweiterung beschrieben und nicht umgesetzt (S1.4, OP-07).
 
 ### 4.2 Grobzerlegung
 
-Drei Bausteine: **Frontend (React-SPA)** → **Backend/API (Express)** →
-**Datenbank (SQLite)**.
+Vier Bausteine: **Frontend (React-SPA)** → **Backend/API (Express)** →
+**Datenbank (SQLite)** und **Bildablage (Dateisystem)**.
 
 Das Frontend kommuniziert ausschließlich über HTTP-Anfragen mit dem
-Backend; das Backend ist der einzige Zugriffspunkt auf die Datenbank. Ein
-Instagram-Import wird wie ein normaler Event-Import verarbeitet; Bilder werden
-in der eigenen Upload-Ablage persistiert, nicht nur über eine externe URL referenziert.
-Keine separate Worker- oder Queue-Schicht, da alle Operationen
-synchron innerhalb einer Anfrage abgeschlossen werden können.
+Backend; das Backend ist der einzige Zugriffspunkt auf Datenbank, Bildablage
+und Feiertagsdienst. Bilder werden als Datei gespeichert, in der Datenbank
+steht nur der Pfad (ADR-006). Keine separate Worker- oder Queue-Schicht, da
+alle Operationen synchron innerhalb einer Anfrage abgeschlossen werden können.
 
 Wie diese Bausteine tatsächlich bereitgestellt werden (SQLite läuft
 z. B. eingebettet im Backend-Prozess, nicht als eigener Server),

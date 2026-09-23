@@ -4,9 +4,9 @@
 
 | ID | Randbedingung | Beschreibung |
 |---|---|---|
-| TECH-01 | Frontend-Stack | React, TypeScript, Vite |
+| TECH-01 | Frontend-Stack | React, TypeScript, Vite, Tailwind CSS; Icons mit lucide-react, PNG-Export mit html2canvas |
 | TECH-02 | Backend-Stack | Node.js, TypeScript, Express |
-| TECH-03 | Datenbank | SQLite, kein separater Datenbankserver |
+| TECH-03 | Datenbank | SQLite über das eingebaute Modul `node:sqlite` (Node.js ab 22.13), kein separater Datenbankserver |
 | TECH-04 | Versionsverwaltung | Git, GitHub |
 | TECH-05 | Entwicklungsumgebung | Visual Studio Code |
 
@@ -26,14 +26,14 @@
 | CONV-01 | Sprache | Dokumentation und Code-Kommentare auf Deutsch |
 | CONV-02 | Commit-Stil | Conventional Commits (`type(scope): description`) |
 | CONV-03 | Doku-Trennung | Spezifikation nach Siedersleben (`docs/spec/`), Architektur nach arc42 (`docs/arch/`) |
-| CONV-04 | Diagramme | Mermaid direkt im Markdown |
-| CONV-05 | Secret-Handling | Secrets (Passwörter, Session-Secret, API-Keys) ausschließlich in `.env`, niemals im Repository (`.gitignore`) |
+| CONV-04 | Diagramme | In der Architektur Mermaid direkt im Markdown; in der Spezifikation zusätzlich PlantUML, jeweils mit Quelltext im Repository |
+| CONV-05 | Secret-Handling | Konfiguration und mögliche Geheimnisse (z. B. künftige API-Schlüssel) ausschließlich in `.env`, niemals im Repository (`.gitignore`) |
 
 ### 2.4 Datenschutz-Randbedingungen
 
 Da Lifeline persönliche Ziele und Lebensereignisse enthalten kann, gelten
 zusätzlich zu den technischen Schutzmaßnahmen (Validierung, Zugriffs-
-kontrolle, Passwort-Hashing – siehe Kapitel 8.1/8.2) zwei grundsätzliche
+kontrolle, Passwort-Hashing – siehe Kapitel 8.1 und 8.2) zwei grundsätzliche
 Randbedingungen für den Umgang mit Daten:
 
 | ID | Randbedingung | Beschreibung |
