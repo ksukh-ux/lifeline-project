@@ -76,7 +76,7 @@ export default function EventCard({
             </div>
 
             <span className="font-mono text-[11px] text-slate-400" aria-hidden="true">
-              {event.significance}
+              {event.significance} / 100
             </span>
           </div>
         </div>
