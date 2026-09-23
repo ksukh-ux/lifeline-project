@@ -64,15 +64,16 @@ andere darf ohne Weiteres neu erzeugt werden.
 |---|---|---|
 | **Chronikbestand** | Benutzerkonten, Kategorien, Events ([D1.1](../spec/D1-datenmodell.md#d11-übersicht)) | Totalverlust aller Chroniken. Nicht wiederherstellbar. |
 | **Bildablage** | Die zu Events hochgeladenen Bilddateien ([D2.3](../spec/D2-datentypenverzeichnis.md#d23-bild-image_path)) | Events bleiben erhalten, ihre Bilder fehlen; `INV-E5` ist verletzt. |
-| **Session-Geheimnis** | Der Schlüssel, mit dem Session-Nachweise signiert werden | Alle bestehenden Sessions werden ungültig; Nutzer:innen müssen sich neu anmelden. Kein Datenverlust. |
+| **Session-Zustand** | Kurzlebige Session-IDs im Arbeitsspeicher des Backend-Prozesses | Alle aktiven Sessions gehen bei einem Neustart verloren; die persistenten Nutzdaten bleiben erhalten. |
 
 Zwei Folgerungen, die leicht übersehen werden:
 
 1. **Eine Sicherung der Datenbank allein sichert die Chronik nicht vollständig.** Bilder
    liegen außerhalb. Beide Flächen sind gemeinsam zu sichern und gemeinsam
    zurückzuspielen, sonst entstehen Verweise auf fehlende Dateien.
-2. **Das Session-Geheimnis darf sich nicht bei jeder Auslieferung ändern.** Wird es
-   zufällig beim Start erzeugt, werden alle Nutzer:innen bei jedem Deployment abgemeldet.
+2. **Der Session-Zustand ist nicht persistent.** Nach einem Neustart müssen sich
+  Nutzer:innen erneut anmelden; das ist eine bewusst akzeptierte Einschränkung des
+  aktuellen Prototyps.
 
 ---
 
@@ -84,7 +85,7 @@ Jede Zeile ist eine Bedingung, nicht ein Befehl.
 |---|---|---|
 | I1 | Voraussetzungen `HOST-01` bis `HOST-06` prüfen und nachweisen. | Umgebung geeignet. |
 | I2 | Persistenten Speicherbereich einrichten und der Anwendung zuweisen. | Beide Flächen aus S3.3 liegen dort. |
-| I3 | Laufzeitkonfiguration setzen (S3.7), insbesondere ein **dauerhaftes** Session-Geheimnis. | Anwendung startfähig. |
+| I3 | Laufzeitkonfiguration setzen (S3.7). | Anwendung startfähig. Aktive Sessions müssen nach einem Neustart neu aufgebaut werden. |
 | I4 | Auslieferungsartefakt bereitstellen und Anwendung starten. | Anwendung erreichbar. |
 | I5 | Leeres Datenschema anlegen, einschließlich der vorbelegten Standardkategorien ([D1.3](../spec/D1-datenmodell.md#d13-categories)). | Leere Datenbank mit nutzbaren Kategorien. |
 | I6 | Abnahme: Konto anlegen, Event erfassen, **Anwendung neu starten**, Event ist noch vorhanden. | `SC-01` und **`SC-04`** nachgewiesen. |
@@ -137,7 +138,6 @@ Repository.
 | Netzwerkport | Port, auf dem die Anwendung Anfragen annimmt | Anwendung nicht erreichbar. |
 | Pfad des Chronikbestands | Ablageort der Datenbank | Muss auf die persistente Fläche zeigen, sonst Datenverlust bei jedem Deployment. |
 | Pfad der Bildablage | Ablageort der Bilddateien | Muss auf die persistente Fläche zeigen, sonst fehlende Bilder. |
-| Session-Geheimnis | Signatur der Session-Nachweise | Änderung meldet alle Nutzer:innen ab (S3.3). |
 | Betriebsmodus | Unterscheidung Entwicklung/Produktion | Im Produktionsmodus dürfen keine internen Fehlerdetails ausgeliefert werden ([N2.4](../spec/N2-querschnittskonzepte.md)). |
 
 Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansicht.md).

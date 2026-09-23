@@ -49,7 +49,6 @@ Netzwerk-Konfiguration zwischen mehreren Diensten.
 |---|---|---|
 | `PORT` | Port, auf dem der Express-Server lauscht | `.env` (nicht im Repo) |
 | `DATABASE_PATH` | Pfad zur SQLite-Datei | `.env` (nicht im Repo) |
-| `SESSION_SECRET` | Signierschlüssel für Sessions (siehe Kap. 8.2) | `.env` (nicht im Repo) |
 | `NODE_ENV` | `development` oder `production` | `.env` bzw. Hosting-Plattform |
 
 Konkrete Werte werden **nie** committet – nur die Variablennamen hier,
