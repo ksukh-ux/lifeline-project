@@ -250,7 +250,7 @@ zuzuordnen. Es werden keine Nutzungsdaten zu anderen Zwecken erhoben.
 **NFR-15c-02: Keine personenbezogenen Daten in Protokollen**
 
 Protokolle enthalten weder Zugangsdaten noch Event-Inhalte
-([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-logging), DS-02 in A02).
+([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-protokollierung), DS-02 in A02).
 
 **Prüfkriterium:** In einem Protokollauszug eines vollständigen Durchlaufs ist kein
 Event-Titel und kein Passwort enthalten.
