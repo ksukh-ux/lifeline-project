@@ -101,7 +101,7 @@ keine Muss-Funktion; sie ändert nichts an
 | **Eingaben** | Fester Ländercode aus der Hostkonfiguration, Standard: Deutschland (`DE`); das in der Timeline sichtbare Kalenderjahr. Kein Schlüssel erforderlich (siehe S1.1). |
 | **Ausgaben** | Liste aus Datum und Bezeichnung, eingeblendet als Hintergrundmarkierung in [DLG-01](B1-dialogspezifikation.md#dlg-01--timeline). Wird **nicht** persistiert — kein Attribut in [D1](D1-datenmodell.md) wird davon befüllt. |
 | **Ausgelöst durch** | [UC-04](F2-anwendungsfaelle.md#uc-04--timeline-ansehen), Schritt 6. |
-| **Semantik** | Rein informativ; keine Rückwirkung auf `EVENTS` oder `CATEGORIES`. Das Ergebnis wird für die Dauer der Session je Land und Jahr zwischengespeichert, um wiederholte Aufrufe zu vermeiden. |
+| **Semantik** | Rein informativ; keine Rückwirkung auf `EVENTS` oder `CATEGORIES`. Das Ergebnis wird je Land und Jahr zwischengespeichert, solange die Anwendung läuft, um wiederholte Aufrufe zu vermeiden; nach einem Neustart wird es bei Bedarf neu abgefragt. |
 | **Fehlerbehandlung** | Nicht erreichbar, langsame Antwort, ungültige Daten und unbekanntes Jahr/Land werden **alle** wie „keine Feiertage für diesen Zeitraum" behandelt. Es entsteht keine Fehlermeldung an die Nutzer:in. |
 | **Verantwortung** | Der externe Dienst wird vom jeweiligen externen Anbieter betrieben; Lifeline übernimmt keine administrative Verantwortung. |
 | **Anpassungen am Nachbarsystem** | Keine Anpassungen erforderlich; Lifeline nutzt den öffentlich bereitgestellten Dienst ausschließlich über dessen vorhandene Schnittstelle. |
@@ -141,7 +141,7 @@ doppelte Importe.
 
 | Aspekt | Festlegung |
 |---|---|
-| Richtung | Ausgehend: Instagram bzw. Exportdatei → Lifeline |
+| Richtung | Eingehend: Instagram bzw. Exportdatei → Lifeline |
 | Auslösung | Manuell durch die Nutzer:in; kein Scheduler und keine automatische Synchronisation |
 | Persistenz | Importierte Beiträge werden als normale Lifeline-Events gespeichert; Bilder liegen unter `backend/uploads/`, in SQLite steht nur der Pfad |
 | Authentifizierung | Im Prototyp keine echte Instagram-Anmeldung; für die spätere API-Anbindung ist OAuth erforderlich |
@@ -187,5 +187,5 @@ anderen Bausteinen auf S1**: was dort konkret aus S1 aufgerufen oder vorausgeset
 | **B1** | DLG-01 zeigt das Ergebnis von S1.3 als Hintergrundmarkierung. Kein Dialog stellt einen Fehler dar, wenn S1.3 ausfällt (B1.4.2 ist hier bewusst nicht angewendet). |
 | **N1** | `NFR-15a-01` und `NFR-15b-01` gelten für S1.2. Für S1.3 gilt sinngemäß, dass ihr Ausfall keine Anforderung an S1.2 verletzen darf. |
 | **N2** | N2.2 Validierung gilt an der Grenze zu S1.2; N2.4 Fehlerbehandlung enthält die für S1.3 geltende Sonderregel; N2.5 Secret-Handling und Logging gilt für S1.2 — S1.3 braucht keines. |
-| **P2** | P2.2 führt S1.2 und S1.3 als vollständiges Nachbarsysteminventar. |
+| **P2** | P2 Abschnitt 3 führt NB-01 bis NB-03 als vollständiges Nachbarsysteminventar. |
 | **`docs/OFFENE-PUNKTE.md`** | OP-04 wird durch S1.3 gelöst. |
