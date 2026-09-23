@@ -579,7 +579,8 @@ export default function App() {
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[...filtered]
               .sort((a, b) =>
-                `${b.date}T${b.time ?? ''}`.localeCompare(`${a.date}T${a.time ?? ''}`),
+                // Gleiche Ordnung wie die Zeitachse: ohne Uhrzeit am Tagesende (D2.6).
+                `${b.date}T${b.time ?? '23:59'}`.localeCompare(`${a.date}T${a.time ?? '23:59'}`),
               )
               .map((event) => (
                 <EventCard
