@@ -209,7 +209,7 @@ export default function Timeline({
         className="scrollbar-hidden scroll-smooth overflow-x-auto pb-2"
       >
         <div
-          className="relative h-64 px-4"
+          className="relative h-72 px-4"
           style={{ minWidth: `${timelineWidth}px` }}
         >
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent" />
@@ -246,12 +246,15 @@ export default function Timeline({
           {visibleHolidays.map((holiday) => (
             <div
               key={`${holiday.date}-${holiday.name}`}
-              className="group/holiday absolute top-1/2 z-10 flex -translate-x-1/2 -translate-y-full flex-col items-center"
+              tabIndex={0}
+              role="note"
+              aria-label={`Feiertag: ${holiday.name}, ${formatDate(holiday.date)}`}
+              className="group/holiday absolute focus:outline-none top-1/2 z-10 flex -translate-x-1/2 -translate-y-full flex-col items-center"
               style={{ left: `${posFor(holiday.date)}%` }}
             >
               <span className="mb-0.5 h-1.5 w-1.5 rounded-full bg-amber-400/80" />
               <span className="block h-5 w-px border-l border-dashed border-amber-400/70" />
-              <span className="pointer-events-none absolute bottom-7 hidden whitespace-nowrap rounded border border-amber-400/20 bg-ink-950/95 px-2 py-1 font-mono text-[9px] text-amber-300 shadow-lg group-hover/holiday:block">
+              <span className="pointer-events-none absolute bottom-7 hidden whitespace-nowrap rounded border border-amber-400/20 bg-ink-950/95 px-2 py-1 font-mono text-[9px] text-amber-300 shadow-lg group-hover/holiday:block group-focus/holiday:block">
                 {holiday.name} · {formatDate(holiday.date)}
               </span>
             </div>
@@ -260,31 +263,44 @@ export default function Timeline({
           {displayedEvents.map((event, index) => {
             const category = getCategory(categories, event.category)
             const pointsUp = index % 2 === 0
+            // Visuelle Gewichtung nach Bedeutung (B1 DLG-01, D2.2): wichtigere
+            // Events haben einen höheren und breiteren Marker.
+            const markerHeight = 24 + Math.round((event.significance / 100) * 40)
+            const markerWidth = event.significance >= 67 ? 6 : event.significance >= 34 ? 4 : 3
+            const labelOffset = markerHeight / 2 + 30
             return (
               <button
                 key={event.id}
                 type="button"
                 onClick={() => onSelect(event)}
-                className="group absolute top-1/2 z-20 -translate-x-1/2 focus:outline-none"
+                aria-label={`${event.title}, ${formatDate(event.date)}, Kategorie ${category.label}, Bedeutung ${event.significance} von 100`}
+                title={`${event.title} · ${formatDate(event.date)} · ${category.label}`}
+                className="group absolute top-1/2 z-20 -translate-x-1/2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-400"
                 style={{ left: `${posFor(event.date)}%` }}
               >
                 <div
                   className="absolute left-1/2 w-px -translate-x-1/2 bg-white/15 transition group-hover:bg-white/30"
-                  style={pointsUp ? { bottom: 4, height: 44 } : { top: 4, height: 44 }}
+                  style={pointsUp ? { bottom: 4, height: labelOffset - 8 } : { top: 4, height: labelOffset - 8 }}
                 />
                 <span
-                  className="absolute left-1/2 top-1/2 h-12 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 group-hover:h-14 group-hover:w-1.5"
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 group-hover:scale-110"
                   style={{
+                    height: markerHeight,
+                    width: markerWidth,
                     backgroundColor: category.color,
                     boxShadow: `0 0 8px ${category.color}`,
                   }}
                 />
                 <div
                   className="absolute left-1/2 w-32 -translate-x-1/2 text-left"
-                  style={pointsUp ? { bottom: 52 } : { top: 52 }}
+                  style={pointsUp ? { bottom: labelOffset } : { top: labelOffset }}
                 >
                   <p className="line-clamp-2 text-xs font-medium leading-snug text-slate-200 group-hover:text-brass-400">
                     {event.title}
+                  </p>
+                  {/* Kategorie auch als Text, nicht nur als Farbe (B1.4.7, NFR-11d-01) */}
+                  <p className="mt-0.5 truncate font-mono text-[9px] uppercase tracking-wide text-slate-500">
+                    {category.label} · {formatDate(event.date)}
                   </p>
                 </div>
               </button>

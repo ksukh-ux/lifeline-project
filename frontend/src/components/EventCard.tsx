@@ -82,7 +82,10 @@ export default function EventCard({
           />
         )}
 
-        <div className="absolute right-3 top-3 flex gap-1 opacity-0 transition group-hover:opacity-100">
+        {/* Nur auf Geräten mit Maus werden die Aktionen erst beim Überfahren
+            eingeblendet. Auf Touch-Geräten und bei Tastaturfokus sind sie immer
+            sichtbar (CON-3e-01, NFR-10a-01, NFR-11d-01). */}
+        <div className="absolute right-3 top-3 flex gap-1 transition group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:hover)]:opacity-0">
           <button
             onClick={() => onEdit(event)}
             className="rounded p-1.5 text-slate-400 hover:bg-white/5 hover:text-slate-200"
