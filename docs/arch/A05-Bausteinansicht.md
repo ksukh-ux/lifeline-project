@@ -125,7 +125,7 @@ flowchart TB
 | `routes/events` | `GET`, `POST`, `PUT`, `DELETE` auf eigene Events inkl. Bild; prüft Besitz und Kategorie | `/api/events[/:id]` | UC-01–UC-04 | `backend/src/routes/events.ts` |
 | `routes/categories` | `GET` und `POST` auf eigene Kategorien | `/api/categories` | UC-08 | `backend/src/routes/categories.ts` |
 | `routes/stats` | Aggregation per SQL: Anzahl, ältestes/jüngstes Datum, Zeitspanne (AF-01), Anzahl und Mittel der Bedeutung je Kategorie (AF-02) | `/api/stats` | UC-06 | `backend/src/routes/stats.ts` |
-| `routes/holidays` | Vermittelt den Feiertagsdienst (NB-02), Zwischenspeicher je Land und Jahr, liefert bei jedem Fehler eine leere Liste | `/api/holidays?year=` | UC-04 (Schritt 6) | `backend/src/routes/holidays.ts` |
+| `routes/holidays` | Vermittelt den Feiertagsdienst (NB-02), Zwischenspeicher je Land und Jahr, liefert bei jedem Fehler eine leere Liste | `/api/holidays?year=` | UC-04 (Schritt 4) | `backend/src/routes/holidays.ts` |
 | `utils/validateEvent` | Zentrale Prüfung der Event-Eingaben für `POST` und `PUT` | Funktionsaufruf | UC-01, UC-02 | `backend/src/utils/validateEvent.ts` |
 | `utils/image` | Prüft Data-URI, Format, Größe und Dateisignatur; speichert und löscht Bilddateien | Funktionsaufruf | UC-01–UC-03 | `backend/src/utils/image.ts` |
 | `utils/password` | Hashen und Prüfen von Passwörtern mit `scrypt` | Funktionsaufruf | UC-07 | `backend/src/utils/password.ts` |
