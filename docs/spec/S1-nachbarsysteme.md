@@ -170,7 +170,7 @@ doppelte Importe.
 | Richtung | Eingehend: Instagram bzw. Exportdatei → Lifeline |
 | Auslösung | Manuell durch die Nutzer:in; kein Scheduler und keine automatische Synchronisation |
 | Persistenz | Importierte Beiträge werden als normale Lifeline-Events gespeichert; Bilder liegen unter `backend/uploads/`, in SQLite steht nur der Pfad |
-| Authentifizierung | Im Prototyp keine echte Instagram-Anmeldung; für die spätere API-Anbindung ist OAuth erforderlich |
+| Authentifizierung | Für einen manuellen Import wäre keine Instagram-Anmeldung nötig; eine echte API-Anbindung erfordert OAuth |
 | Fehlerbehandlung | Ungültige Datensätze werden abgewiesen; bereits importierte Medien werden übersprungen |
 | Status | Vorgeschlagene Erweiterung, **nicht umgesetzt** |
 

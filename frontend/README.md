@@ -6,13 +6,16 @@ Dieses Frontend setzt die Benutzeroberfläche aus dem [lifeline-project](https:/
 
 ## Funktionen
 
-- Interaktive horizontale Timeline mit Kategorie-Farben
-- Event-Karten mit Titel, Datum, Beschreibung, Kategorie, Bedeutung (0–100 %)
-- Ereignis hinzufügen / bearbeiten / löschen (Modal-Formular)
-- Filter nach Kategorie
+- Interaktive Timeline mit Übersicht und Jahresansicht, fließendem Wechsel, Zoom und
+  gesetzlichen Feiertagen
+- Event-Karten mit Titel, Datum, Beschreibung, Kategorie, Bild und Bedeutung (0–100,
+  angezeigt als „75 / 100“, keine Prozentangabe)
+- Ereignis hinzufügen / bearbeiten / löschen (Formular im Dialogfenster, mit Bildvorschau)
+- Filter nach Kategorie und eigene Kategorien anlegen
+- Statistik mit Ringdiagramm der Anteile je Kategorie
 - Export der Timeline als PNG
 - Alle Ereignisse löschen
-- Registrierung und Anmeldung
+- Registrierung, Anmeldung und Abmelden
 - Persistenz über die Backend-API und SQLite
 - JSON-Sicherung exportieren und importieren
 
@@ -34,8 +37,9 @@ npm run dev
 App läuft danach auf `http://localhost:5173`.
 
 ```bash
-npm run build     # Production-Build nach dist/
-npm run preview   # Production-Build lokal testen
+npm run build          # Production-Build nach dist/
+npm run preview        # Production-Build lokal testen
+npm run test:browser   # Browser-Test der nichtfunktionalen Anforderungen (Chrome oder Edge nötig)
 ```
 
 ## Backend
@@ -48,8 +52,13 @@ Produktionsauslieferung kann das gebaute Frontend über den Express-Server bedie
 
 ```
 src/
-  components/       # Header, Timeline, EventCard, EventFormModal, CategoryFilter
+  components/       # AuthForms, Header, Timeline, EventCard, EventFormModal,
+                    # CategoryFilter, StatsDashboard
   api/              # HTTP-Client
   types.ts          # LifeEvent, Category, Holiday
   App.tsx
+e2e/                # Browser-Test (nfr-checks.mjs)
 ```
+
+Die Bausteine und ihre Zuordnung zu den Anwendungsfällen sind in
+[A05](../docs/arch/A05-Bausteinansicht.md) beschrieben.
