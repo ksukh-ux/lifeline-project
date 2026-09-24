@@ -324,9 +324,8 @@ export default function App() {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
 
-    link.download = `lifeline-sicherung-${new Date()
-      .toISOString()
-      .slice(0, 10)}.json`
+    // Lokales Datum im Format YYYY-MM-DD (sv-SE), nicht UTC.
+    link.download = `lifeline-sicherung-${new Date().toLocaleDateString('sv-SE')}.json`
 
     link.href = url
     link.click()
