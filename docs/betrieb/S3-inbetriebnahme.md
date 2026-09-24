@@ -138,6 +138,8 @@ Repository.
 | Netzwerkport | Port, auf dem die Anwendung Anfragen annimmt | Anwendung nicht erreichbar. |
 | Pfad des Chronikbestands | Ablageort der Datenbank | Muss auf die persistente Fläche zeigen, sonst Datenverlust bei jedem Deployment. |
 | Ablageort der Bilder | Ort der Bilddateien | Muss auf der persistenten Fläche liegen, sonst fehlende Bilder. Im aktuellen Stand ist der Ort nicht einstellbar, sondern fest vorgegeben (siehe A07.2); die Zielumgebung muss ihn deshalb auf persistentem Speicher bereitstellen. |
+| Ländercode für Feiertage | Land, dessen gesetzliche Feiertage angezeigt werden (Standard Deutschland) | Falscher Wert: Feiertage eines anderen Landes oder keine; die Timeline bleibt nutzbar. |
+| Erlaubte Frontend-Adresse | Nur nötig, wenn Frontend und Backend unter verschiedenen Adressen laufen (Entwicklung) | Fehlt sie, kann sich das Frontend nicht anmelden, weil der Browser das Session-Cookie nicht mitsendet. |
 | Betriebsmodus | Unterscheidung Entwicklung/Produktion | Im Produktionsmodus dürfen keine internen Fehlerdetails ausgeliefert werden ([N2.4](../spec/N2-querschnittskonzepte.md)). |
 
 Die konkreten Variablennamen stehen in [A07.2](../arch/A07-Bereitstellungsansicht.md).
