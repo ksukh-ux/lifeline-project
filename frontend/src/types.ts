@@ -10,7 +10,7 @@ export interface Category {
 }
 
 // S1.3 NB-02 — Feiertagsdienst: rein informative Anreicherung der Timeline,
-// nie persistiert und kein Attribut irgendeiner Entität (siehe D1.5).
+// nie persistiert und kein Attribut irgendeiner Entität (siehe S1.3, „Ausgaben“).
 export interface Holiday {
   date: string // ISO date, e.g. 2026-01-01
   name: string
