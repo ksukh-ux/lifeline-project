@@ -79,7 +79,7 @@ sequenceDiagram
             R-->>AC: 409 { error }
         else frei
             R->>P: hashPassword (scrypt + Salt)
-            R->>DB: BEGIN; INSERT users; INSERT 6 Startkategorien; COMMIT
+            R->>DB: Transaktion: INSERT users, INSERT 6 Startkategorien
             R->>S: createSession(userId)
             R-->>AC: 201 + Set-Cookie sid (HttpOnly, SameSite=Lax)
         end
