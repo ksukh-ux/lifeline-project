@@ -184,8 +184,11 @@ eine passende Kategorie, legt die Nutzer:in sie zuvor in der Filterleiste an
 |---|---|
 | Hinzufügen / Speichern | Prüfung nach [N2.2](N2-querschnittskonzepte.md#n22-validierung); bei Erfolg schließt das Formular und DLG-01 wird aktualisiert. |
 | Abbrechen, Schließen-Symbol oder Escape | Schließt ohne Änderung. Wurden Werte geändert, erst nach Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen). |
-| Bild wählen | Das Bild wird eingelesen; bis dahin ist Speichern gesperrt. |
+| Bild wählen | Das Bild wird eingelesen; bis dahin ist Speichern gesperrt. Danach erscheint eine Vorschau. |
 | Bild entfernen | Setzt den Bildverweis zurück; wirksam erst mit dem Speichern. |
+
+Hat ein Event bereits ein Bild, zeigt der Bearbeitungsmodus es als Vorschau mit dem Hinweis,
+dass eine neu gewählte Datei es ersetzt.
 
 **Fehler- und Sonderzustände**
 

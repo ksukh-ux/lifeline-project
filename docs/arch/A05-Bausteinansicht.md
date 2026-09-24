@@ -86,7 +86,7 @@ flowchart TB
 | `Header` | Anwendungsrahmen: angemeldete Person, „Ereignis hinzufügen“, Menü für Export, Import, „Alle löschen“ und Abmelden | UC-07 (Abmelden), UC-09, UC-10 | B1.4.5 | `frontend/src/components/Header.tsx` |
 | `Timeline` | Chronologische Darstellung in Übersicht und Jahresansicht mit fließendem Übergang (alle Events bleiben gerendert und gleiten an ihre neue Position), Zoom, Feiertagsmarkierungen, Markergröße nach Bedeutung, Verteilung der Beschriftungen auf vier Ebenen | UC-04 | DLG-01 | `frontend/src/components/Timeline.tsx` |
 | `EventCard` | Karte eines Events mit Details, Bild, Bearbeiten und Löschen | UC-02, UC-03, UC-04 | DLG-01 | `frontend/src/components/EventCard.tsx` |
-| `EventFormModal` | Formular zum Anlegen und Bearbeiten eines Events inkl. Bildauswahl | UC-01, UC-02 | DLG-02 | `frontend/src/components/EventFormModal.tsx` |
+| `EventFormModal` | Formular zum Anlegen und Bearbeiten eines Events inkl. Bildauswahl mit Vorschau | UC-01, UC-02 | DLG-02 | `frontend/src/components/EventFormModal.tsx` |
 | `CategoryFilter` | Filterleiste nach Kategorie (AF-03) und Anlegen einer neuen Kategorie | UC-05, UC-08 | DLG-03, DLG-06 | `frontend/src/components/CategoryFilter.tsx` |
 | `StatsDashboard` | Anzeige der Kennzahlen aus `GET /api/stats`: Kacheln, Ringdiagramm der Anteile je Kategorie (eigenes SVG ohne Diagramm-Bibliothek, Teilkomponente `CategoryDonut`) und Tabelle als Legende und Textfassung | UC-06 | DLG-04 | `frontend/src/components/StatsDashboard.tsx` |
 | `api/client` | Einzige Stelle für HTTP-Anfragen; wandelt Backend-Zeilen in Frontend-Typen um; meldet 401 an `App` | alle | — | `frontend/src/api/client.ts` |
