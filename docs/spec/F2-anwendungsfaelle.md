@@ -101,7 +101,7 @@ Das Diagramm zeigt vier Gruppen: *Zugang* (UC-07, ohne bestehende Session erreic
 
 #### Ausnahmefälle
 
-- Ungültige Eingaben: Das Event wird nicht gespeichert, die Meldung erscheint am betroffenen Feld bzw. im Formular; alle Eingaben bleiben erhalten.
+- Ungültige Eingaben: Das Event wird nicht gespeichert. Fehlende Pflichtangaben werden direkt am Feld angezeigt, von der Anwendungslogik abgewiesene Eingaben als Meldung ([B1.4.2](B1-dialogspezifikation.md#b142-fehlermeldungen)); das Formular bleibt geöffnet und alle Eingaben bleiben erhalten.
 - Ungültiges Bild (falsches Format, größer als 5 MB, Inhalt passt nicht zum Format): Das Bild wird abgewiesen; das Event wird erst gespeichert, wenn das Bild entfernt oder ersetzt wurde.
 - Die Nutzer:in bricht nach Eingaben ab: Rückfrage, ob die Eingaben verworfen werden sollen.
 

@@ -16,7 +16,10 @@ interface Props {
 export default function EventFormModal({ categories, initial, onSave, onClose }: Props) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
-  const [date, setDate] = useState(initial?.date ?? new Date().toISOString().slice(0, 10))
+  // Heutiges Datum in lokaler Zeit (B1 DLG-02). toISOString() läge zwischen
+  // Mitternacht und 2 Uhr noch auf dem Vortag, weil es in UTC rechnet;
+  // das Gebietsschema sv-SE liefert das Format YYYY-MM-DD.
+  const [date, setDate] = useState(initial?.date ?? new Date().toLocaleDateString('sv-SE'))
   // Die Uhrzeit ist optional (D1.4) und wird deshalb nicht vorbelegt; sonst
   // hätte jedes neue Event die Uhrzeit der Erfassung (NFR-12c-01).
   const [time, setTime] = useState(initial?.time ?? '')

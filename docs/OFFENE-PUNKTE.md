@@ -15,8 +15,8 @@ wird nach Auflösung nicht neu vergeben.
 
 **Bezug:** [B1](spec/B1-dialogspezifikation.md), DLG-01.
 
-Für das vollständige Löschen aller Events einer Nutzer:in existiert bislang kein eigener
-Dialog. Vorgesehen ist eine Aktion in DLG-01 mit einer Rückfrage nach
+Für das vollständige Löschen aller Events einer Nutzer:in gab es ursprünglich keinen
+eigenen Dialog. Vorgesehen war eine Aktion in DLG-01 mit einer Rückfrage nach
 [B1.4.3](spec/B1-dialogspezifikation.md#b143-bestätigung-zerstörerischer-aktionen)
 (Bestätigung zerstörerischer Aktionen), analog zum Löschen eines einzelnen Events.
 
@@ -57,24 +57,6 @@ vollständig spezifiziert und mittlerweile auch technisch umgesetzt: Endpunkt
 `GET /api/holidays` in `backend/src/routes/holidays.ts`, nicht-blockierender Aufruf und
 Darstellung als Hintergrundmarkierung in der Timeline im Frontend.
 
-## OP-07 – Instagram-Import als spätere Erweiterung
-
-**Bezug:** [S1.4](spec/S1-nachbarsysteme.md#s14-nb-03--instagram-vorgeschlagene-erweiterung),
-[A03](arch/A03-Kontext-und-Umfang.md), [A04](arch/A04-Lösungsstrategie.md).
-
-Als weiteres Nachbarsystem wurde Instagram vorgeschlagen, damit eigene Beiträge als
-Lifeline-Ereignisse übernommen werden können. Für die Abgabe wird keine echte
-Meta-OAuth-/Graph-API-Anbindung vorausgesetzt. Diese würde eine Meta-App,
-Berechtigungen und ein geeignetes Instagram-Konto erfordern.
-
-Als mögliche spätere Ausbaustufe ist ein manueller Import eines festgelegten
-Instagram-Exportformats beschrieben. Das konkrete Format, die Medien-ID zur
-Duplikatprüfung und der dazugehörige Dialog sind noch nicht implementiert.
-
-**Status:** Bewusst zurückgestellt. Die technische Grundlage für Bildpersistenz und
-normale Event-Erstellung ist vorhanden; die Instagram-spezifische Anbindung bleibt
-ein dokumentierter Prototyp bzw. Folgeausbau.
-
 ## OP-05 – Fehlender Anwendungsfall für die Kategorienverwaltung
 
 **Bezug:** [B1](spec/B1-dialogspezifikation.md), DLG-06; [D1.3](spec/D1-datenmodell.md#d13-categories); `NFR-14c-01` in [N1](spec/N1-nichtfunktional.md).
@@ -83,7 +65,7 @@ Seit `CATEGORIES` eine eigene Entität ist, müssen Nutzer:innen eigene Kategori
 Laufzeit anlegen können — das ist die Bedingung dafür, dass `NFR-14c-01`
 („Erweiterbarkeit der Kategorien") überhaupt erfüllbar ist. Der Dialog DLG-06 ist dafür
 bereits spezifiziert, ein passender Anwendungsfall in [F2](spec/F2-anwendungsfaelle.md)
-fehlt aber noch.
+fehlte aber zunächst.
 
 **Status:** Gelöst. [UC-08](spec/F2-anwendungsfaelle.md#uc-08--kategorie-anlegen)
 deckt `POST /api/categories` und die DLG-06-Oberfläche jetzt formal ab (siehe auch OP-06
@@ -103,6 +85,24 @@ Standard- von einer eigenen Kategorie unterscheidet.
 **Status:** Gelöst. DLG-06 wurde auf den tatsächlichen Funktionsumfang gekürzt
 (nur noch Anlegen); Umbenennen, Umfärben und Löschen sind bewusst nicht spezifiziert,
 solange es dafür keine Backend-Endpunkte gibt.
+
+## OP-07 – Instagram-Import als spätere Erweiterung
+
+**Bezug:** [S1.4](spec/S1-nachbarsysteme.md#s14-nb-03--instagram-vorgeschlagene-erweiterung),
+[A03](arch/A03-Kontext-und-Umfang.md), [A04](arch/A04-Lösungsstrategie.md).
+
+Als weiteres Nachbarsystem wurde Instagram vorgeschlagen, damit eigene Beiträge als
+Lifeline-Ereignisse übernommen werden können. Für die Abgabe wird keine echte
+Meta-OAuth-/Graph-API-Anbindung vorausgesetzt. Diese würde eine Meta-App,
+Berechtigungen und ein geeignetes Instagram-Konto erfordern.
+
+Als mögliche spätere Ausbaustufe ist ein manueller Import eines festgelegten
+Instagram-Exportformats beschrieben. Das konkrete Format, die Medien-ID zur
+Duplikatprüfung und der dazugehörige Dialog sind noch nicht implementiert.
+
+**Status:** Bewusst zurückgestellt. Die technische Grundlage für Bildpersistenz und
+normale Event-Erstellung ist vorhanden; die Instagram-spezifische Anbindung bleibt
+ein dokumentierter Prototyp bzw. Folgeausbau.
 
 ## OP-08 – Bilddatei und Datenbank nicht vollständig atomar
 

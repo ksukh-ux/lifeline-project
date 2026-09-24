@@ -86,7 +86,7 @@ flowchart TB
 | `Header` | Anwendungsrahmen: angemeldete Person, „Ereignis hinzufügen“, Menü für Export, Import, „Alle löschen“ und Abmelden | UC-07 (Abmelden), UC-09, UC-10 | B1.4.5 | `frontend/src/components/Header.tsx` |
 | `Timeline` | Chronologische Darstellung in Übersicht und Jahresansicht mit fließendem Übergang (alle Events bleiben gerendert und gleiten an ihre neue Position), Zoom, Feiertagsmarkierungen, Markergröße nach Bedeutung, Verteilung der Beschriftungen auf vier Ebenen | UC-04 | DLG-01 | `frontend/src/components/Timeline.tsx` |
 | `EventCard` | Karte eines Events mit Details, Bild, Bearbeiten und Löschen | UC-02, UC-03, UC-04 | DLG-01 | `frontend/src/components/EventCard.tsx` |
-| `EventFormModal` | Formular zum Anlegen und Bearbeiten eines Events inkl. Bildauswahl | UC-01, UC-02 | DLG-02 | `frontend/src/components/EventFormModal.tsx` |
+| `EventFormModal` | Formular zum Anlegen und Bearbeiten eines Events inkl. Bildauswahl mit Vorschau | UC-01, UC-02 | DLG-02 | `frontend/src/components/EventFormModal.tsx` |
 | `CategoryFilter` | Filterleiste nach Kategorie (AF-03) und Anlegen einer neuen Kategorie | UC-05, UC-08 | DLG-03, DLG-06 | `frontend/src/components/CategoryFilter.tsx` |
 | `StatsDashboard` | Anzeige der Kennzahlen aus `GET /api/stats`: Kacheln, Ringdiagramm der Anteile je Kategorie (eigenes SVG ohne Diagramm-Bibliothek, Teilkomponente `CategoryDonut`) und Tabelle als Legende und Textfassung | UC-06 | DLG-04 | `frontend/src/components/StatsDashboard.tsx` |
 | `api/client` | Einzige Stelle für HTTP-Anfragen; wandelt Backend-Zeilen in Frontend-Typen um; meldet 401 an `App` | alle | — | `frontend/src/api/client.ts` |
@@ -125,7 +125,7 @@ flowchart TB
 | `routes/events` | `GET`, `POST`, `PUT`, `DELETE` auf eigene Events inkl. Bild; prüft Besitz und Kategorie | `/api/events[/:id]` | UC-01–UC-04 | `backend/src/routes/events.ts` |
 | `routes/categories` | `GET` und `POST` auf eigene Kategorien | `/api/categories` | UC-08 | `backend/src/routes/categories.ts` |
 | `routes/stats` | Aggregation per SQL: Anzahl, ältestes/jüngstes Datum, Zeitspanne (AF-01), Anzahl und Mittel der Bedeutung je Kategorie (AF-02) | `/api/stats` | UC-06 | `backend/src/routes/stats.ts` |
-| `routes/holidays` | Vermittelt den Feiertagsdienst (NB-02), Zwischenspeicher je Land und Jahr, liefert bei jedem Fehler eine leere Liste | `/api/holidays?year=` | UC-04 (Schritt 6) | `backend/src/routes/holidays.ts` |
+| `routes/holidays` | Vermittelt den Feiertagsdienst (NB-02), Zwischenspeicher je Land und Jahr, liefert bei jedem Fehler eine leere Liste | `/api/holidays?year=` | UC-04 (Schritt 4) | `backend/src/routes/holidays.ts` |
 | `utils/validateEvent` | Zentrale Prüfung der Event-Eingaben für `POST` und `PUT` | Funktionsaufruf | UC-01, UC-02 | `backend/src/utils/validateEvent.ts` |
 | `utils/image` | Prüft Data-URI, Format, Größe und Dateisignatur; speichert und löscht Bilddateien | Funktionsaufruf | UC-01–UC-03 | `backend/src/utils/image.ts` |
 | `utils/password` | Hashen und Prüfen von Passwörtern mit `scrypt` | Funktionsaufruf | UC-07 | `backend/src/utils/password.ts` |

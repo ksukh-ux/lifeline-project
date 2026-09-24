@@ -3,7 +3,7 @@ import { requireAuth } from "../middleware/requireAuth.js";
 
 // S1.3 NB-02 — Feiertagsdienst: speicherfreie Anreicherung der Timeline mit
 // gesetzlichen Feiertagen. Der Ländercode ist fest aus der Hostkonfiguration
-// (S1.1: "Fester Ländercode aus der Hostkonfiguration"), keine Nutzereingabe.
+// (S1.3, Eingaben: "Fester Ländercode aus der Hostkonfiguration"), keine Nutzereingabe.
 const HOLIDAY_COUNTRY = process.env.HOLIDAY_COUNTRY ?? "DE";
 
 // Öffentliche, schlüssellose API (siehe CON-3g-01 in P1-constraints.md und
