@@ -96,9 +96,11 @@ Typischer Ablauf am Beispiel „Event anlegen“ ([UC-01](F2-anwendungsfaelle.md
 5. Das Event wird in der Datenbank gespeichert und zurückgemeldet.
 6. Die Oberfläche aktualisiert Timeline und Statistik.
 
-Parallel zum Laden der Timeline fragt die Oberfläche die Feiertage des
-angezeigten Jahres an. Diese Anfrage ist unabhängig: Die Timeline wird nie auf
-sie warten ([S1.3.2](S1-nachbarsysteme.md#s132-bindende-regel-fehlerverhalten)).
+Parallel zum Laden der Timeline fragt die Oberfläche beim eigenen Backend die
+Feiertage des angezeigten Jahres an; das Backend vermittelt dabei zum
+Feiertagsdienst (NB-02, siehe 4.2), sodass der Browser nie direkt mit dem
+Drittanbieter spricht (vgl. Abschnitt 7). Diese Anfrage ist unabhängig: Die
+Timeline wird nie auf sie warten ([S1.3.2](S1-nachbarsysteme.md#s132-bindende-regel-fehlerverhalten)).
 
 Die technischen Abläufe sind in [A06](../arch/A06-Laufzeitansicht.md) als
 Sequenzdiagramme beschrieben.

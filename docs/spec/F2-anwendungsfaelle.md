@@ -360,7 +360,7 @@ Der Import legt Events immer zusätzlich an. Wird dieselbe Sicherung zweimal imp
 |---|---|
 | F1 | Entfällt nach Abstimmung mit dem Betreuer; die fachlichen Abläufe werden direkt in diesem Baustein F2 beschrieben. |
 | [P1](P1-ziele-rahmenbedingungen.md) | P1.4.1 stuft jeden Anwendungsfall als Muss oder Erweiterung ein. |
-| [F3](F3-anwendungsfunktionen.md) | UC-06 nutzt AF-01 und AF-02, UC-05 nutzt AF-03, UC-04 nutzt AF-04. |
+| [F3](F3-anwendungsfunktionen.md) | UC-06 nutzt AF-01 und AF-02, UC-05 nutzt AF-03, UC-04 nutzt AF-04, UC-10 nutzt AF-05. |
 | [D1](D1-datenmodell.md) | `USERS`, `CATEGORIES` und `EVENTS` werden von den UCs gelesen bzw. geschrieben; nur UC-03 löscht Events. |
 | [B1](B1-dialogspezifikation.md) | Bildschirmgestaltung und Dialogablauf je UC (Zuordnung in B1.1). |
 | [N1](N1-nichtfunktional.md) | Die Zeile *Qualitäten* je UC verweist auf die geltenden Anforderungen. |
