@@ -41,6 +41,10 @@ erDiagram
     }
 ```
 
+Die Entitäten werden in der Spezifikation großgeschrieben (`USERS`, `CATEGORIES`, `EVENTS`);
+im Code heißen die gleichnamigen Tabellen `users`, `categories` und `events`, die Attribute
+sind identisch benannt (`backend/src/db/schema.sql`).
+
 Notation gemäß [D2.4](D2-datentypenverzeichnis.md#d24-notationskonventionen): `●` markiert Pflichtfelder, `[0..1]` optionale Attribute, `PK`/`FK` Primär- bzw. Fremdschlüssel.
 
 ## D1.2 USERS
