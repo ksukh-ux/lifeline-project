@@ -252,6 +252,7 @@ useEffect(() => {
               id="timeline-year"
               type="text"
               onFocus={(e) => e.currentTarget.select()}
+              onClick={(e) => e.currentTarget.select()}
 inputMode="numeric"
               min="1900"
               max="2100"
