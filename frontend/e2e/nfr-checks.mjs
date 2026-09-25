@@ -6,6 +6,8 @@
 // Browser-Download).
 //
 // Aufruf: npm --prefix frontend run test:browser
+// Mit BROWSER=msedge bzw. BROWSER=chrome wird ein bestimmter Browser erzwungen
+// (NFR-13b-02 verlangt den Durchlauf in zwei Browsern).
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
@@ -124,18 +126,44 @@ const cardTitles = (page) => page.locator('h3').allTextContents()
 const timelineLabels = (page) =>
   page.locator('button[aria-label*=", Kategorie "]').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label').split(',')[0]))
 
+const BROWSER_NAMES = { chrome: 'Google Chrome', msedge: 'Microsoft Edge' }
+let browserName = ''
+
 async function launchBrowser() {
-  for (const channel of ['chrome', 'msedge']) {
+  const channels = process.env.BROWSER ? [process.env.BROWSER] : ['chrome', 'msedge']
+  for (const channel of channels) {
     try {
-      return await chromium.launch({ channel, headless: true })
+      const launched = await chromium.launch({ channel, headless: true })
+      browserName = BROWSER_NAMES[channel] ?? channel
+      return launched
     } catch {
       // nächsten Browser versuchen
     }
   }
-  throw new Error('Weder Google Chrome noch Microsoft Edge gefunden.')
+  throw new Error(`Browser nicht gefunden: ${channels.join(', ')}`)
 }
 
 // ---------------------------------------------------------------- Prüfungen
+
+// NFR-13b-02: vollständiger Durchlauf über die Oberfläche, von der
+// Registrierung bis zum angelegten Event.
+async function checkSignUpToFirstEvent(browser) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  const page = await context.newPage()
+  await page.goto(APP)
+  await page.getByText('Noch kein Konto? Registrieren').click()
+  await page.fill('#auth-email', 'durchlauf@example.com')
+  await page.fill('#auth-password', PASSWORD)
+  await page.fill('#auth-password-confirmation', PASSWORD)
+  await page.getByRole('button', { name: 'Konto erstellen', exact: true }).click()
+  await page.getByRole('button', { name: 'Erstes Ereignis anlegen' }).click()
+  await page.fill('#event-title', 'Erstes Ereignis')
+  await page.getByRole('button', { name: 'Hinzufügen', exact: true }).click()
+  await page.getByRole('heading', { name: 'Erstes Ereignis' }).waitFor()
+  record('NFR-13b-02 Nutzung ohne Installation', true,
+    `Registrierung und Anlegen eines Events über die Oberfläche in ${browserName} ${browser.version()}`)
+  await context.close()
+}
 
 async function checkChronologicalOrder(browser) {
   const user = await registerUser('ordnung@example.com')
@@ -331,6 +359,7 @@ try {
   await warmup.locator('#auth-email').waitFor()
   await warmup.close()
 
+  await checkSignUpToFirstEvent(browser)
   await checkChronologicalOrder(browser)
   await checkTextNeutralisation(browser)
   await checkFilterWithoutRequest(browser)

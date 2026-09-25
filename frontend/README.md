@@ -39,7 +39,8 @@ App läuft danach auf `http://localhost:5173`.
 ```bash
 npm run build          # Production-Build nach dist/
 npm run preview        # Production-Build lokal testen
-npm run test:browser   # Browser-Test der nichtfunktionalen Anforderungen (Chrome oder Edge nötig)
+npm run test:browser   # Browser-Test der nichtfunktionalen Anforderungen (Chrome oder Edge nötig;
+                       # BROWSER=msedge bzw. BROWSER=chrome wählt den Browser gezielt)
 ```
 
 ## Backend
