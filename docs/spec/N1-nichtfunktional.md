@@ -106,7 +106,7 @@ unverändert vorhanden ([SC-04](P1-ziele-rahmenbedingungen.md#p16-erfolgskriteri
 
 **NFR-12d-02: Keine Teilzustände**
 
-Schlägt eine schreibende Operation fehl, wird kein Teilergebnis gespeichert. Die Nutzer:in
+Schlägt eine einzelne schreibende Operation fehl, wird für diese Operation kein Teilergebnis gespeichert. Die Nutzer:in
 kann die Operation unverändert wiederholen.
 
 **Prüfkriterium:** Bei erzwungenem Fehler während des Speicherns ist danach weder ein
