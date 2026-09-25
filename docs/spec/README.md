@@ -109,6 +109,17 @@ Die Spezifikation richtet sich insbesondere an:
 
 ---
 
+## Quellen
+
+- SIEDERSLEBEN, J. (Hrsg.) 2003. *Softwaretechnik – Praxiswissen für Softwareingenieure.*
+  München: Carl Hanser Verlag, Kapitel 4 (Bausteine der Spezifikation). Grundlage der Gliederung.
+- ROBERTSON, S.; ROBERTSON, J. *Volere Requirements Specification Template.*
+  <https://www.volere.org/templates/volere-requirements-specification-template/>. Gliederung von
+  P1-constraints (Abschnitt 3) und N1 (Abschnitte 10–17).
+- LUCKE, C. *Herold.* <https://github.com/carstenlucke/herold>. Beispielprojekt des Moduls,
+  genutzt als Orientierung für Stil und Granularität der Bausteine.
+- Modulvorgaben WK_1106 SS 2026. <https://github.com/carstenlucke/thm_wkb_wk-1106>.
+
 ## Eingesetzte KI-Werkzeuge
 
 Offenlegung gemäß Abschnitt 9.1 der Modulvorgaben (WK_1106). Alle Inhalte wurden

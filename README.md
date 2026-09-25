@@ -115,7 +115,7 @@ das Anlegen von Kategorien und die Dauerhaftigkeit nach einem Neustart.
 Zusätzlich prüft ein Browser-Test die nichtfunktionalen Anforderungen aus
 [N1](docs/spec/N1-nichtfunktional.md) (Ladezeit mit 200 und 500 Events,
 Reihenfolge, Filter ohne Serveranfrage, Layout auf Smartphone und Desktop,
-Schutz vor Skript-Eingaben):
+Schutz vor Skript-Eingaben, Durchlauf von der Registrierung bis zum ersten Event):
 
 ```bash
 npm --prefix frontend run test:browser
@@ -124,6 +124,8 @@ npm --prefix frontend run test:browser
 Der Test baut das Frontend, startet Backend und Produktions-Build selbst (Ports
 3190 und 5191, temporäre Datenbank) und benötigt einen installierten Google Chrome
 oder Microsoft Edge. Ladezeiten werden als Median aus drei Ladevorgängen gemessen.
+Mit `BROWSER=chrome` bzw. `BROWSER=msedge` läuft der Test gezielt in einem der beiden
+Browser.
 
 ## Produktionsbetrieb (ein Prozess)
 

@@ -122,7 +122,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 | Menü: Timeline als Bild exportieren | Lädt die aktuelle Darstellung als PNG herunter ([AF-04](F3-anwendungsfunktionen.md#af-04--timeline-export)). Erweiterung. |
 | Menü: Daten exportieren | Lädt eine Sicherungsdatei (JSON) herunter (UC-09). Erweiterung. |
 | Menü: Daten importieren | Wählt eine Sicherungsdatei, fragt nach und importiert die Events zusätzlich (UC-10, [AF-05](F3-anwendungsfunktionen.md#af-05--kategorien-beim-import-zuordnen)); meldet anschließend die Anzahl. Erweiterung. |
-| Menü: Alle Ereignisse löschen | Rückfrage nach B1.4.3, danach werden alle eigenen Events gelöscht (UC-03). |
+| Menü: Alle Ereignisse löschen | Rückfrage nach B1.4.3, danach werden alle eigenen Events gelöscht (UC-03). Schlägt das Löschen einzelner Events fehl, zeigt die Timeline den tatsächlichen Bestand und eine Meldung nennt die Anzahl. |
 | Menü: Abmelden | Beendet die Session und führt zu DLG-05. |
 
 Ansicht, Jahr, Zoom und aktiver Filter sind **flüchtiger Anzeigezustand**: sie werden

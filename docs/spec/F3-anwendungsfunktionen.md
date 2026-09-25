@@ -73,7 +73,7 @@ Was bleibt, sind die Funktionen, die tatsächlich etwas *berechnen* oder *transf
 | **Zweck** | Die Kategorien in einer Sicherung stammen aus einem anderen Konto oder einem früheren Stand und haben dort andere Kennungen. Die Funktion bildet sie auf die Kategorien der angemeldeten Person ab, damit jedes importierte Event einer eigenen Kategorie zugeordnet wird. |
 | **Eingaben** | Kategorien der Sicherung (Kennung, Name, Farbe); Kategorien der angemeldeten Person. |
 | **Ausgaben** | Zuordnung *Kennung in der Sicherung → eigene Kategorie*. |
-| **Regeln** | - Zuordnung über den Namen, ohne Unterschied von Groß-/Kleinschreibung und führenden/folgenden Leerzeichen.<br>- Gibt es keine Kategorie mit diesem Namen, wird sie mit der Farbe aus der Sicherung angelegt (UC-08).<br>- Verweist ein Event der Sicherung auf eine Kategorie, die in der Sicherung fehlt, wird der Import mit einer Meldung abgebrochen. |
+| **Regeln** | - Zuordnung über den Namen, ohne Unterschied von Groß-/Kleinschreibung und führenden/folgenden Leerzeichen.<br>- Gibt es keine Kategorie mit diesem Namen, wird sie mit der Farbe aus der Sicherung angelegt (UC-08).<br>- Verweist ein Event der Sicherung auf eine Kategorie, die in der Sicherung fehlt, wird der Import mit einer Meldung abgebrochen, bevor Kategorien angelegt werden. |
 | **Verwendet von** | [UC-10](F2-anwendungsfaelle.md#uc-10--sicherung-importieren) *Sicherung importieren*. |
 
 ---

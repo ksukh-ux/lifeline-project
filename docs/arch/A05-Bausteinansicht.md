@@ -147,8 +147,8 @@ Nutzen; jede Abfrage enthält die Einschränkung auf `user_id` (Kapitel 8.2).
 | UC-03 Event löschen | `EventCard`, `App` | `routes/events`, `utils/image` | wie 6.1 |
 | UC-04 Timeline ansehen | `App`, `Timeline`, `EventCard` | `routes/events`, `routes/holidays` | 6.4 |
 | UC-05 Timeline filtern | `CategoryFilter`, `App` | — (clientseitig) | — |
-| UC-06 Statistik berechnen | `StatsDashboard` | `routes/stats` | 6.3 |
+| UC-06 Statistik berechnen | `App`, `StatsDashboard` | `routes/stats` | 6.3 |
 | UC-07 Registrieren und Login (inkl. Abmelden) | `AuthForms`, `Header` | `routes/auth`, `middleware/session`, `utils/password` | 6.2 |
-| UC-08 Kategorie anlegen | `CategoryFilter` | `routes/categories`, `constants/categories` | 6.5 |
+| UC-08 Kategorie anlegen | `CategoryFilter`, `App` | `routes/categories`, `constants/categories` | 6.5 |
 | UC-09 Sicherung exportieren | `Header`, `App` | — (clientseitig) | — |
 | UC-10 Sicherung importieren | `Header`, `App` | `routes/categories`, `routes/events` | — |

@@ -25,39 +25,40 @@ rectangle "Lifeline" {
   rectangle "Zugang" {
     usecase "UC-07\nRegistrieren und Login" as UC07
   }
+  rectangle "Sicherung" {
+    usecase "UC-09\nSicherung exportieren" as UC09
+    usecase "UC-10\nSicherung importieren" as UC10
+  }
   rectangle "Event-Verwaltung" {
+    usecase "UC-08\nKategorie anlegen" as UC08
     usecase "UC-01\nEvent anlegen" as UC01
     usecase "UC-02\nEvent bearbeiten" as UC02
     usecase "UC-03\nEvent löschen" as UC03
     usecase "UC-04\nTimeline ansehen" as UC04
-    usecase "UC-08\nKategorie anlegen" as UC08
   }
   rectangle "Auswertung" {
     usecase "UC-05\nTimeline filtern" as UC05
     usecase "UC-06\nStatistik berechnen" as UC06
   }
-  rectangle "Sicherung" {
-    usecase "UC-09\nSicherung exportieren" as UC09
-    usecase "UC-10\nSicherung importieren" as UC10
-  }
 }
 
 N --> UC07
+N --> UC09
+N --> UC10
+N --> UC08
 N --> UC01
 N --> UC02
 N --> UC03
 N --> UC04
-N --> UC08
 N --> UC05
 N --> UC06
-N --> UC09
-N --> UC10
 
+' norank: die include-Kante soll die Anordnung der Gruppen nicht verschieben
+UC10 .[norank].> UC08 : <<include>>
 UC01 ..> UC04 : <<precedes>>
 UC02 ..> UC04 : <<precedes>>
 UC03 ..> UC04 : <<precedes>>
 UC05 ..> UC04 : <<extend>>
-UC10 ..> UC08 : <<include>>
 
 note bottom of N
   Alle Anwendungsfälle außer UC-07

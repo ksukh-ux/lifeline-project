@@ -1,0 +1,7 @@
+# Führt die Git-Namen jeder Person zusammen (git shortlog, git log --use-mailmap).
+# Die Historie selbst bleibt unverändert.
+Sukhmani Kaur <sukhmani.kaur@mnd.thm.de>
+Ahmed Al-Gumaeli <ahmed.al-gumaeli@mnd.thm.de>
+Ahmed Al-Gumaeli <ahmed.al-gumaeli@mnd.thm.de> <algumaeliahmed@gmail.com>
+Mary Rose Alghanem <mary.rose.alghanem@mnd.thm.de>
+Diona Feka <diona.feka@mnd.thm.de>

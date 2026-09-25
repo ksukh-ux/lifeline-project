@@ -21,6 +21,7 @@ Alle Bausteine in den Diagrammen sind in Kapitel 5 beschrieben.
 sequenceDiagram
     actor N as Nutzer:in
     participant EF as EventFormModal
+    participant App as App
     participant AC as api/client
     participant R as routes/events
     participant V as utils/validateEvent
@@ -29,12 +30,14 @@ sequenceDiagram
 
     N->>EF: füllt Formular aus, wählt ggf. Bild, klickt Hinzufügen
     EF->>EF: Pflichtfelder, Bildformat und -größe vorprüfen
-    EF->>AC: createEvent(event)
+    EF->>App: onSave(event)
+    App->>AC: createEvent(event)
     AC->>R: POST /api/events (JSON, Bild als Data-URI)
     R->>V: validateEventInput(body)
     alt Eingabe ungültig
         R-->>AC: 422 { error }
-        AC-->>N: Meldung, Formular bleibt offen
+        AC-->>App: Fehler mit Meldung
+        App-->>N: Meldung, Formular bleibt offen
     else Eingabe gültig
         R->>DB: Kategorie gehört der Person?
         R->>I: parseDataUri + saveImage (Signatur prüfen)
@@ -45,13 +48,14 @@ sequenceDiagram
             R-->>AC: 500 { error }
         else Erfolg
             R-->>AC: 201 Created, gespeichertes Event
-            AC-->>EF: Erfolg
-            EF-->>N: Timeline aktualisiert sich
+            AC-->>App: gespeichertes Event
+            App-->>N: Formular schließt, Timeline und Statistik aktualisieren sich
         end
     end
 ```
 
-**Anmerkungen:** Die verbindliche Prüfung liegt im Backend; die Vorprüfung im
+**Anmerkungen:** Die Komponenten rufen die API nicht selbst auf, sondern
+übergeben an `App`, die den Zustand hält (Kapitel 5.2.1). Die verbindliche Prüfung liegt im Backend; die Vorprüfung im
 Formular dient nur der schnellen Rückmeldung am Feld (Kapitel 8.1). Beim
 Bearbeiten (`PUT`) wird ein ersetztes Bild erst **nach** erfolgreichem Update
 gelöscht, damit ein Datenbankfehler keinen Verweis auf eine fehlende Datei
@@ -110,19 +114,22 @@ Adressen ermittelt werden können (B1 DLG-05).
 ```mermaid
 sequenceDiagram
     actor N as Nutzer:in
+    participant App as App
     participant SD as StatsDashboard
     participant AC as api/client
     participant R as routes/stats
     participant DB as Datenbank
 
-    N->>SD: öffnet die Timeline (Statistik wird mitgeladen)
-    SD->>AC: fetchStats()
+    N->>App: öffnet die Timeline (Statistik wird mitgeladen)
+    App->>AC: fetchStats()
     AC->>R: GET /api/stats
     R->>DB: COUNT, MIN(date), MAX(date) WHERE user_id = ?
     R->>DB: COUNT, AVG(significance) je Kategorie WHERE user_id = ?
     R->>R: Zeitspanne in Tagen berechnen (AF-01)
     R-->>AC: 200 { totalCount, oldestDate, newestDate, spanDays, categories }
-    AC-->>SD: Kennzahlen anzeigen
+    AC-->>App: Kennzahlen
+    App->>SD: Kennzahlen und aktiver Filter
+    SD-->>N: Kacheln, Ringdiagramm, Tabelle
 ```
 
 **Anmerkung:** Die Aggregation (AF-02) erfolgt per SQL direkt in
@@ -178,12 +185,14 @@ geladenen Events.
 sequenceDiagram
     actor N as Nutzer:in
     participant CF as CategoryFilter
+    participant App as App
     participant AC as api/client
     participant R as routes/categories
     participant DB as Datenbank
 
     N->>CF: „Neue Kategorie“, Name und Farbe
-    CF->>AC: createCategory(label, color)
+    CF->>App: onCreateCategory(label, color)
+    App->>AC: createCategory(label, color)
     AC->>R: POST /api/categories
     R->>R: Name 1–40 Zeichen, Farbe #RRGGBB?
     alt ungültig
@@ -193,7 +202,8 @@ sequenceDiagram
     else gültig
         R->>DB: INSERT INTO categories (user_id, label, color)
         R-->>AC: 201, neue Kategorie
-        AC-->>CF: sofort im Filter und im Event-Formular auswählbar
+        AC-->>App: neue Kategorie
+        App-->>CF: sofort im Filter und im Event-Formular auswählbar
     end
 ```
 

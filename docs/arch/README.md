@@ -62,6 +62,17 @@ unter `frontend/src/` und `backend/src/`.
 
 ---
 
+## Quellen
+
+- STARKE, G.; HRUSCHKA, P. *arc42 – Template zur Dokumentation von Software- und
+  Systemarchitekturen.* <https://arc42.org/>. Grundlage der Kapitelgliederung.
+- LUCKE, C. *Herold.* <https://github.com/carstenlucke/herold>. Beispielprojekt des Moduls.
+- Modulvorgaben WK_1106 SS 2026. <https://github.com/carstenlucke/thm_wkb_wk-1106>; daraus
+  auch der Aufbau der ADRs in Kapitel 9 (Kontext, Alternativen, Entscheidung, Begründung,
+  Konsequenzen).
+- Offizielle Dokumentation der eingesetzten Technologien: Node.js (`node:sqlite`,
+  `crypto.scrypt`), Express, React, Vite und Mermaid.
+
 ## Eingesetzte KI-Werkzeuge
 
 Offenlegung gemäß Abschnitt 9.1 der Modulvorgaben (WK_1106). Alle Inhalte wurden
