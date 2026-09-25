@@ -64,16 +64,16 @@ andere darf ohne Weiteres neu erzeugt werden.
 |---|---|---|
 | **Chronikbestand** | Benutzerkonten, Kategorien, Events ([D1.1](../spec/D1-datenmodell.md#d11-übersicht)) | Totalverlust aller Chroniken. Nicht wiederherstellbar. |
 | **Bildablage** | Die zu Events hochgeladenen Bilddateien ([D2.3](../spec/D2-datentypenverzeichnis.md#d23-bild-image_path)) | Events bleiben erhalten, ihre Bilder fehlen; `INV-E5` ist verletzt. |
-| **Session-Zustand** | Kurzlebige Session-IDs im Arbeitsspeicher des Backend-Prozesses | Alle aktiven Sessions gehen bei einem Neustart verloren; die persistenten Nutzdaten bleiben erhalten. |
 
 Zwei Folgerungen, die leicht übersehen werden:
 
 1. **Eine Sicherung der Datenbank allein sichert die Chronik nicht vollständig.** Bilder
    liegen außerhalb. Beide Flächen sind gemeinsam zu sichern und gemeinsam
    zurückzuspielen, sonst entstehen Verweise auf fehlende Dateien.
-2. **Der Session-Zustand ist nicht persistent.** Nach einem Neustart müssen sich
-  Nutzer:innen erneut anmelden; das ist eine bewusst akzeptierte Einschränkung des
-  aktuellen Prototyps.
+2. **Der Session-Zustand gehört ausdrücklich nicht dazu.** Die Session-Kennungen liegen
+   nur im Arbeitsspeicher des Backend-Prozesses und gehen bei jedem Neustart verloren;
+   die Nutzdaten bleiben erhalten, Nutzer:innen müssen sich nur erneut anmelden. Das ist
+   eine bewusst akzeptierte Einschränkung des aktuellen Prototyps.
 
 ---
 

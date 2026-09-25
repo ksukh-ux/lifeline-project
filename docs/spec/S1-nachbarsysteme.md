@@ -163,7 +163,9 @@ Instagram-Exportformats denkbar; auch dieser ist nicht umgesetzt. Ein Importdate
 Instagram-Medien-ID, eine Caption, ein Veröffentlichungsdatum und optional ein Bild.
 Lifeline wandelt jeden gültigen Datensatz in ein eigenes Event um und speichert das
 Bild mit derselben Bildpersistenz wie manuell erfasste Events. Die Medien-ID verhindert
-doppelte Importe.
+doppelte Importe; dafür müsste `EVENTS` in [D1](D1-datenmodell.md#d14-events) um ein
+optionales Attribut für die Herkunft (Instagram-Medien-ID, je Person eindeutig) erweitert
+werden. Das heutige Datenmodell enthält dieses Attribut nicht.
 
 | Aspekt | Festlegung |
 |---|---|
@@ -181,6 +183,14 @@ Graph API ersetzen. Sie darf nur Medien des vom jeweiligen Konto autorisierten
 Instagram-Profils importieren. Die extern gelieferte Medien-URL sollte nicht als
 dauerhafte Lifeline-Datenhaltung verwendet werden; das Bild muss beim Import in die
 eigene Ablage übernommen werden.
+
+Wie beim Feiertagsdienst spricht nur das Backend mit Instagram, nie der Browser
+direkt ([P2](P2-architekturüberblick.md) Abschnitt 7, ADR-008 in
+[A09](../arch/A09-Architekturentscheidungen.md)). Anders als NB-02 bräuchte diese
+Anbindung Geheimnisse: das App-Secret der Meta-App und die Zugriffstoken der
+Nutzer:innen. Sie liegen ausschließlich im Backend, das App-Secret als
+Umgebungsvariable, und werden nie protokolliert
+([N2.5](N2-querschnittskonzepte.md#n25-secret-handling-und-protokollierung)).
 
 ## S1.5 Nicht Teil von S1
 
@@ -215,6 +225,6 @@ anderen Bausteinen auf S1**: was dort konkret aus S1 aufgerufen oder vorausgeset
 | **D1** | Kein Attribut wird durch S1 befüllt. Feiertage aus S1.3 werden ausdrücklich **nicht** gespeichert — das ist eine bewusste Festlegung, keine Lücke. |
 | **B1** | DLG-01 zeigt das Ergebnis von S1.3 als Hintergrundmarkierung. Kein Dialog stellt einen Fehler dar, wenn S1.3 ausfällt (B1.4.2 ist hier bewusst nicht angewendet). |
 | **N1** | `NFR-15a-01` und `NFR-15b-01` gelten für S1.2. Für S1.3 gilt sinngemäß, dass ihr Ausfall keine Anforderung an S1.2 verletzen darf. |
-| **N2** | N2.2 Validierung gilt an der Grenze zu S1.2; N2.4 Fehlerbehandlung enthält die für S1.3 geltende Sonderregel; N2.5 Secret-Handling und Protokollierung gilt für S1.2 — S1.3 braucht keine Geheimnisse. |
+| **N2** | N2.2 Validierung gilt an der Grenze zu S1.2; N2.4 Fehlerbehandlung enthält die für S1.3 geltende Sonderregel; N2.5 Secret-Handling und Protokollierung gilt für S1.2 — S1.3 braucht keine Geheimnisse; eine spätere Anbindung nach S1.4.2 bräuchte welche und fiele ebenfalls unter N2.5. |
 | **P2** | P2 Abschnitt 3 führt NB-01 bis NB-03 als vollständiges Nachbarsysteminventar. |
 | **`docs/OFFENE-PUNKTE.md`** | OP-04 wird durch S1.3 gelöst; OP-07 hält fest, dass S1.4 nicht umgesetzt ist. |
