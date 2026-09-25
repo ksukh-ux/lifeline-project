@@ -60,12 +60,12 @@ export default function EventCard({
           {/* Bedeutung kompakt als Balken und Zahl; die Beschriftung steht im
               Tooltip und für Screenreader (keine Prozentangabe, D2.2). */}
           <div
-            className="absolute bottom-4 left-7 flex items-center gap-2"
+            className="absolute bottom-4 left-7 right-5 flex items-center gap-2"
             title={`Bedeutung ${event.significance} von 100`}
             aria-label={`Bedeutung ${event.significance} von 100`}
             role="img"
           >
-            <div className="h-1 w-64 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
+            <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
               <div
                 className="h-full rounded-full"
                 style={{
@@ -75,7 +75,8 @@ export default function EventCard({
               />
             </div>
 
-            <span className="mt-1 font-mono text-[11px] text-slate-400" aria-hidden="true">              {event.significance} / 100
+            <span className="mt-1 shrink-0 whitespace-nowrap font-mono text-[11px] text-slate-400" aria-hidden="true">
+              {event.significance} / 100
             </span>
           </div>
         </div>
