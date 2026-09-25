@@ -121,7 +121,7 @@ keine Muss-Funktion (umgesetzt ist sie dennoch); sie ändert nichts an
 |---|---|
 | **Operation** | `getHolidays(country, year) → [{ date, name }]` |
 | **Richtung** | Ausgehend (Anfrage: Ländercode + Jahr; Antwort: Liste von Feiertagen). |
-| **Eingaben** | Fester Ländercode aus der Hostkonfiguration, Standard: Deutschland (`DE`); das in der Timeline sichtbare Kalenderjahr. Kein Schlüssel erforderlich (siehe S1.1). |
+| **Eingaben** | Fester Ländercode aus der Hostkonfiguration, Standard: Deutschland (`DE`); das in der Timeline sichtbare Kalenderjahr (1900 bis 2100, siehe [B1](B1-dialogspezifikation.md#dlg-01--timeline); andere Werte weist das Backend ab, ohne den Dienst aufzurufen). Kein Schlüssel erforderlich (siehe S1.1). |
 | **Ausgaben** | Liste aus Datum und Bezeichnung, eingeblendet als Hintergrundmarkierung in [DLG-01](B1-dialogspezifikation.md#dlg-01--timeline). Wird **nicht** persistiert — kein Attribut in [D1](D1-datenmodell.md) wird davon befüllt. |
 | **Ausgelöst durch** | [UC-04](F2-anwendungsfaelle.md#uc-04--timeline-ansehen), Schritt 4, sowie jeder Wechsel des Jahres in der Jahresansicht. |
 | **Semantik** | Rein informativ; keine Rückwirkung auf `EVENTS` oder `CATEGORIES`. Das Ergebnis wird je Land und Jahr zwischengespeichert, solange die Anwendung läuft, um wiederholte Aufrufe zu vermeiden; nach einem Neustart wird es bei Bedarf neu abgefragt. |

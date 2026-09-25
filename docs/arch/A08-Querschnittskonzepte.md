@@ -18,6 +18,7 @@ nur der schnellen Rückmeldung (Nachvollziehbarkeit, QG-02):
 | Backend – Registrierung/Login | E-Mail-Format, Passwort mindestens 8 Zeichen; E-Mail bereits vergeben; Zugangsdaten falsch | 422, 409 bzw. 401 |
 | Backend – Kategorie anlegen | Name 1–40 Zeichen, Farbe `#RRGGBB`, Name pro Person eindeutig (`constants/categories.ts`) | 422 bzw. 409 |
 | Backend – Bild-Upload | Data-URI mit Typ JPEG/PNG/WEBP, höchstens 5 MB, passende Dateisignatur (`utils/image.ts`) | 422, nichts gespeichert |
+| Backend – Feiertage abrufen | `year` ist eine ganze Zahl von 1900 bis 2100 (`routes/holidays.ts`); das Jahresfeld der Oberfläche lässt nur diesen Bereich zu | 422; Fehler des Feiertagsdienstes selbst ergeben dagegen eine leere Liste |
 
 **Regeln in `validateEventInput`** (gilt für `POST` und `PUT /api/events`):
 

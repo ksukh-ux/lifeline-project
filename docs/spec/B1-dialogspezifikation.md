@@ -116,7 +116,7 @@ Verhalten, das mehrere Dialoge gleich behandeln, steht einmalig in
 | Bearbeiten an einer Karte | Öffnet DLG-02 im Bearbeitungsmodus. |
 | Löschen an einer Karte | Rückfrage nach [B1.4.3](#b143-bestätigung-zerstörerischer-aktionen), danach Entfernen aus der Darstellung. |
 | Übersicht / Jahresansicht | Wechselt die Ansicht der Zeitachse über einen Umschalter. Der Wechsel ist fließend: Events gleiten an ihre neue Position, Events anderer Jahre blenden aus (bei „Bewegung reduzieren“ ohne Animation). |
-| Jahr wählen (vor, zurück, Eingabe) | Zeigt ein anderes Jahr in der Jahresansicht und lädt dessen Feiertage. |
+| Jahr wählen (vor, zurück, Eingabe) | Zeigt ein anderes Jahr in der Jahresansicht und lädt dessen Feiertage. Wählbar sind die Jahre 1900 bis 2100. Das Eingabefeld nimmt nur Ziffern an und übernimmt das Jahr, sobald vier Ziffern im gültigen Bereich eingegeben sind; eine unvollständige oder ungültige Eingabe wird beim Verlassen des Feldes auf das angezeigte Jahr zurückgesetzt. |
 | Horizontal navigieren | Verschiebt den sichtbaren Zeitbereich (Wischen, Scrollen oder Positionsregler). |
 | Zoom ändern | Ändert die Breite der Zeitachse. |
 | Menü: Timeline als Bild exportieren | Lädt die aktuelle Darstellung als PNG herunter ([AF-04](F3-anwendungsfunktionen.md#af-04--timeline-export)). Erweiterung. |
