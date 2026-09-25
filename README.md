@@ -10,7 +10,7 @@ Benutzerfreundlichkeit und interaktiver Visualisierung.
 
 - Registrierung, Anmeldung und Abmeldung (jede Person sieht nur eigene Events)
 - Anlegen, Bearbeiten und Löschen persönlicher Lebensereignisse, optional mit Bild
-- Eigene Kategorien anlegen (sechs Startkategorien sind vorbelegt)
+- Eigene Kategorien anlegen (sieben Startkategorien sind vorbelegt)
 - Interaktive Timeline mit Übersicht, Jahresansicht und Zoom
 - Filtern nach Kategorie
 - Statistik (Anzahl je Kategorie, Zeitspanne, Tendenz der Bedeutung)
