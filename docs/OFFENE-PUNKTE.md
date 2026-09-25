@@ -101,8 +101,8 @@ Instagram-Exportformats beschrieben. Das konkrete Format, die Medien-ID zur
 Duplikatprüfung und der dazugehörige Dialog sind noch nicht implementiert.
 
 **Status:** Bewusst zurückgestellt. Die technische Grundlage für Bildpersistenz und
-normale Event-Erstellung ist vorhanden; die Instagram-spezifische Anbindung bleibt
-ein dokumentierter Prototyp bzw. Folgeausbau.
+normale Event-Erstellung ist vorhanden; die Instagram-spezifische Anbindung ist nur
+konzeptionell beschrieben und bleibt ein möglicher Folgeausbau.
 
 ## OP-08 – Bilddatei und Datenbank nicht vollständig atomar
 
