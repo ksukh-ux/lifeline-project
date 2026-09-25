@@ -42,8 +42,8 @@ erDiagram
 ```
 
 Die Entitäten werden in der Spezifikation großgeschrieben (`USERS`, `CATEGORIES`, `EVENTS`);
-im Code heißen die gleichnamigen Tabellen `users`, `categories` und `events`, die Attribute
-sind identisch benannt (`backend/src/db/schema.sql`).
+in der Umsetzung heißen die gleichnamigen Tabellen `users`, `categories` und `events`, die
+Attribute sind identisch benannt (siehe [A05](../arch/A05-Bausteinansicht.md)).
 
 Notation gemäß [D2.4](D2-datentypenverzeichnis.md#d24-notationskonventionen): `●` markiert Pflichtfelder, `[0..1]` optionale Attribute, `PK`/`FK` Primär- bzw. Fremdschlüssel.
 
@@ -72,7 +72,7 @@ Die Entität `CATEGORIES` löst die frühere feste, im Code hinterlegte Kategori
 | `color` | string | Hex-Farbcode für die Darstellung in Timeline und Filterleiste, z. B. `#38BDF8` |
 | `created_at` | datetime | Zeitpunkt der Erstellung |
 
-Jede neu registrierte Person erhält bei der Registrierung automatisch sechs vorbelegte Startkategorien (Meilenstein, Karriere, Bildung, Beziehung, Reise, Gesundheit) — das ist nur eine bequeme Vorbelegung, keine feste Liste: Sie lässt sich über `POST /api/categories` (siehe [UC-08](F2-anwendungsfaelle.md#uc-08--kategorie-anlegen)) beliebig um eigene Kategorien erweitern.
+Jede neu registrierte Person erhält bei der Registrierung automatisch sechs vorbelegte Startkategorien (Meilenstein, Karriere, Bildung, Beziehung, Reise, Gesundheit) — das ist nur eine bequeme Vorbelegung, keine feste Liste: Sie lässt sich über die Oberfläche (siehe [UC-08](F2-anwendungsfaelle.md#uc-08--kategorie-anlegen)) beliebig um eigene Kategorien erweitern.
 
 ## D1.4 EVENTS
 

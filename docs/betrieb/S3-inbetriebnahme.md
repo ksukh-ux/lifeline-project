@@ -53,6 +53,10 @@ zurückgesetzt. Die Eignung der gewählten Plattform ist vor der Inbetriebnahme
 [CON-3b-01](../spec/P1-constraints.md#con-3b-01-persistenter-speicher-in-der-zielumgebung)
 und die Konsequenzen von ADR-003.
 
+**Stand zur Abgabe:** Lifeline wird nur lokal betrieben; eine Zielumgebung, die HOST-01 bis
+HOST-06 erfüllt, ist noch nicht ausgewählt und nachgewiesen
+([OP-10](../OFFENE-PUNKTE.md)).
+
 ---
 
 ## S3.3 Persistente Zustandsflächen

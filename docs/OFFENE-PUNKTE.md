@@ -121,3 +121,36 @@ seltenen Fällen einen verwaisten Datei- oder Datenbankverweis hinterlassen.
 Bildpersistenz und die Kompensation für die üblichen Fehlerfälle sind implementiert;
 ein separates Storage-/Transaktionssystem wäre für den aktuellen Abgabeumfang
 unverhältnismäßig.
+
+## OP-09 – Eigenes Konto löschen nicht umgesetzt
+
+**Bezug:** [NFR-17a-01](spec/N1-nichtfunktional.md#17-anforderungen-an-konformität),
+[CON-3j-01](spec/P1-constraints.md#con-3j-01-persönliche-daten).
+
+Nutzer:innen können ihre Events einsehen, als Sicherung exportieren (UC-09) und einzeln
+oder vollständig löschen (UC-03). Das Benutzerkonto selbst mit E-Mail-Adresse,
+Passwort-Hash und eigenen Kategorien lässt sich über die Oberfläche aber nicht löschen;
+es gibt dafür weder einen Anwendungsfall noch einen Endpunkt.
+
+**Status:** Bewusst zurückgestellt. Für eine Umsetzung wären ein Anwendungsfall in F2,
+eine Rückfrage nach B1.4.3 und ein Endpunkt nötig, der Konto, Kategorien, Events und
+Bilddateien gemeinsam entfernt und die Session beendet. NFR-17a-01 ist bis dahin nur
+teilweise erfüllt.
+
+## OP-10 – Betrieb über HTTPS in einer Zielumgebung nicht nachgewiesen
+
+**Bezug:** [NFR-15b-01](spec/N1-nichtfunktional.md#15-anforderungen-an-sicherheit),
+[NFR-13b-01](spec/N1-nichtfunktional.md#13-anforderungen-an-betrieb-und-umgebung),
+[S3.2](betrieb/S3-inbetriebnahme.md#s32-voraussetzungen-an-den-host).
+
+Lifeline wird bisher nur lokal betrieben (Entwicklungsumgebung und lokaler
+Produktionsbetrieb). Eine Zielumgebung, die HOST-01 bis HOST-06 erfüllt, ist nicht
+ausgewählt; damit ist weder die verschlüsselte Übertragung noch die Inbetriebnahme nach
+S3 in einer solchen Umgebung nachgewiesen. Die Anwendung ist darauf vorbereitet: Im
+Produktionsmodus wird das Session-Cookie nur über HTTPS gesendet, und für eine
+Vorführung kann der lokale Produktionsbetrieb vorübergehend über einen HTTPS-Tunnel
+erreichbar gemacht werden (README).
+
+**Status:** Bewusst zurückgestellt. Für die Abgabe genügt der lokale Betrieb; eine
+dauerhafte Bereitstellung setzt eine kostenfreie Plattform mit persistentem Speicher
+voraus (CON-3b-01, CON-3g-01), deren Eignung vorher nachzuweisen ist.

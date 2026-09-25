@@ -171,7 +171,7 @@ werden. Das heutige Datenmodell enthält dieses Attribut nicht.
 |---|---|
 | Richtung | Eingehend: Instagram bzw. Exportdatei → Lifeline |
 | Auslösung | Manuell durch die Nutzer:in; kein Scheduler und keine automatische Synchronisation |
-| Persistenz | Importierte Beiträge werden als normale Lifeline-Events gespeichert; Bilder liegen unter `backend/uploads/`, in SQLite steht nur der Pfad |
+| Persistenz | Importierte Beiträge werden als normale Lifeline-Events gespeichert; Bilder werden wie bei manuell erfassten Events in der Bildablage gespeichert, das Event verweist nur darauf ([D2.3](D2-datentypenverzeichnis.md#d23-bild-image_path)) |
 | Authentifizierung | Für einen manuellen Import wäre keine Instagram-Anmeldung nötig; eine echte API-Anbindung erfordert OAuth |
 | Fehlerbehandlung | Ungültige Datensätze werden abgewiesen; bereits importierte Medien werden übersprungen |
 | Status | Vorgeschlagene Erweiterung, **nicht umgesetzt** |

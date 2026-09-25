@@ -18,7 +18,7 @@ Lifeline dokumentiert.
 |---|---|
 | **Rahmenbedingung** | Lifeline wird ausschließlich als Webanwendung bereitgestellt und über einen aktuellen Browser genutzt; auf dem Gerät der Nutzer:in ist keine Installation erforderlich. |
 | **Begründung** | Zielsetzung des Lehrprojekts (`G-04`, `G-05`): ein vollständiger Full-Stack-Prozess soll exemplarisch und ohne Installationshürde vorgeführt werden können. |
-| **Konsequenz** | Keine native App für iOS/Android (siehe `NG-01`). Zugriff ausschließlich über HTTPS im Browser; geprüft durch den vollständigen Durchlauf von Registrierung bis Anlegen eines Events ([N1](N1-nichtfunktional.md)). |
+| **Konsequenz** | Keine native App für iOS/Android (siehe `NG-01`). Zugriff ausschließlich über den Browser, in der Zielumgebung über HTTPS ([S3, HOST-01](../betrieb/S3-inbetriebnahme.md), `NFR-15b-01`); geprüft durch den vollständigen Durchlauf von Registrierung bis Anlegen eines Events ([N1](N1-nichtfunktional.md)). |
 
 ### CON-3a-02 Eingebettete Datenbank
 
@@ -66,7 +66,7 @@ Lifeline dokumentiert.
 |---|---|
 | **Rahmenbedingung** | Für Hosting, Datenbank und externe Dienste steht kein Budget zur Verfügung. |
 | **Begründung** | Studentisches Lehrprojekt ohne Finanzierung. |
-| **Konsequenz** | Nur kostenlose Hosting-Angebote kommen infrage ([S3, HOST-06](../betrieb/S3-inbetriebnahme.md)). Externe Nachbarsysteme dürfen keinen kostenpflichtigen Schlüssel und kein Abonnement voraussetzen — ausschlaggebend für die Auswahl in [S1.3](S1-nachbarsysteme.md#s13-nb-02--feiertagsdienst) (siehe auch `docs/OFFENE-PUNKTE.md`, OP-04). |
+| **Konsequenz** | Nur kostenlose Hosting-Angebote kommen infrage; die Anforderungen an den Host sind deshalb bewusst schlicht gehalten ([S3.2](../betrieb/S3-inbetriebnahme.md#s32-voraussetzungen-an-den-host), insbesondere HOST-06). Externe Nachbarsysteme dürfen keinen kostenpflichtigen Schlüssel und kein Abonnement voraussetzen — ausschlaggebend für die Auswahl in [S1.3](S1-nachbarsysteme.md#s13-nb-02--feiertagsdienst) (siehe auch `docs/OFFENE-PUNKTE.md`, OP-04). |
 
 ### CON-3h-01 Harte Abgabefrist
 
