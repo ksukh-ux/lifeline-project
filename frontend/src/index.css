@@ -307,3 +307,13 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .donut-segment { animation: none; }
 }
+#timeline-year {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+#timeline-year::-webkit-inner-spin-button,
+#timeline-year::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

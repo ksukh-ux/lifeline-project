@@ -245,7 +245,8 @@ export default function Timeline({
             </label>
             <input
               id="timeline-year"
-              type="number"
+              type="text"
+inputMode="numeric"
               min="1900"
               max="2100"
               value={selectedYear}
