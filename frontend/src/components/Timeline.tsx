@@ -66,6 +66,11 @@ export default function Timeline({
   }, [])
   const [zoom, setZoom] = useState(0)
   const [viewMode, setViewMode] = useState<ViewMode>('overview')
+  const [yearDraft, setYearDraft] = useState(String(selectedYear))
+
+useEffect(() => {
+  setYearDraft(String(selectedYear))
+}, [selectedYear])
 
   const sorted = useMemo(
     () => [...events].sort((a, b) => eventSortKey(a).localeCompare(eventSortKey(b))),
@@ -246,11 +251,20 @@ export default function Timeline({
             <input
               id="timeline-year"
               type="text"
+              onFocus={(e) => e.currentTarget.select()}
 inputMode="numeric"
               min="1900"
               max="2100"
-              value={selectedYear}
-              onChange={(event) => changeYear(Number(event.target.value))}
+value={yearDraft}
+onChange={(event) => {
+  const value = event.currentTarget.value.replace(/\D/g, '').slice(0, 4)
+  setYearDraft(value)
+
+  if (value.length === 4) {
+    const year = Number(value)
+    if (year >= 1900 && year <= 2100) changeYear(year)
+  }
+}}
               className="w-24 rounded-md border border-white/10 bg-ink-900/60 px-3 py-1.5 text-center font-mono text-sm text-slate-200 outline-none focus:border-brass-500/50"
             />
             <button
