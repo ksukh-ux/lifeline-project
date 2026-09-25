@@ -6,6 +6,15 @@ mit Datum, Kategorie, Bedeutung und optionalem Bild und sehen sie in einer
 chronologischen Timeline. Der Fokus des Projekts liegt auf moderner UI,
 Benutzerfreundlichkeit und interaktiver Visualisierung.
 
+**Lifeline**
+
+<img width="440" alt="Lifeline" src="https://github.com/user-attachments/assets/5a2806d5-7360-473e-98ab-78911b83fbdb" />
+
+**Rückblick Statistik**
+
+<img width="440" alt="Rückblick Statistik" src="https://github.com/user-attachments/assets/35ff2087-b5e8-4ff0-95a2-d0bf6a8916aa" />
+
+
 ## Features
 
 - Registrierung, Anmeldung und Abmeldung (jede Person sieht nur eigene Events)
