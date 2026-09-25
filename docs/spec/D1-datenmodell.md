@@ -43,7 +43,7 @@ erDiagram
 
 Die Entitäten werden in der Spezifikation großgeschrieben (`USERS`, `CATEGORIES`, `EVENTS`);
 in der Umsetzung heißen die gleichnamigen Tabellen `users`, `categories` und `events`, die
-Attribute sind identisch benannt (siehe [A05](../arch/A05-Bausteinansicht.md)).
+Attribute sind identisch benannt (siehe [A08](../arch/A08-Querschnittskonzepte.md), Kapitel 8.4).
 
 Notation gemäß [D2.4](D2-datentypenverzeichnis.md#d24-notationskonventionen): `●` markiert Pflichtfelder, `[0..1]` optionale Attribute, `PK`/`FK` Primär- bzw. Fremdschlüssel.
 

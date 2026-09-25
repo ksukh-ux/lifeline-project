@@ -301,7 +301,7 @@ Das Diagramm zeigt vier Gruppen: *Zugang* (UC-07, ohne bestehende Session erreic
 | **Beschreibung** | Die Nutzer:in lädt ihre Kategorien und Events als Sicherungsdatei herunter. |
 | **Trigger** | Die Nutzer:in möchte eine Kopie ihrer Daten behalten oder auf ein anderes Konto übertragen. |
 | **Vorbedingung** | Bestehende Session. |
-| **Nachbedingung** | Die Nutzer:in hat eine JSON-Datei mit ihren Kategorien (Name, Farbe) und Events; der Bestand in Lifeline ist unverändert. |
+| **Nachbedingung** | Die Nutzer:in hat eine JSON-Datei mit ihren Kategorien (Kennung, Name, Farbe) und Events; der Bestand in Lifeline ist unverändert. |
 | **Qualitäten** | [NFR-17a-01](N1-nichtfunktional.md) (eigene Inhalte einsehen). |
 
 #### Hauptablauf
@@ -333,12 +333,14 @@ Das Diagramm zeigt vier Gruppen: *Zugang* (UC-07, ohne bestehende Session erreic
 1. Die Nutzer:in wählt im Menü „Daten importieren“ und eine Sicherungsdatei.
 2. Lifeline prüft die Datei und fragt nach, ob die enthaltenen Events zusätzlich importiert werden sollen.
 3. Nach Bestätigung ordnet Lifeline jede Kategorie der Sicherung über ihren Namen einer vorhandenen Kategorie zu oder legt sie neu an (UC-08).
-4. Lifeline legt jedes Event neu an (wie UC-01), einschließlich seines Bildes, sofern es noch abrufbar ist.
+4. Lifeline legt jedes Event neu an (wie UC-01), einschließlich seines Bildes, sofern es aus der Bildablage dieser Lifeline-Installation stammt und noch abrufbar ist; andere Bildadressen werden nicht aufgerufen.
 5. Lifeline meldet, wie viele Events importiert wurden, und aktualisiert Timeline und Statistik.
 
 #### Ausnahmefälle
 
 - Die Datei ist keine gültige Sicherung: kein Import, Fehlermeldung.
+- Ein Event verweist auf eine Kategorie, die in der Sicherung fehlt: kein Import, Fehlermeldung; es werden auch keine Kategorien angelegt.
+- Ältere Sicherungen ohne Kategorien (nur Events) werden nur übernommen, wenn alle Kategorie-Kennungen im eigenen Konto existieren; sonst Fehlermeldung.
 - Die Sicherung enthält keine Events: Hinweis, kein Import.
 - Einzelne Events lassen sich nicht anlegen: Die übrigen werden importiert; die Meldung nennt die Anzahl der fehlgeschlagenen Events.
 - Die Nutzer:in bestätigt nicht: kein Import.
