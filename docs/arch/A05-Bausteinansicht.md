@@ -117,7 +117,7 @@ flowchart TB
 
 | Baustein | Zweck/Verantwortung | Schnittstelle | Erfüllt | Ablageort |
 |---|---|---|---|---|
-| `server` | Einstiegspunkt: wendet Schema und Migrationen an, registriert Middleware und Routen, liefert `/uploads` und im Produktionsbetrieb das gebaute Frontend aus, zentraler Fehler-Handler | HTTP | — | `backend/src/server.ts` |
+| `server` | Einstiegspunkt: wendet Schema und Migrationen an, registriert Middleware und Routen, liefert `/uploads` und im Produktionsbetrieb das gebaute Frontend aus, zentraler Fehler-Handler; `GET /api/health` meldet `{ status: "ok" }`, sobald die Datenbank antwortet (ohne Session, ohne Nutzdaten) | HTTP | — | `backend/src/server.ts` |
 | `middleware/cors` | Erlaubt dem Frontend auf anderem Port Anfragen mit Cookie (`FRONTEND_ORIGIN`) | Express-Middleware | — | `backend/src/middleware/cors.ts` |
 | `middleware/session` | In-Memory-Session-Store, Setzen und Löschen des Cookies `sid`, Ermitteln von `req.userId` | Express-Middleware | UC-07 | `backend/src/middleware/session.ts` |
 | `middleware/requireAuth` | Weist Anfragen ohne gültige Session mit 401 ab | Express-Middleware | alle außer UC-07 | `backend/src/middleware/requireAuth.ts` |
