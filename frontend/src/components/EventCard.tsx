@@ -65,7 +65,7 @@ export default function EventCard({
             aria-label={`Bedeutung ${event.significance} von 100`}
             role="img"
           >
-            <div className="h-1 w-24 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
+            <div className="h-1 w-72 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
               <div
                 className="h-full rounded-full"
                 style={{
