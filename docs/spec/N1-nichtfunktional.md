@@ -311,7 +311,7 @@ und gelöscht werden können.
 
 ## N1.11 Erfüllungsstand zur Abgabe
 
-Stand 23.09.2026. **Erfüllt** heißt: umgesetzt und mit dem genannten Nachweis geprüft.
+Stand 25.09.2026. **Erfüllt** heißt: umgesetzt und mit dem genannten Nachweis geprüft.
 **Teilweise** heißt: umgesetzt, aber das Prüfkriterium ist nicht vollständig nachgewiesen.
 **Offen** heißt: nicht nachgewiesen.
 
