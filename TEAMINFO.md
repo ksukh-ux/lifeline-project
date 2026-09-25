@@ -6,7 +6,7 @@ Lifeline Project
 
 ## Kurzbeschreibung
 
-Lifeline ist eine interaktive Timeline-Webanwendung zur visuellen Darstellung persönlicher Meilensteine, Ziele und Ereignisse. Nutzer können Events organisieren, kategorisieren und Erinnerungen verwalten. Ziel des Projekts ist die Entwicklung einer modernen, intuitiven und visuell ansprechenden Plattform mit Fokus auf Benutzerfreundlichkeit und interaktiver Darstellung.
+Lifeline ist eine interaktive Timeline-Webanwendung zur visuellen Darstellung persönlicher Meilensteine, Ziele und Ereignisse. Nutzer können Events organisieren, kategorisieren und auf einer interaktiven Timeline darstellen. Ziel des Projekts ist die Entwicklung einer modernen, intuitiven und visuell ansprechenden Plattform mit Fokus auf Benutzerfreundlichkeit und interaktiver Darstellung.
 
 ---
 
@@ -44,8 +44,6 @@ der [README](README.md#features) und verbindlich in der Spezifikation
 - Interaktive Timeline
 - Event-Detailseiten
 - Kategorien & Farben
-- Reminder-System (später als Nichtziel ausgeschlossen, NG-04)
-- Progress Tracking (nicht umgesetzt)
 - Moderne Dark-Mode UI
 
 ---
