@@ -86,7 +86,7 @@ Jede Zeile ist eine Bedingung, nicht ein Befehl.
 | I1 | Voraussetzungen `HOST-01` bis `HOST-06` prüfen und nachweisen. | Umgebung geeignet. |
 | I2 | Persistenten Speicherbereich einrichten und der Anwendung zuweisen. | Beide Flächen aus S3.3 liegen dort. |
 | I3 | Laufzeitkonfiguration setzen (S3.7). | Anwendung startfähig. Aktive Sessions müssen nach einem Neustart neu aufgebaut werden. |
-| I4 | Auslieferungsartefakt bereitstellen und Anwendung starten. | Anwendung erreichbar. |
+| I4 | Auslieferungsartefakt bereitstellen und Anwendung starten. | Anwendung erreichbar: `GET /api/health` antwortet mit `{ "status": "ok" }`. |
 | I5 | Leeres Datenschema anlegen. Die Standardkategorien entstehen nicht mit dem Schema, sondern bei jeder Registrierung für das neue Konto ([D1.3](../spec/D1-datenmodell.md#d13-categories)). | Leere, betriebsbereite Datenbank. |
 | I6 | Abnahme: Konto anlegen, Event erfassen, **Anwendung neu starten**, Event ist noch vorhanden. | `SC-01` und **`SC-04`** nachgewiesen. |
 
