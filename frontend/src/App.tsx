@@ -232,7 +232,7 @@ export default function App() {
             )
           : [...previousEvents, saved],
       )
-      setStats(await fetchStats())
+      setStats(await fetchStats().catch(() => null))
 
       setModalEvent(undefined)
     } catch (error) {
@@ -254,7 +254,7 @@ export default function App() {
       setEvents((previousEvents) =>
         previousEvents.filter((event) => event.id !== id),
       )
-      setStats(await fetchStats())
+      setStats(await fetchStats().catch(() => null))
     } catch (error) {
       alert(
         error instanceof Error
@@ -273,18 +273,23 @@ export default function App() {
       return
     }
 
-    try {
-      await Promise.all(
-        events.map((event) => deleteEventOnServer(event.id)),
-      )
+    const results = await Promise.allSettled(
+      events.map((event) => deleteEventOnServer(event.id)),
+    )
+    const failedDeletes = results.filter(
+      (result) => result.status === 'rejected',
+    ).length
 
-      setEvents([])
-      setStats(await fetchStats())
-    } catch (error) {
+    // Den tatsächlichen Datenbankstand neu laden, damit auch nach einzelnen
+    // Fehlern nur noch vorhandene Ereignisse angezeigt werden.
+    setEvents(await fetchEvents().catch(() => events))
+    setStats(await fetchStats().catch(() => null))
+
+    if (failedDeletes > 0) {
       alert(
-        error instanceof Error
-          ? error.message
-          : 'Ereignisse konnten nicht vollständig gelöscht werden.',
+        `${failedDeletes} Ereignis${
+          failedDeletes === 1 ? ' konnte' : 'se konnten'
+        } nicht gelöscht werden.`,
       )
     }
   }
@@ -386,6 +391,21 @@ export default function App() {
           )
         }
 
+        // Erst prüfen, dann anlegen: Fehlt eine Kategorie in der Sicherung,
+        // wird abgebrochen, bevor Kategorien angelegt wurden (AF-05).
+        const backupCategoryIds = new Set(
+          importedCategories.map((category) => category.id),
+        )
+        const eventWithoutCategory = importedEvents.find(
+          (event) => !backupCategoryIds.has(event.category),
+        )
+
+        if (eventWithoutCategory) {
+          throw new Error(
+            `Für das Ereignis „${eventWithoutCategory.title}“ fehlt die Kategorie in der Sicherung.`,
+          )
+        }
+
         const localCategories = [...categories]
         const categoryIdMap = new Map<number, number>()
 
@@ -410,20 +430,10 @@ export default function App() {
           categoryIdMap.set(importedCategory.id, localCategory.id)
         }
 
-        eventsForImport = importedEvents.map((event) => {
-          const localCategoryId = categoryIdMap.get(event.category)
-
-          if (localCategoryId === undefined) {
-            throw new Error(
-              `Für das Ereignis „${event.title}“ fehlt die Kategorie in der Sicherung.`,
-            )
-          }
-
-          return {
-            ...event,
-            category: localCategoryId,
-          }
-        })
+        eventsForImport = importedEvents.map((event) => ({
+          ...event,
+          category: categoryIdMap.get(event.category) ?? event.category,
+        }))
 
         setCategories(localCategories)
       } else {

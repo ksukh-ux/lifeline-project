@@ -73,6 +73,10 @@ async function apiFetch(path: string, options: RequestInit = {}): Promise<Respon
 // damit es beim JSON-Import als neues Bild hochgeladen werden kann.
 // Gibt undefined zurück, wenn das Bild nicht (mehr) abrufbar ist.
 export async function imageUrlToDataUri(url: string): Promise<string | undefined> {
+  // Nur Bilder aus der eigenen Bildablage laden: Eine Sicherungsdatei könnte
+  // sonst beliebige fremde Adressen enthalten, und der Browser würde
+  // Drittanbieter kontaktieren (P2 Abschnitt 7).
+  if (!isOwnUploadUrl(url)) return undefined
   try {
     const response = await fetch(url, { credentials: 'include' })
     if (!response.ok) return undefined
@@ -176,6 +180,16 @@ export async function fetchHolidays(year: number): Promise<Holiday[]> {
     return Array.isArray(holidays) ? holidays : []
   } catch {
     return []
+  }
+}
+
+function isOwnUploadUrl(url: string): boolean {
+  try {
+    const target = new URL(url, window.location.href)
+    const api = new URL(API_BASE_URL || window.location.origin, window.location.href)
+    return target.origin === api.origin && target.pathname.startsWith('/uploads/')
+  } catch {
+    return false
   }
 }
 

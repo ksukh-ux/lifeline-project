@@ -79,7 +79,7 @@ export default function Timeline({
     [events],
   )
 
-  // Ohne Ereignisse wird automatisch die Monatsansicht gezeigt.
+  // Ohne Ereignisse wird automatisch die Jahresansicht gezeigt.
   const effectiveViewMode: ViewMode =
     sorted.length === 0 ? 'year' : viewMode
 
