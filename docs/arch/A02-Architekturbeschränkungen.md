@@ -39,7 +39,7 @@ Randbedingungen für den Umgang mit Daten:
 | ID | Randbedingung | Beschreibung |
 |---|---|---|
 | DS-01 | Datensparsamkeit | Es werden ausschließlich die für die Kernfunktion (Timeline-Einträge, Login) fachlich notwendigen Felder erhoben (siehe D1/D2); keine zusätzlichen personenbezogenen Daten ohne konkreten Verwendungszweck |
-| DS-02 | Keine unnötige Speicherung sensibler Daten | Es werden keine sensiblen Daten (z. B. Klartext-Passwörter, vgl. CONV-05) gespeichert oder geloggt, die über den fachlich notwendigen Umfang hinausgehen |
+| DS-02 | Keine unnötige Speicherung sensibler Daten | Es werden keine sensiblen Daten (z. B. Klartext-Passwörter, vgl. NFR-15b-02 in [N1](../spec/N1-nichtfunktional.md)) gespeichert oder geloggt, die über den fachlich notwendigen Umfang hinausgehen |
 
 Die übrigen, ursprünglich in der Spezifikation (P2 §7) genannten
 Sicherheitsaspekte – Eingabevalidierung, kontrollierter Datenbankzugriff

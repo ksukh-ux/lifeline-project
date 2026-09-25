@@ -28,8 +28,9 @@ Beide Nutzungskontexte sind gleichrangig
 ([CON-3e-01](P1-constraints.md#con-3e-01-desktop-und-smartphone-gleichrangig)). Die
 Darstellung passt sich der Fensterbreite an, ohne dass horizontal gescrollt werden muss —
 ausgenommen die Zeitleiste selbst, deren horizontale Navigation beabsichtigt ist. Auf
-Berührungsgeräten sind alle Bedienelemente mit dem Finger erreichbar; Navigieren und
-Zoomen der Zeitleiste funktionieren per Wischgeste.
+Berührungsgeräten sind alle Bedienelemente mit dem Finger erreichbar; die Zeitleiste
+lässt sich per Wischgeste verschieben, Zoom und Positionsregler sind mit dem Finger
+bedienbar.
 
 **Prüfkriterium:** Jeder Dialog aus [B1](B1-dialogspezifikation.md) ist auf einem
 Smartphone-Fenster (375 × 667) und einem Desktop-Fenster (1920 × 1080) vollständig
@@ -181,8 +182,8 @@ Anforderung ist deshalb neu formuliert und der Wertebereich in eine eigene Entit
 überführt ([D1.3](D1-datenmodell.md#d13-categories)).
 
 **Status:** Erfüllt. Kategorie ist als eigene Entität `CATEGORIES` umgesetzt
-(Datenmodell, Backend-Endpunkte `GET`/`POST /api/categories`, Frontend). Neue
-Kategorien werden über die Oberfläche angelegt (`CategoryFilter`), sofort im
+(Datenmodell, Anwendungslogik und Oberfläche, siehe UC-08). Neue
+Kategorien werden über die Oberfläche angelegt (DLG-06), sofort im
 Event-Formular auswählbar und in der Timeline filterbar — ohne Neustart oder
 Code-Änderung. Bestehende Installationen mit der alten, fest codierten
 Kategorie-Liste werden beim Serverstart automatisch migriert.
@@ -317,7 +318,8 @@ Stand 25.09.2026. **Erfüllt** heißt: umgesetzt und mit dem genannten Nachweis 
 
 Automatisierte Tests: `npm --prefix backend test` (Integrationstests gegen die laufende
 API sowie Einzeltests für Validierung und Bildprüfung) und
-`npm --prefix frontend run test:browser` (Browser-Test in Chrome oder Edge; startet Backend
+`npm --prefix frontend run test:browser` (Browser-Test in Chrome oder Edge, mit
+`BROWSER=chrome` bzw. `BROWSER=msedge` gezielt in einem der beiden; startet Backend
 und den Produktions-Build des Frontends selbst und prüft die hier genannten Anforderungen
 mit Messwerten).
 
@@ -328,22 +330,22 @@ mit Messwerten).
 | NFR-11c-01 Verständliche Rückmeldungen | Erfüllt | Meldungen der Anwendungslogik ohne Feldnamen und Formate; zentraler Fehler-Handler ohne Stapelspuren; Netzwerkfehler werden übersetzt. |
 | NFR-11d-01 Grundlegende Zugänglichkeit | Teilweise | Formularfelder beschriftet, Kategorie überall als Text. Vollständige Tastaturbedienung nicht systematisch geprüft (z. B. kein Fokusfang im Formularfenster). |
 | NFR-12a-01 Ladeverhalten | Erfüllt | Browser-Test: 200 Events in unter 1 s vollständig dargestellt (Produktions-Build, Median aus drei Ladevorgängen, in mehreren Läufen 0,5–1,0 s; Grenze 2 s). |
-| NFR-12a-02 Filterung ohne Verzögerung | Erfüllt | Browser-Test: Filterwechsel ohne Serveranfrage, Darstellung nach rund 40 ms (Grenze 200 ms). |
+| NFR-12a-02 Filterung ohne Verzögerung | Erfüllt | Browser-Test: Filterwechsel ohne Serveranfrage, Darstellung nach 20–40 ms (Grenze 200 ms). |
 | NFR-12c-01 Chronologische Ordnung | Erfüllt | Browser-Test mit mehreren Events am selben Tag mit und ohne Uhrzeit: Zeitachse und Event-Liste folgen derselben Ordnung (Datum, dann Uhrzeit, ohne Uhrzeit am Tagesende). |
 | NFR-12d-01 Dauerhaftigkeit | Erfüllt | Test „Events bleiben nach einem Neustart erhalten“. |
 | NFR-12d-02 Keine Teilzustände | Teilweise | Konto und Startkategorien in einer Transaktion; Bilder werden kompensierend aufgeräumt. Restrisiko zwischen Datei und Datenbank siehe OP-08. |
-| NFR-12e-01 Bestandsgröße | Erfüllt | Browser-Test mit 500 Events: Darstellung in unter 2 s (Produktions-Build, Median aus drei Ladevorgängen, in mehreren Läufen 1,2–1,4 s); Filtern, Jahresansicht, Jahreswechsel, Anlegen und Bearbeiten funktionieren. |
-| NFR-13b-01 Betrieb ohne Zusatzdienste | Teilweise | Produktionsbetrieb als ein Prozess ohne Datenbankserver lokal geprüft; Betrieb hinter HTTPS nicht nachgewiesen. |
-| NFR-13b-02 Nutzung ohne Installation | Teilweise | Durchlauf von Registrierung bis Anlegen in Chrome; zweiter Browser nicht protokolliert. |
+| NFR-12e-01 Bestandsgröße | Erfüllt | Browser-Test mit 500 Events: Darstellung in unter 2 s (Produktions-Build, Median aus drei Ladevorgängen, in mehreren Läufen 1,1–1,5 s); Filtern, Jahresansicht, Jahreswechsel, Anlegen und Bearbeiten funktionieren. |
+| NFR-13b-01 Betrieb ohne Zusatzdienste | Teilweise | Produktionsbetrieb als ein Prozess ohne Datenbankserver lokal geprüft; Betrieb hinter HTTPS nicht nachgewiesen, siehe [OP-10](../OFFENE-PUNKTE.md). |
+| NFR-13b-02 Nutzung ohne Installation | Erfüllt | Browser-Test: Registrierung und Anlegen eines Events über die Oberfläche in Google Chrome 153 und Microsoft Edge 153 (jeweils mit `BROWSER=…`). |
 | NFR-14a-01 Nachvollziehbarkeit | Teilweise | Versionierung und Pull Requests auf GitHub; der Abgabe-Tag `v1.0.0` wird mit der Abgabe gesetzt. |
 | NFR-14a-02 Prüfbarkeit der Kernabläufe | Erfüllt | Integrationstests: UC-01, UC-02, UC-03, UC-04 (Laden), UC-07, UC-08. Browser-Test: UC-05 (Filtern) und UC-04 (Darstellung). |
 | NFR-14c-01 Erweiterbarkeit der Kategorien | Erfüllt | Test „Kategorie anlegen und verwenden“; Anlegen über die Oberfläche ohne Neustart. |
 | NFR-15a-01 Zugriff nur auf eigene Daten | Erfüllt | Test: fremdes Event wird mit 404 beantwortet, genau wie ein nicht existierendes. |
 | NFR-15a-02 Prüfung bei jeder Operation | Erfüllt | Test für Lesen, Ändern und Löschen eines fremden Events sowie für eine fremde Kategorie. |
-| NFR-15b-01 Verschlüsselte Übertragung | Offen | Im Produktionsmodus wird das Cookie nur über HTTPS gesendet; eine Zielumgebung mit HTTPS ist nicht nachgewiesen. |
+| NFR-15b-01 Verschlüsselte Übertragung | Offen | Im Produktionsmodus wird das Cookie nur über HTTPS gesendet; eine Zielumgebung mit HTTPS ist nicht nachgewiesen, siehe [OP-10](../OFFENE-PUNKTE.md). |
 | NFR-15b-02 Passwörter nie im Klartext | Erfüllt | Speicherung nur als scrypt-Hash; Passwörter werden nicht protokolliert. |
 | NFR-15b-03 Neutralisierung von Freitext | Erfüllt | Browser-Test: ein Titel mit `<script>` und `<img onerror>` erscheint als Text, es wird nichts ausgeführt. |
 | NFR-15b-04 Prüfung hochgeladener Dateien | Erfüllt | Einzeltest: Datei mit falscher Signatur und nicht erlaubter Typ werden abgewiesen. |
 | NFR-15c-01 Datensparsamkeit | Erfüllt | Es werden nur E-Mail, Passwort-Hash, Kategorien und Events gespeichert; jedes Attribut gehört zu einem Anwendungsfall. |
 | NFR-15c-02 Keine personenbezogenen Daten in Protokollen | Erfüllt | Protokolliert werden nur Start, Migrationen und unerwartete Fehler. |
-| NFR-17a-01 Auskunft und Löschung | Teilweise | Events einsehen, exportieren (UC-09) und löschen (UC-03) ist möglich; das Löschen des eigenen Kontos ist nicht umgesetzt. |
+| NFR-17a-01 Auskunft und Löschung | Teilweise | Events einsehen, exportieren (UC-09) und löschen (UC-03) ist möglich; das Löschen des eigenen Kontos ist nicht umgesetzt, siehe [OP-09](../OFFENE-PUNKTE.md). |
